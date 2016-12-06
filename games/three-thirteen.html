@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Card Games Score Keeper</title>
+  <!-- Bootstrap -->
+	<link
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css"
+    integrity="sha384-dNpIIXE8U05kAbPhy3G1cz+yZmTzA6CY8Vg/u2L9xRnHjJiAK76m2BIEaSEV+/aU"
+    crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Three-Thirteen</a>
+    </div>
+
+    <ul class="nav navbar-nav">
+      <li><a href="#" onclick="init3_13()"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</a></li>
+      <li><a href="#"><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li class="active"><a>Three-Thirteen<span class="sr-only"> (current)</span></a></li>
+          <li><a href="#">Richet Lieux</a></li>
+          <li><a href="#">Doughnut</a></li>
+        </ul>
+      </li>
+    </ul><!--
+    <form class="navbar-form navbar-left">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>-->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+  <!--<button type="button" id="initBtn" class="btn btn-primary" onclick="init();"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</button>-->
+
+  <h1 id="initH1">Please initialize game</h1>
+
+  <div class="table-responsive hidden">
+    <table class="table table-bordered" id="scorecard">
+      <thead>
+        <tr>
+          <th>Round &amp; Dealer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">3</th>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+        </tr>
+        <tr>
+          <th scope="row">5</th>
+        </tr>
+        <tr>
+          <th scope="row">6</th>
+        </tr>
+        <tr>
+          <th scope="row">7</th>
+        </tr>
+        <tr>
+          <th scope="row">8</th>
+        </tr>
+        <tr>
+          <th scope="row">9</th>
+        </tr>
+        <tr>
+          <th scope="row">10</th>
+        </tr>
+        <tr>
+          <th scope="row">J</th>
+        </tr>
+        <tr>
+          <th scope="row">Q</th>
+        </tr>
+        <tr>
+          <th scope="row">K</th>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Total Scores:</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div><!-- .table-responsive -->
+</div><!-- .container -->
+
+<!-- jQuery -->
+<script
+  src="http://code.jquery.com/jquery-3.1.1.slim.min.js"
+  integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc="
+  crossorigin="anonymous"></script>
+<!-- bootstrap -->
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="../script.js"></script>
+</body>
+</html>
