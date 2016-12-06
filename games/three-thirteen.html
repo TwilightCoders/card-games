@@ -3,7 +3,7 @@
 <head>
   <title>Card Games Score Keeper</title>
   <!-- Bootstrap -->
-	<link
+  <link
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -27,7 +27,7 @@
 
     <ul class="nav navbar-nav">
       <li><a href="#" onclick="init3_13()"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</a></li>
-      <li><a href="#"><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
+      <li><a href="#" data-toggle="modal" data-target=".rules-modal" ><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
         <ul class="dropdown-menu">
@@ -62,7 +62,7 @@
 <div class="container">
   <!--<button type="button" id="initBtn" class="btn btn-primary" onclick="init();"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</button>-->
 
-  <h1 id="initH1">Please initialize game</h1>
+  <h2 id="initH1">Please initialize game</h2>
 
   <div class="table-responsive hidden">
     <table class="table table-bordered" id="scorecard">
@@ -114,6 +114,107 @@
     </table>
   </div><!-- .table-responsive -->
 </div><!-- .container -->
+
+<!-- Game Rules Modal -->
+<div class="modal fade rules-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1>Three Thirteen Rules</h1>
+      </div>
+      <div class="modal-body">
+        <!-- Taken from: https://www.pagat.com/rummy/3-13.html -->
+        <!-- Will re-write better once this is more finalized -->
+        <h2>Players</h2>
+        <p>Two or more players</p>
+
+        <h2>Cards</h2>
+
+        <p>Normal playing cards. One 52 card deck for two players, two decks for three or four people. It doesn't really matter after that as long as you have enough cards to play with.</p>
+
+        <h2>The Deal</h2>
+
+        <p>This game has eleven rounds. The first dealer is chosen at random and the turn to deal passes to the left after each round. In the first round three cards are dealt to each player, in the second round four cards are dealt and so on until the eleventh and last round in which thirteen cards each are dealt. The remainder of the cards are placed face down on the table to form a stock pile. The top card of the stock is being flipped face up and put beside the stock pile to start the discard pile.</p>
+
+        <h2>Object of the Game</h2>
+
+        <p>The object of the game is to form all the cards in your hand into combinations. There are two types of valid combination:
+
+        <ol>
+        <li>a set or group of three or more cards of the same rank, such as club5-spade5-diamond5. When playing with more than one deck it is possible for a set to contain identical cards, for example  club9-club9-diamond9.</li>
+        <li>a run or sequence of three or more cards in the same suit, such as heart4-heart5-heart6</li>
+        </ol>
+
+        Combinations can contain more than three cards - for example four sevens or 8-9-10-J-Q of a suit. However, you cannot count the same card as part of more than one combination. For example spade5-spade6-spade7-heart6-club6 is either a set of sixes with a 5 and 7 of spades left over, or a run of spades with two sixes left over.</p>
+
+        <p>Aces rank low in this game, so A-2-3 is a valid sequence but Q-K-A is not.</p>
+
+        <h2>Wild Cards</h2>
+
+        <p>In each round there is a wild card. It is the card equal to the number of cards dealt. Wild cards can be used in place of any other card in making a group or sequence. You can even make a set that consists of only wild cards if you wish. Below is a list of wild cards by round:</p>
+
+        <ul>
+        <li>Round 1 Threes are wild.</li>
+        <li>Round 2 Fours are wild.</li>
+        <li>Round 3 Fives are wild.</li>
+        <li>Round 4 Sixes are wild.</li>
+        <li>Round 5 Sevens are wild.</li>
+        <li>Round 6 Eights are wild.</li>
+        <li>Round 7 Nines are wild.</li>
+        <li>Round 8 Tens are wild.</li>
+        <li>Round 9 Jacks are wild.</li>
+        <li>Round 10 Queens are wild.</li>
+        <li>Round 11 Kings are wild.</li>
+        </ul>
+
+        <h2>The Play</h2>
+
+        <p>The player to dealer's left begins, and players take turns clockwise around the table. A turn consists of drawing one card - either the top card of the face down stock or the top card of the discard pile - and then discarding one card face up on top of the discard pile. Note that only the top card of the discard pile can be taken.</p>
+
+        <h2>Going Out</h2>
+
+        <p>You can go out at your turn to play if, after drawing the top card of the stock or the top discard, you are able to arrange all the cards in your hand except one into separate sets, and then discard a card. In this case, when discarding you announce that you are out. Each of the other players is allowed one more turn. When the turn to play comes back to you the round is over and the scores are calculated.</p>
+
+        <h2>Scoring</h2>
+
+        <p>At the end of the round, each player arranges as much as possible of their hand into sets and runs. Any cards that are not included in a set or run are counted as penalty points against the holder as follows:
+
+        <ul>
+        <li>Ace   1pt</li>
+        <li>Two   2pts</li>
+        <li>Three 3pts</li>
+        <li>Four  4pts</li>
+        <li>Five  5pts</li>
+        <li>Six   6pts</li>
+        <li>Seven 7pts</li>
+        <li>Eight 8pts</li>
+        <li>Nine  9pts</li>
+        <li>Ten   10pts</li>
+        <li>Jack  10pts</li>
+        <li>Queen 10pts</li>
+        <li>King  10pts</li>
+        </ul>
+
+        The scores are accumulated from round to round, and whoever has the lowest score at the end of the eleventh round is the winner.</p>
+
+        <p>Note that in this form of rummy, players are not allowed to dispose of cards by adding them to other players' sets or runs. Combinations are made only from your own hand, and any cards not included are penalty cards.</p>
+
+        <h2>Variations</h2>
+
+        <ul>
+        <li>Some play that Aces can be used as high or low - so A-K-Q is a valid sequence. In this case an Ace remaining in your hand at the end costs 15 points, rather than one.</li>
+
+        <li>Some groups score 11 points for Jacks, 12 for Queens and 13 for Kings.</li>
+
+        <li>Some groups include Jokers as additional wild cards. In that case, a joker left in your hand at the end of a round scores 20 penalty points.</li>
+
+        <li>For large groups of players, Stan Stone has invented 3-13 Speed, in which the play is speeded up by means of simultaneous drawing and discarding, controlled by a caller.</li>
+
+        <li>A proprietary version of 3-13 using a special five-suited pack, has been published under the name Five Crowns.</li>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- jQuery -->
 <script
