@@ -8,11 +8,11 @@ var game =
   playerNames: [],
   scores: [],
   
+
   init: function()
   {
-    // Assign "this" to "self" (a normal variable) so that "this" retains the wanted scope inside callback functions
     var self = this;
-    
+
     // Don't run this funtion if already initialized
     if (this.initialized)
     {
@@ -36,12 +36,19 @@ var game =
   {
     // TODO: For now, assume everything is set up correctly - we will error check later
     
+    // Close the modal
+    $("#init-modal").modal('hide');
+
     // Un-hide the initial table, & hide the button telling us to initialize the game
     $("div.table-responsive.hidden").removeClass("hidden");
     $("#initH1").addClass("hidden");
     
-    // Configure the players & scores per whatever was entered
-    this.configurePlayers();
+    // Read the players to variables & set the round modal
+    this.getPlayers();
+
+    // Configure the scorecard table
+    this.configureRows();
+    this.configureColumns();
     
     // TODO: Refactor the rest of this function from this point on
 
@@ -49,23 +56,13 @@ var game =
     this.initialized = true;
     this.round = 1;
 
-    var button = '<button id="start3_13" class="btn btn-primary btn-lg col-xs-12" onclick="game.completeRound();">Complete Round 1</button>';
+    var button = '<button id="completeRound" class="btn btn-primary btn-lg col-xs-12" onclick="game.completeRound();">Complete Round 1</button>';
     $("table.table").after(button);
   },
-  
-  
-  completeRound: function()
-  {
-    alert("Function not implimented yet");
-  },
-  
-  
-  // This function assigns player names to the table as columns, and adds the names in the appropriate rows for dealer
-  configurePlayers: function()
-  {
-    // Determine what bootstrap column value to assign the player columns
-    var n = Math.floor(10 / this.players);
 
+
+  getPlayers: function()
+  {
     // Loop through and get player info based on parameters captured above
     for (i = 0; i < this.players; i++)
     {
@@ -74,14 +71,46 @@ var game =
       // Set the player name
       this.playerNames[i] = name;
 
+      // Set the roundModal with the names we've gathered
+      $("#roundScores div.row:nth-of-type(" + (i + 1) + ") span.input-group-addon").text(this.playerNames[i]);
+    }
+  },
+  
+
+  configureRows: function()
+  {
+    // Clear the rows of the scorecard body, so that we can add the rows natively
+    $("#scorecard tbody tr").html("");
+
+    //alert("Players:\n\n" + this.playerNames + "\n\nNum: " + this.players + " " + typeof this.players);
+
+    for (var i = 0; i < this.numRounds; i++)
+    {
+      var text = "<tr>\n<th scope=\"row\">" + (i + 3) + " - " + (this.playerNames[i % this.players]) + "</th>\n</tr>\n";
+      $("#scorecard tbody").append(text);
+    }
+  },
+
+  
+  // This function assigns player names to the table as columns, and adds the names in the appropriate rows for dealer
+  configureColumns: function()
+  {
+    // Determine what bootstrap column value to assign the player columns
+    var n = Math.floor(10 / this.players);
+
+    // Loop through and get player info based on parameters captured above
+    for (i = 0; i < this.players; i++)
+    {
+      var name = this.playerNames[i]
+
       // Add the th element to the first row in the table for the player names
       $("#scorecard thead tr").append("<th class=\"col-xs-" + n + " text-center\">" + name + "</th>\n");
 
       // Dynamically get the correct th element for the purposes of listing who the dealer will be
-      var search = "#scorecard tbody tr:nth-of-type(" + this.players + "n + " + (i + 1) + ") th";
+      //var search = "#scorecard tbody tr:nth-of-type(" + this.players + "n + " + (i + 1) + ") th";
 
       // Apply the name of the current player to the th element searched for above
-      $(search).append(" - " + this.playerNames[i]);
+      //$(search).append(" - " + this.playerNames[i]);
 
       // Add an empty cell for this player's column in all tr rows in the tbody - so this will be a complete table
       $("#scorecard tbody tr").append("<td class=\"text-center\"></td>\n");
@@ -95,25 +124,34 @@ var game =
   },
   
   
+  // This will set the names of the init modal and the roundScore modal
   initPlayerNames: function(num)
   {
     // To start, make all inputs hidden, then enable them using switch case logic by cascading down from num
     $("#initPlayerNames div.row").addClass("hidden");
+    $("#roundScores div.row").addClass("hidden");
     
     switch(num)
     {
       case 6:
         $("#initPlayerNames div.row:nth-of-type(6)").removeClass("hidden");
+        $("#roundScores div.row:nth-of-type(6)").removeClass("hidden");
       case 5:
         $("#initPlayerNames div.row:nth-of-type(5)").removeClass("hidden");
+        $("#roundScores div.row:nth-of-type(5)").removeClass("hidden");
       case 4:
         $("#initPlayerNames div.row:nth-of-type(4)").removeClass("hidden");
+        $("#roundScores div.row:nth-of-type(4)").removeClass("hidden");
       case 3:
         $("#initPlayerNames div.row:nth-of-type(3)").removeClass("hidden");
+        $("#roundScores div.row:nth-of-type(3)").removeClass("hidden");
       case 2:
       default:
         $("#initPlayerNames div.row:nth-of-type(2)").removeClass("hidden");
+        $("#roundScores div.row:nth-of-type(2)").removeClass("hidden");
+
         $("#initPlayerNames div.row:nth-of-type(1)").removeClass("hidden");
+        $("#roundScores div.row:nth-of-type(1)").removeClass("hidden");
         break;
     }
   },
@@ -136,7 +174,14 @@ var game =
         $("tfoot th#player" + (i + 1)).html(_scores[i]);
       }
     }
+  },
+
+
+  completeRound: function()
+  {
+    $("#round-modal").modal('show');
   }
+
 };
 
 

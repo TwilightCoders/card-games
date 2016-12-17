@@ -37,8 +37,8 @@
     </div>
     <div class="collapse navbar-collapse" id="main-navbar">
       <ul class="nav navbar-nav">
-        <li><a href="" onclick="init3_13()"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</a></li>
-        <li><a href="" data-toggle="modal" data-target=".init-modal" ><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
+        <!-- <li><a href="" onclick="init3_13()"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</a></li> -->
+        <li><a href="" data-toggle="modal" data-target="#rules-modal" ><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -74,7 +74,7 @@
 <div class="container">
   <!--<button type="button" id="initBtn" class="btn btn-primary" onclick="init();"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</button>-->
 
-  <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target=".init-modal" id="initH1">Please initialize game</button>
+  <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#init-modal" id="initH1">Please initialize game</button>
 
   <div class="table-responsive hidden">
     <table class="table table-bordered" id="scorecard">
@@ -84,39 +84,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">3</th>
-        </tr>
-        <tr>
-          <th scope="row">4</th>
-        </tr>
-        <tr>
-          <th scope="row">5</th>
-        </tr>
-        <tr>
-          <th scope="row">6</th>
-        </tr>
-        <tr>
-          <th scope="row">7</th>
-        </tr>
-        <tr>
-          <th scope="row">8</th>
-        </tr>
-        <tr>
-          <th scope="row">9</th>
-        </tr>
-        <tr>
-          <th scope="row">10</th>
-        </tr>
-        <tr>
-          <th scope="row">J</th>
-        </tr>
-        <tr>
-          <th scope="row">Q</th>
-        </tr>
-        <tr>
-          <th scope="row">K</th>
-        </tr>
+        <!-- Empty ... will be filled by JavaScript -->
       </tbody>
       <tfoot>
         <tr>
@@ -127,8 +95,95 @@
   </div><!-- .table-responsive -->
 </div><!-- .container -->
  
+
+
+<!-- *********************************************** -->
+<!-- ***                                         *** -->
+<!-- ***                  MODALS                 *** -->
+<!-- ***                                         *** -->
+<!-- *********************************************** -->
+
+
+<!-- Round Modal -->
+<div class="modal fade" id="round-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1>Complete Round</h1>
+      </div>
+      <div class="modal-body">
+        <form id="roundForm" onsubmit="return false;">
+          
+          <div id="roundScores">
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 1</span>
+                  <input class="form-control" type="text" name="player1score">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 2</span>
+                  <input class="form-control" type="text" name="player2score">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+            
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 3</span>
+                  <input class="form-control" type="text" name="player3score">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 4</span>
+                  <input class="form-control" type="text" name="player4score">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+            
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 5</span>
+                  <input class="form-control" type="text" name="player5score">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 6</span>
+                  <input class="form-control" type="text" name="player6score">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+          
+          </div><!-- #roundScores -->
+
+        </form>
+      </div><!-- .modal-body -->
+    </div><!-- .modal-content -->
+  </div><!-- .modal-dialog -->
+</div>
+<!-- End of round modal -->
+
+
+
 <!-- Initialze Modal -->
-<div class="modal fade init-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="init-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -244,8 +299,11 @@
 </div>
 <!-- End of Initialze Modal -->
 
+
+
+
 <!-- Game Rules Modal -->
-<div class="modal fade rules-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="rules-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
