@@ -26,22 +26,29 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
     <div class="navbar-header">
       <a class="navbar-brand" href="../../index.html">Three-Thirteen</a>
     </div>
-
-    <ul class="nav navbar-nav">
-      <li><a href="#" onclick="init3_13()"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</a></li>
-      <li><a href="#" data-toggle="modal" data-target=".rules-modal" ><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li class="active"><a>Three-Thirteen<span class="sr-only"> (current)</span></a></li>
-          <li><a href="#">Richet Lieux</a></li>
-          <li><a href="#">Doughnut</a></li>
-        </ul>
-      </li>
-    </ul><!--
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav">
+        <li><a href="" onclick="init3_13()"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</a></li>
+        <li><a href="" data-toggle="modal" data-target=".init-modal" ><i class="fa fa-balance-scale" aria-hidden="true"></i> Game Rules</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li class="active"><a>Three-Thirteen<span class="sr-only"> (current)</span></a></li>
+            <li><a href="#">Richet Lieux</a></li>
+            <li><a href="#">Doughnut</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!--
     <form class="navbar-form navbar-left">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="Search">
@@ -67,7 +74,7 @@
 <div class="container">
   <!--<button type="button" id="initBtn" class="btn btn-primary" onclick="init();"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</button>-->
 
-  <h2 id="initH1">Please initialize game</h2>
+  <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target=".init-modal" id="initH1">Please initialize game</button>
 
   <div class="table-responsive hidden">
     <table class="table table-bordered" id="scorecard">
@@ -119,6 +126,123 @@
     </table>
   </div><!-- .table-responsive -->
 </div><!-- .container -->
+ 
+<!-- Initialze Modal -->
+<div class="modal fade init-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1>Initialize Game</h1>
+      </div>
+      <div class="modal-body">
+        <form id="initForm" onsubmit="return false;">
+          
+          <div class="row">
+            
+            <div class="col-xs-12">
+              <h2>
+                Number of players
+              </h2>
+            </div>
+            
+            <div class="col-xs-12">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary btn-lg active">
+                  <input type="radio" name="numPlayers" value="2" checked>2
+                </label>
+                <label class="btn btn-primary btn-lg">
+                  <input type="radio" name="numPlayers" value="3">3
+                </label>
+                <label class="btn btn-primary btn-lg">
+                  <input type="radio" name="numPlayers" value="4">4
+                </label>
+                <label class="btn btn-primary btn-lg">
+                  <input type="radio" name="numPlayers" value="5">5
+                </label>
+                <label class="btn btn-primary btn-lg">
+                  <input type="radio" name="numPlayers" value="6">6
+                </label>
+              </div>
+            </div>
+            
+          </div><!-- .row -->
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <h2>Enter Names:</h2>
+            </div>
+          </div>
+          
+          <div id="initPlayerNames">
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 1</span>
+                  <input class="form-control" type="text" name="player1name">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 2</span>
+                  <input class="form-control" type="text" name="player2name">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+            
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 3</span>
+                  <input class="form-control" type="text" name="player3name">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 4</span>
+                  <input class="form-control" type="text" name="player4name">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+            
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 5</span>
+                  <input class="form-control" type="text" name="player5name">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+
+            <div class="row hidden">
+              <div class="form-group col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Player 6</span>
+                  <input class="form-control" type="text" name="player6name">
+                </div><!-- .input-group -->
+              </div><!-- .form-group -->
+            </div><!-- .row -->
+          
+          </div><!-- #initPlayerNames -->
+          <br><br>
+          <div class="row">
+            <div class="col-xs-12">
+              <button class="btn btn-primary btn-lg btn-block" id="startBtn" onclick="game.startGame();">Start Game!</button>
+            </div>
+          </div>
+        </form>
+      </div><!-- .modal-body -->
+    </div><!-- .modal-content -->
+  </div><!-- .modal-dialog -->
+</div>
+<!-- End of Initialze Modal -->
 
 <!-- Game Rules Modal -->
 <div class="modal fade rules-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -208,19 +332,20 @@
         <h2>Variations</h2>
 
         <ul>
-        <li>Some play that Aces can be used as high or low - so A-K-Q is a valid sequence. In this case an Ace remaining in your hand at the end costs 15 points, rather than one.</li>
+          <li>Some play that Aces can be used as high or low - so A-K-Q is a valid sequence. In this case an Ace remaining in your hand at the end costs 15 points, rather than one.</li>
 
-        <li>Some groups score 11 points for Jacks, 12 for Queens and 13 for Kings.</li>
+          <li>Some groups score 11 points for Jacks, 12 for Queens and 13 for Kings.</li>
 
-        <li>Some groups include Jokers as additional wild cards. In that case, a joker left in your hand at the end of a round scores 20 penalty points.</li>
+          <li>Some groups include Jokers as additional wild cards. In that case, a joker left in your hand at the end of a round scores 20 penalty points.</li>
 
-        <li>For large groups of players, Stan Stone has invented 3-13 Speed, in which the play is speeded up by means of simultaneous drawing and discarding, controlled by a caller.</li>
+          <li>For large groups of players, Stan Stone has invented 3-13 Speed, in which the play is speeded up by means of simultaneous drawing and discarding, controlled by a caller.</li>
 
-        <li>A proprietary version of 3-13 using a special five-suited pack, has been published under the name Five Crowns.</li>
+          <li>A proprietary version of 3-13 using a special five-suited pack, has been published under the name Five Crowns.</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</div><!-- End Game Rules Modal -->
 
 <!-- jQuery -->
 <script

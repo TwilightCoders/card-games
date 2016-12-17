@@ -26,20 +26,28 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
     <div class="navbar-header">
       <a class="navbar-brand" href="./index.html">Card Games</a>
     </div>
 
-    <ul class="nav navbar-nav">
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="./games/three-thirteen/index.html">Three-Thirteen</a></li>
-          <li><a href="#">Richet Lieux</a></li>
-          <li><a href="#">Doughnut</a></li>
-        </ul>
-      </li>
-    </ul><!--
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-crosshairs" aria-hidden="true"></i> Games <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="./games/three-thirteen/index.html">Three-Thirteen</a></li>
+            <li><a href="#">Richet Lieux</a></li>
+            <li><a href="#">Doughnut</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!--
     <form class="navbar-form navbar-left">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="Search">
