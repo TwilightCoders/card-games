@@ -74,10 +74,10 @@
 <div class="container">
   <!--<button type="button" id="initBtn" class="btn btn-primary" onclick="init();"><i class="fa fa-wrench" aria-hidden="true"></i> Initialze Game</button>-->
 
-  <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#init-modal" id="initH1">Please initialize game</button>
+  <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#init-modal" id="initMessage">Please initialize game</button>
 
-  <div class="table-responsive hidden">
-    <table class="table table-bordered" id="scorecard">
+  <div class="table-responsive hidden" id="scorecardDiv">
+<!--     <table class="table table-bordered" id="scorecard">
       <thead>
         <tr>
           <th>Round &amp; Dealer</th>
@@ -85,13 +85,13 @@
       </thead>
       <tbody>
         <!-- Empty ... will be filled by JavaScript -->
-      </tbody>
+      <!--</tbody>
       <tfoot>
         <tr>
           <th scope="row">Total Scores:</th>
         </tr>
       </tfoot>
-    </table>
+    </table> -->
   </div><!-- .table-responsive -->
 </div><!-- .container -->
  
@@ -121,7 +121,7 @@
               <div class="form-group col-sm-8">
                 <div class="input-group">
                   <span class="input-group-addon">Player 1</span>
-                  <input class="form-control" type="text" name="player1score">
+                  <input class="form-control" type="number" name="player1score">
                 </div><!-- .input-group -->
               </div><!-- .form-group -->
             </div><!-- .row -->
@@ -130,7 +130,7 @@
               <div class="form-group col-sm-8">
                 <div class="input-group">
                   <span class="input-group-addon">Player 2</span>
-                  <input class="form-control" type="text" name="player2score">
+                  <input class="form-control" type="number" name="player2score">
                 </div><!-- .input-group -->
               </div><!-- .form-group -->
             </div><!-- .row -->
@@ -139,7 +139,7 @@
               <div class="form-group col-sm-8">
                 <div class="input-group">
                   <span class="input-group-addon">Player 3</span>
-                  <input class="form-control" type="text" name="player3score">
+                  <input class="form-control" type="number" name="player3score">
                 </div><!-- .input-group -->
               </div><!-- .form-group -->
             </div><!-- .row -->
@@ -148,7 +148,7 @@
               <div class="form-group col-sm-8">
                 <div class="input-group">
                   <span class="input-group-addon">Player 4</span>
-                  <input class="form-control" type="text" name="player4score">
+                  <input class="form-control" type="number" name="player4score">
                 </div><!-- .input-group -->
               </div><!-- .form-group -->
             </div><!-- .row -->
@@ -157,7 +157,7 @@
               <div class="form-group col-sm-8">
                 <div class="input-group">
                   <span class="input-group-addon">Player 5</span>
-                  <input class="form-control" type="text" name="player5score">
+                  <input class="form-control" type="number" name="player5score">
                 </div><!-- .input-group -->
               </div><!-- .form-group -->
             </div><!-- .row -->
@@ -166,12 +166,19 @@
               <div class="form-group col-sm-8">
                 <div class="input-group">
                   <span class="input-group-addon">Player 6</span>
-                  <input class="form-control" type="text" name="player6score">
+                  <input class="form-control" type="number" name="player6score">
                 </div><!-- .input-group -->
               </div><!-- .form-group -->
             </div><!-- .row -->
-          
+            
+            
           </div><!-- #roundScores -->
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <button class="btn btn-primary btn-lg btn-block" id="completeScores" onclick="game.completeRound();">Complete Round!</button>
+            </div>
+          </div>
 
         </form>
       </div><!-- .modal-body -->
