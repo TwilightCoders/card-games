@@ -3,7 +3,7 @@ var game =
   initialized: false,
   round: null,
   numRounds: 11,
-  started : false,
+  active : false,
   players: 2,
   playerNames: [],
   scores: [],
@@ -29,17 +29,15 @@ var game =
       self.initPlayerNames(self.players);
     });
     
-    // Add Event Listener to the "startGame" button
-    //$("#startBtn").on("click", this.startGame());
+    // Set the game to be active, so that things may be stylized
+    this.active = true;
   },
   
   
   startGame: function()
   {
-    // TODO: For now, assume everything is set up correctly - we will error check later
-    
-    // Close the init modal
-    $("#init-modal").modal('hide');
+    // If the names are not valid, abort the function
+    if (!this.validateNames()) return;
 
     // Un-hide the initial table, & hide the button telling us to initialize the game
     $("div.table-responsive.hidden").removeClass("hidden");
@@ -48,7 +46,7 @@ var game =
     // Set the round
     this.round = 1;
     
-    // Read the players to variables & set the round modal
+    // Read the players to variables & set the round modal with them
     this.getPlayers();
     
     // Initialize the scores array with the proper formatting
@@ -61,8 +59,15 @@ var game =
     this.configureRows();
     this.configureColumns();
 
+    // Highlight the first row to indicate the game has started
+    this.highlightRow();
+
     // Finish initialization so that we can start the game
     this.initialized = true;
+
+    // Close the init modal & clear the values now that we've started the game
+    $("#init-modal").modal('hide');
+    $("#init-modal input").val("");
     
     // Now that the table has been initialized, format the 'Complete Round' button...
     var button = '<button id="completeRound" class="btn btn-primary btn-lg col-xs-12" onclick="$(\'#round-modal\').modal(\'show\');">Complete Round for 3\'s</button>';
@@ -112,7 +117,7 @@ var game =
           '<!-- Empty ... will be filled by JavaScript -->'+
         '</tbody>'+
         '<tfoot>'+
-          '<tr>'+
+          '<tr class="info">'+
             '<th scope="row">Total Scores:</th>'+
           '</tr>'+
         '</tfoot>'+
@@ -233,50 +238,37 @@ var game =
   
   completeRound: function()
   {
-    if (this.validateScores())
+    // If the scores are not valid, abort the function
+    if (!this.validateScores()) return;
+
+    var score;
+    
+    for (var player = 0; player < this.players; ++player)
     {
-      // If the scores are valid, then perform some logic
-      //var _scores = [];   // Initialize a variable to store the scores for the round
-      var score;
+      score = parseInt($("input[name=player" + (player + 1) + "score]").val());
       
-      for (var player = 0; player < this.players; ++player)
-      {
-        score = parseInt($("input[name=player" + (player + 1) + "score]").val());
-        
-        // Add score to the scores array
-        this.scores[this.round - 1][player] = score;
-        
-        // Add the score to the table in the HTML
-        $("#scorecard tbody tr:nth-of-type(" + this.round + ") td:nth-of-type(" + (player + 1) + ")").html(score);
-      }
+      // Add score to the scores array
+      this.scores[this.round - 1][player] = score;
       
-      // Close & reset the values of the scores modal
-      $("#round-modal").modal('hide');
-      $("#round-modal input").val("");
-      
-      // Recalculate the scores for the bottom of the table
-      this.calculateScores();
-      
-      // Set the round to the next number, and other misc tasks
-      this.advanceRound();  // Run this last! Don't want to run other tasks after the round has been incrimented
+      // Add the score to the table in the HTML
+      $("#scorecard tbody tr:nth-of-type(" + this.round + ") td:nth-of-type(" + (player + 1) + ")").html(score);
     }
-    else
-    {
-      // At the moment, do nothing - the validate scores function will highlight what field is messed up
-      // If the scores are not valid, then display some sort of error message
-      //alert("Scores not valid, please enter valid data!");
-    }
+    
+    // Close & reset the values of the scores modal
+    $("#round-modal").modal('hide');
+    $("#round-modal input").val("");
+    
+    // Recalculate the scores for the bottom of the table
+    this.calculateScores();
+    
+    // Set the round to the next number, and other misc tasks
+    this.advanceRound();  // Run this last! Don't want to run other tasks after the round has been incrimentedlert("Scores not valid, please enter valid data!");
   },
   
   
   // Advance the round - set button labels to be correct, update variables etc...
   advanceRound: function()
-  {
-    // Get the completeButton, since we will be needing this in both conditions for different things
-    $completeBtn = $("button#completeRound");
-
-    $h1title = $("#round-modal h1.h1title");
-    
+  { 
     // Check if it is ok to advance to the next round, otherwise... if the current round is the last round, then trigger game finalization
     if (this.round < this.numRounds)
     {
@@ -286,49 +278,63 @@ var game =
       var roundLabel = "Complete Round for " + this.getRoundLabel(this.round) + "'s";
       
       // Change button descriptions
-      $completeBtn.text(roundLabel);
+      $("button#completeRound").text(roundLabel);
 
-      $h1title.text(roundLabel);
-      
-      // TODO: Update the CSS classes to highlight the current round
-      
-      // Return false, so that the completeRound function doesn't trigger the end game
-      return false;
+      $("#round-modal h1.h1title").text(roundLabel);
     }
     else
     {
-      // Finalize the game
-      var button = '<button id="completeRound" class="btn btn-success btn-lg col-xs-12" onclick="game.reset();">Game over!! Click here to reset the game</button>';
+      // Moved this logic to a function since it is somewhat lengthy
+      this.finalizeGame();
+    }
+
+    // Update the row highlighting now that we've updated the round
+    this.highlightRow();
+  },
+
+
+  // If the game is over due to the last round being played, then perform the tasks to demonstrate the game is over
+  finalizeGame: function()
+  {
+    // Make a new button to replace the "Complete Round" button we've been using
+    var button = '<button id="completeRound" class="btn btn-success btn-lg col-xs-12" onclick="game.reset();">Game over!! Click here to reset the game</button>';
+    
+    // Replace the button
+    $("button#completeRound").replaceWith(button);
+
+    // Set the game to be deactive
+    this.active = false;
+    
+    // Get the array of winners (in case there were ties, it is an array)
+    var winners = this.getWinners();
+
+    // Check if there are more than 1 winner
+    if (winners.length > 1)
+    {
+      // Format the text to be alerted
+      var text = "<p>Tie game!! Winners are:</p> \n <p><ul>";
       
-      $completeBtn.replaceWith(button);
-      
-      var winners = this.getWinners();
-      
-      if (winners.length > 1)
+      // Add the names of the players to the text string
+      for (var i = 0; i < winners.length; i++)
       {
-        var text = "Tie game!! Winners are: \n\n";
-        
-        for (var i = 0; i < winners.length; i++)
-        {
-          text += this.playerNames[winners[i]] + "\n";
-          //$("#scorecard tr > :nth-child(" + (winners[i] + 2) + ")").addClass("success");
-        }
-        
-        bootbox.alert(text);
-      }
-      else
-      {
-        bootbox.alert(this.playerNames[winners[0]] + " won!!");
-        //$("#scorecard tr > :nth-child(" + (winners[0] + 2) + ")").addClass("success");
+        text += "<li><strong>" + this.playerNames[winners[i]] + "</strong></li>\n";
       }
 
-      winners.forEach(function(winner){
-      	$("#scorecard tr > :nth-child(" + (winner + 2) + ")").addClass("success");
-      });
-      // TODO: Do something to indicate who won
+      text += "</ul></p>\n";
       
-      return true;
+      // Alert the result using a bootbox modal
+      bootbox.alert(text);
     }
+    else  // There was only one winner
+    {
+      // Alert the name of the winner via bootbox modal
+      bootbox.alert("<strong>" + this.playerNames[winners[0]] + "</strong> won!!");
+    }
+
+    // Stylize the column of the winning player(s) by looping through the winners array
+    winners.forEach(function(winner){
+      $("#scorecard tr > :nth-child(" + (winner + 2) + ")").addClass("success");
+    });
   },
   
   
@@ -337,7 +343,7 @@ var game =
   validateScores: function()
   {
     var isValid = true;
-    var elem;
+    var $elem;
     
     // Loop through each player, and retrieve the value from its input
     for (var i = 1; i <= this.players; i++)
@@ -354,6 +360,31 @@ var game =
         
     }
     
+    return isValid;
+  },
+
+
+  // Validates that the names entered are valid
+  validateNames: function()
+  {
+    var isValid = true;
+    var $elem;
+
+    // Loop through each player, and retrieve the value from its input
+    for (var i = 1; i <= this.players; i++)
+    {
+      $elem = $("input[name=player" + i + "name]");
+      $elem.parent().removeClass("has-error");       // Re-setting the parent to remove the 'has-error' class because that's how bootstrap works with erroneous input's
+      
+      // Check if the value for each player is not an empty string - if it is empty, stylize it to be red, and set 'isValid' to false
+      if ( !$elem.val() )
+      {
+        isValid = false;
+        $elem.parent().addClass("has-error");        // Setting the parent to have the 'has-error' class because that's how bootstrap works with erroneous input's
+      }
+        
+    }
+
     return isValid;
   },
   
@@ -398,7 +429,21 @@ var game =
     return winners;
   },
   
-  
+
+  // Highlight the row for the current round (or none if the game is over)
+  highlightRow: function()
+  {
+    var cssClass = "success";
+
+    $("#scorecard tr").removeClass(cssClass);
+
+    // Only highlight a row if the the number of rounds of scores are less than the number of rounds in the game
+    if (this.active)
+      $("#scorecard tbody tr:nth-child(" + (this.round) + ")").addClass(cssClass);
+  },
+
+
+  // Reset the whole game, so that we can start from scratch
   reset: function()
   {
     // Remove the #completeRound button, because this button will be created by JavaScript during initialization
@@ -408,7 +453,7 @@ var game =
     this.initialized = false;
     this.round = null;
     this.numRounds = 11;
-    this.started = false;
+    this.active = false;
     this.players = 2;
     this.playerNames = [];
     this.scores = [];
