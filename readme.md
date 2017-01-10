@@ -1,6 +1,7 @@
 # Card Game Score Keeper
 
 This app will keep track of scores for several card games. At the moment, these games are supported by the app:
+
 * Three-Thirteen
 * ~~Richet Lieux~~
 * ~~Donut~~
@@ -12,6 +13,7 @@ The app will take care of keeping a running score, keep track of which level eac
 there is a tie).
 
 TODOS:
+
 * Convert to Node.js
   * Make the scorecard RESTful, with a unique ID
 * Allow guest users to view the scorecard (but not edit it) - do this with a unique id useable for viewing
