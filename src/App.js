@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
-import ThreeThirteen from './components/ThreeThirteen/ThreeeThirteen';
+//import ThreeThirteen from './components/ThreeThirteen/ThreeeThirteen';
+import Game from './components/Game/Game';
 import NavBar from './components/NavBar/NavBar';
 import { Route } from 'react-router-dom'; // https://www.sitepoint.com/react-router-v4-complete-guide/
 
@@ -21,7 +22,7 @@ class App extends Component {
     return (
       <div className="App">
         <Route exact={true} path="/" component={Home} />
-        <Route path="/threeThirteen" component={ThreeThirteen} />
+        <Route path="/threeThirteen" component={Game} />
       </div>
     );
   }
