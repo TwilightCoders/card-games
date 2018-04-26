@@ -23,6 +23,11 @@ export default class InitModal extends Component {
   constructor(props) {
     super(props);
 
+    // Bind 'this' to the needed methods
+    this.toggle = this.toggle.bind(this);
+    this.checkValidation = this.checkValidation.bind(this);
+    this.startGame = this.startGame.bind(this);
+
     // Global private vars:
     this.playerCountToggle = [];
     this.playerNameInputs = [];
@@ -30,8 +35,14 @@ export default class InitModal extends Component {
     // Pull out the needed props
     const { possiblePlayers, name } = this.props.settings;
 
+    // Set the default players to something
+    const defaultPlayers = possiblePlayers.min;
+
     // Seed a list of player names based on the amount of players passed in
-    let playerNames = this.seedPlayerNames(possiblePlayers.min);
+    let playerNames = this.seedPlayerNames(defaultPlayers);
+
+    // Seed the validation array as well
+    let validation = this.seedValidation(defaultPlayers);
 
     // Set the player count selection to a class variable so it can be accessed multiple times without re-calculating it
     //this.playerCountSelection = this.seedPlayerCount(possiblePlayers.min, possiblePlayers.max);
@@ -42,22 +53,25 @@ export default class InitModal extends Component {
       possiblePlayers: possiblePlayers,
       players: playerNames,
       numPlayers: possiblePlayers.min,
-      validation: [false],
+      validation: validation,
     };
 
     // Copy the default state, and assign that to state
-    this.state = Object.assign({}, this.defaultState);
-
-    // Bind 'this' to the needed methods
-    this.toggle = this.toggle.bind(this);
-    this.checkValidation = this.checkValidation.bind(this);
-    this.startGame = this.startGame.bind(this);
+    this.state = this.getDefaultState();
   }
 
   // Use an internal toggle method to perform some cleanup, since hiding a modal is different than unmounting it
   toggle() {
-    this.setState({ ...this.defaultState });
+    this.setState(this.getDefaultState());
     this.props.toggle();
+  }
+
+  getDefaultState() {
+    const state = this.defaultState;
+
+    state.players = state.players.splice();
+
+    return state;
   }
 
   seedPlayerNames(maxPlayers) {
@@ -66,6 +80,14 @@ export default class InitModal extends Component {
       players.push('');
     }
     return players;
+  }
+
+  seedValidation(maxPlayers) {
+    let validation = [];
+    for (let player = 0; player < maxPlayers; ++player) {
+      validation.push(false);
+    }
+    return validation;
   }
 
   changeName(event, id) {
@@ -78,7 +100,11 @@ export default class InitModal extends Component {
   }
 
   checkValidation() {
-    let validated = this.state.validation.reduce((accum, value) => {
+    let { validation } = this.state;
+
+    if (validation.length === 1) return validation[0];
+
+    let validated = validation.reduce((accum, value) => {
       return accum && value;
     });
 
@@ -111,7 +137,12 @@ export default class InitModal extends Component {
 
 
   startGame() {
-    alert(this.checkValidation());
+    const answer = this.checkValidation() ? 'yes' : 'no';
+
+    if (!answer) return alert('Player names not set up correctly!');
+
+    this.props.startGame(this.state.players.slice());
+    this.toggle();
   }
 
   renderPlayerInfo() {
@@ -177,51 +208,7 @@ export default class InitModal extends Component {
     );
   }
 
-  /*resetState() {
-    this.setState({
-      names: defaultData.names.slice(),
-      numPlayers: defaultData.numPlayers,
-      validation: defaultData.validation.slice()
-    });
-  }
-
-  toggle() {
-    this.resetState();
-    this.props.toggle();
-  }
-
-  togglePlayers(num = 2) {
-    if (num < 1 || num > defaultData.possiblePlayers) return;
-
-    let names = [];
-    let validation = [];
-
-    for (let i = 0; i < num; ++i) {
-      if (i < this.state.names.length) {
-        names.push(this.state.names[i]);
-        validation.push(true);
-      } else {
-        names.push('');
-        validation.push(false);
-      }
-    }
-
-    this.setState({
-      numPlayers: num,
-      names: names,
-      validation: validation
-    });
-  }
-
-  changeName(event, id) {
-    let { names, validation } = this.state;
-    let newName = event.target.value;
-    names[id] = newName;
-    validation[id] = newName !== '';
-
-    //alert(`id: ${id} name: ${event.target.value}`);
-    this.setState({ names, validation });
-  }
+  /*
 
   startGame() {
     let errors = this.state.validation.reduce((accum, value) => {
