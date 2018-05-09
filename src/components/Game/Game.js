@@ -3,6 +3,7 @@ import { Prompt } from 'react-router-dom';
 import uuidv1 from 'uuid/v1';
 import NavBar from '../NavBar/NavBar';
 import InitModal from './InitModal';
+import ScoresModal from './ScoresModal';
 import ConfirmModal from './ConfirmModal';
 
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
@@ -23,6 +24,7 @@ const threeThirteen = {
     whammies: false,          // Defines whether or not a game contains "whammies" (aka, donuts, or something else)
     whammieScore: null,       // What is the value of a whammie? (Number)
     whammieStyle: null,       // What type of css style will be applied to the whammie when rendered on the scoreboard? ([circled], [blockout])
+    whammieName: null,        // What is the name of the whammie?
     passesAllowed: false,     // Defines if a player can pass a turn, or if they have to play every turn
     fixedRounds: 11,          // Defines if there should be a fixed number of rounds to the game
     winType: 'score',         // ['rounds', 'score']
@@ -71,8 +73,9 @@ const donut = {
     whammies: true,             // Defines whether or not a game contains "whammies" (aka, donuts, or something else)
     whammieScore: +5,           // What is the value of a whammie? (Number)
     whammieStyle: 'circled',    // What type of css style will be applied to the whammie when rendered on the scoreboard? ([circled], [blockout])
+    whammieName: 'Donut',       // What is the name of the whammie?
     passesAllowed: true,        // Defines if a player can pass a turn, or if they have to play every turn
-    fixedRounds: 11,            // Defines if there should be a fixed number of rounds to the game [false, Number]
+    fixedRounds: false,         // Defines if there should be a fixed number of rounds to the game [false, Number]
     winType: 'score',           // ['rounds', 'score']
     winCondition: 'low',        // if 'rounds', then number of rounds completed. If score, then will high or low score win ('rounds', 'low', 'high')
     winScore: 0,                // What score creates a winner?
@@ -108,6 +111,7 @@ export default class Game extends Component {
     this.state = newGame;
 
     this.toggleInitModal = this.toggleInitModal.bind(this);
+    this.toggleScoresModal = this.toggleScoresModal.bind(this);
     this.confirmDialog = this.confirmDialog.bind(this);
     this.startGame = this.startGame.bind(this);
     this.makeGameGrid = this.makeGameGrid.bind(this);
@@ -143,13 +147,17 @@ export default class Game extends Component {
       });
     });
 
-    console.log(totalScores);
+    //console.log(totalScores);
 
     return totalScores;
   }
 
   toggleInitModal() {
     this.setState({ initModalOpen: !this.state.initModalOpen });
+  }
+
+  toggleScoresModal() {
+    this.setState({ scoresModalOpen: !this.state.scoresModalOpen });
   }
 
   confirmDialog(question, action) {
@@ -172,6 +180,27 @@ export default class Game extends Component {
       initialized: true,
       scores: this.seedScores(players.length, numRounds)
     })
+  }
+
+  updateScores(newScores = []) {
+    if (newScores.length !== this.state.players.length) return;
+
+    const { scores, currentRound } = this.state;
+
+    scores[currentRound] = newScores;
+
+    // Eventually replace this with a call to 'completeRound' which will check if there is a
+    // winner, and if not, initialze everything for the next round - this will move to be
+    // last within this function
+    if (!this.state.gameplay.preRenderScoreboard)
+      scores.push(this.seedScores(this.state.players.length, 1)[0]);
+
+    //alert(currentRound);
+
+    this.setState({
+      scores: scores,
+      currentRound: currentRound + 1,
+    });
   }
 
   makeGameGrid() {
@@ -267,6 +296,17 @@ export default class Game extends Component {
           toggle={() => this.toggleInitModal()}
           settings={this.state.settings}
           startGame={this.startGame} />
+        {this.state.initialized &&
+          <ScoresModal
+            open={this.state.scoresModalOpen}
+            toggle={() => this.toggleScoresModal()}
+            settings={this.state.settings}
+            gameplay={this.state.gameplay}
+            players={this.state.players}
+            round={this.state.currentRound}
+            updateScores={this.updateScores.bind(this)}
+            />
+        }
       </div>
     );
   }

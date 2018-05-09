@@ -185,13 +185,13 @@ export default class InitModal extends Component {
 
 
   render() {
-    const { open } = this.props;
+    const { open, settings } = this.props;
 
     this.renderPlayerInfo();
 
     return (
       <Modal isOpen={open} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Initialize Game!</ModalHeader>
+        <ModalHeader toggle={this.toggle}>Initialize {settings.name}!</ModalHeader>
         <ModalBody>
           <h3>Select the number of players:</h3>
           <ButtonGroup>
