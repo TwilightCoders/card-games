@@ -53,6 +53,7 @@ export default class ScoresModal extends Component {
 
   updateScores() {
     this.props.updateScores(this.state.scores);
+    this.toggle();
   }
 
   scoreFields() {

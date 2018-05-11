@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 //import ThreeThirteen from './components/ThreeThirteen/ThreeeThirteen';
 import Game from './components/Game/Game';

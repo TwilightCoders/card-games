@@ -40,7 +40,7 @@ class NavBar extends Component {
     return (
       <Navbar color="light" light expand="md">
         <div className="container">
-          <NavbarBrand tag={Link} to='/'><i className="fas fa-camera-retro" aria-hidden="true"></i>Card Games</NavbarBrand>
+          <NavbarBrand tag={Link} to='/'><i className="fas fa-edit" aria-hidden="true"></i> Card Games</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>

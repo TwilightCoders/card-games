@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Prompt } from 'react-router-dom';
+import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
 import NavBar from '../NavBar/NavBar';
 import InitModal from './InitModal';
@@ -9,103 +10,11 @@ import ConfirmModal from './ConfirmModal';
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
 // functionality to make a multi-user game possible
 
-// Note - this paradigm should be able to be created per type of game, and when supplied to this
-// game component, should render that game correctly
-// eslint-disable-next-line
-const threeThirteen = {
-  id: null,
-  settings: { // These settings define how to initialize the game
-    name: 'Three Thirteen',             // Name of the game
-    possiblePlayers: {min: 2, max: 6},  // Min & Max
-  },
-  gameplay: {  // These settings govern how the game should be played, after it has been initiated
-    scoreTypes: ['positive'], // This should define what type of scores will be calculated ([positive], [negative])
-    startScore: 0,            // The score every player will start with
-    whammies: false,          // Defines whether or not a game contains "whammies" (aka, donuts, or something else)
-    whammieScore: null,       // What is the value of a whammie? (Number)
-    whammieStyle: null,       // What type of css style will be applied to the whammie when rendered on the scoreboard? ([circled], [blockout])
-    whammieName: null,        // What is the name of the whammie?
-    passesAllowed: false,     // Defines if a player can pass a turn, or if they have to play every turn
-    fixedRounds: 11,          // Defines if there should be a fixed number of rounds to the game
-    winType: 'score',         // ['rounds', 'score']
-    winCondition: 'low',      // if 'rounds', then number of rounds completed. If score, then will high or low score win ('rounds', 'low', 'high')
-    winScore: null,           // 
-    tieBreaker: null,         // if the game can be a tie when the finished condition is met, then what will break the tie? Same options as win condition
-    dealerRotates: true,      // If the dealer of the game rotates, then the game will be set up that way - if false, then none of the players will be identified as a dealer
-    preRenderScoreboard: true,// If the scoreboard should be pre-rendered, then indicate so
-    levelLabels: (num) => {   // A function that will define what the label should be for a given level
-      if (num < 0 || num > 10) return;
-      num += 3;
-
-      // Catch the levels that should be named according to their card's face value, instead of numeric value
-      num = (num === 11) ? 'J' : num;
-      num = (num === 12) ? 'Q' : num;
-      num = (num === 13) ? 'K' : num;
-
-      return num + '\'s';
-    },
-  },
-  description: '',            // A description of the game, which can be called ondemand by the app user - formatted with markdown
-  initialized: false,
-  started: false,
-  currentRound: 0,
-  scores: [],
-  players: [],
-  initModalOpen: false,
-  scoresModalOpen: false,
-  confirmDialog: {
-    open: false,
-    question: '',
-    action: () => { return false },
-  }
-};
-
-// eslint-disable-next-line
-const donut = {
-  id: null,
-  settings: { // These settings define how to initialize the game
-    name: 'Donut',             // Name of the game
-    possiblePlayers: { min: 3, max: 6 },  // Min & Max
-  },
-  gameplay: {  // These settings govern how the game should be played, after it has been initiated
-    scoreTypes: ['negative'],   // This should define what type of scores will be calculated ([positive], [negative])
-    startScore: 21,             // The score every player will start with
-    whammies: true,             // Defines whether or not a game contains "whammies" (aka, donuts, or something else)
-    whammieScore: +5,           // What is the value of a whammie? (Number)
-    whammieStyle: 'circled',    // What type of css style will be applied to the whammie when rendered on the scoreboard? ([circled], [blockout])
-    whammieName: 'Donut',       // What is the name of the whammie?
-    passesAllowed: true,        // Defines if a player can pass a turn, or if they have to play every turn
-    fixedRounds: false,         // Defines if there should be a fixed number of rounds to the game [false, Number]
-    winType: 'score',           // ['rounds', 'score']
-    winCondition: 'low',        // if 'rounds', then number of rounds completed. If score, then will high or low score win ('rounds', 'low', 'high')
-    winScore: 0,                // What score creates a winner?
-    tieBreaker: null,           // if the game can be a tie when the finished condition is met, then what will break the tie?
-    dealerRotates: true,        // If the dealer of the game rotates, then the game will be set up that way - if false, then none of the players will be identified as a dealer
-    preRenderScoreboard: false, // If the scoreboard should be pre-rendered, then indicate so (showing all fixed rounds)
-    levelLabels: (num) => {     // A function that will define what the label should be for a given level
-      return num + 1;
-    },
-  },
-  description: '',            // A description of the game, which can be called ondemand by the app user - formatted with markdown
-  initialized: false,
-  started: false,
-  currentRound: 0,
-  scores: [],
-  players: [],
-  initModalOpen: false,
-  scoresModalOpen: false,
-  confirmDialog: {
-    open: false,
-    question: '',
-    action: () => { return false },
-  }
-};
-
 export default class Game extends Component {
   constructor(props) {
     super(props);
 
-    let newGame = Object.assign({}, donut);
+    let newGame = Object.assign({}, game);
     newGame.id = uuidv1();
 
     this.state = newGame;
@@ -115,6 +24,7 @@ export default class Game extends Component {
     this.confirmDialog = this.confirmDialog.bind(this);
     this.startGame = this.startGame.bind(this);
     this.makeGameGrid = this.makeGameGrid.bind(this);
+    this.isGameOver = this.isGameOver.bind(this);
   }
 
   // Based on a number of players, and rounds provided, return an empty 2d array with all the rows & cols for the game set to null
@@ -132,8 +42,8 @@ export default class Game extends Component {
     return scores;
   }
 
-  getTotalScores() {
-    let { scores, gameplay } = this.state;
+  getTotalScores(scores = this.state.scores) {
+    let { gameplay } = this.state;
 
     let totalScores = [];
 
@@ -152,24 +62,6 @@ export default class Game extends Component {
     return totalScores;
   }
 
-  toggleInitModal() {
-    this.setState({ initModalOpen: !this.state.initModalOpen });
-  }
-
-  toggleScoresModal() {
-    this.setState({ scoresModalOpen: !this.state.scoresModalOpen });
-  }
-
-  confirmDialog(question, action) {
-    this.setState({
-      confirmDialog: {
-        open: true,
-        question: question,
-        action: action,
-      }
-    });
-  }
-
   startGame(players) {
     const { gameplay } = this.state;
 
@@ -178,6 +70,7 @@ export default class Game extends Component {
     this.setState({
       players: players,
       initialized: true,
+      started: true,
       scores: this.seedScores(players.length, numRounds)
     })
   }
@@ -189,17 +82,19 @@ export default class Game extends Component {
 
     scores[currentRound] = newScores;
 
+    const isGameOver = this.isGameOver(this.getTotalScores(scores));
+
     // Eventually replace this with a call to 'completeRound' which will check if there is a
     // winner, and if not, initialze everything for the next round - this will move to be
     // last within this function
-    if (!this.state.gameplay.preRenderScoreboard)
+    if (!this.state.gameplay.preRenderScoreboard && !isGameOver)
       scores.push(this.seedScores(this.state.players.length, 1)[0]);
 
-    //alert(currentRound);
+    const modifier = isGameOver ? 0 : 1;
 
     this.setState({
       scores: scores,
-      currentRound: currentRound + 1,
+      currentRound: currentRound + modifier,
     });
   }
 
@@ -245,14 +140,57 @@ export default class Game extends Component {
     return gameGrid;
   }
 
+  isGameOver(totalScores = this.getTotalScores()) {
+    const { gameplay, currentRound, started } = this.state;
+
+    if (!started) return true;
+
+    const over = (
+      (
+        gameplay.preRenderScoreboard &&
+        gameplay.fixedRounds < currentRound
+      ) || (
+        gameplay.winScore !== null &&
+        (
+          totalScores.reduce((prevVal, curVal) => {
+            if (prevVal > curVal) return curVal;
+            return prevVal;
+          }) <= gameplay.winScore
+        )
+      )
+    );
+
+    return over;
+  }
+
+  toggleInitModal() {
+    this.setState({ initModalOpen: !this.state.initModalOpen });
+  }
+
+  toggleScoresModal() {
+    this.setState({ scoresModalOpen: !this.state.scoresModalOpen });
+  }
+
+  confirmDialog(question, action) {
+    this.setState({
+      confirmDialog: {
+        open: true,
+        question: question,
+        action: action,
+      }
+    });
+  }
+
   render() {
+    const isGameOver = this.isGameOver();
+
     return (
       <div>
         <Prompt
           when={this.state.initialized}
           message={() => {this.confirmDialog(
             'Are you sure you want to leave this game?',
-            () => this.setState({ initialized: false })
+            () => this.setState({ initialized: false, started: false })
           ); return false;}
           }
         />
@@ -269,9 +207,11 @@ export default class Game extends Component {
               <h2>{`Game: ${this.state.settings.name}`}</h2>
               {this.makeGameGrid()}
               <div className='row'>
-                <div className='col'>
-                  <button className='btn btn-primary btn-block' onClick={this.toggleScoresModal}>Enter Scores</button>
-                </div>
+                {!isGameOver &&
+                  <div className='col'>
+                    <button className='btn btn-primary btn-block' onClick={this.toggleScoresModal}>Enter Scores</button>
+                  </div>
+                }
                 <div className='col'>
                   <button
                     className='btn btn-danger btn-block'
@@ -296,7 +236,7 @@ export default class Game extends Component {
           toggle={() => this.toggleInitModal()}
           settings={this.state.settings}
           startGame={this.startGame} />
-        {this.state.initialized &&
+        {this.state.initialized && !isGameOver &&
           <ScoresModal
             open={this.state.scoresModalOpen}
             toggle={() => this.toggleScoresModal()}
