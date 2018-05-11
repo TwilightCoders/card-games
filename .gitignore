@@ -9,6 +9,9 @@
 # production
 /build
 
+# bundled CSS files
+/src/App.css
+
 # misc
 .DS_Store
 .env.local
