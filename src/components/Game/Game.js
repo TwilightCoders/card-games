@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Prompt } from 'react-router-dom';
-import { donut as game } from '../../games';
+//import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
 import NavBar from '../NavBar/NavBar';
 import InitModal from './InitModal';
@@ -10,11 +10,28 @@ import ConfirmModal from './ConfirmModal';
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
 // functionality to make a multi-user game possible
 
+const defaultProps = {
+  confirmDialog: {
+    open: false,
+    question: '',
+    action: () => { return false },
+  },
+  initialized: false,
+  started: false,
+  currentRound: 0,
+  scores: [],
+  players: [],
+  initModalOpen: false,
+  scoresModalOpen: false,
+};
+
 export default class Game extends Component {
   constructor(props) {
     super(props);
 
-    let newGame = Object.assign({}, game);
+    this.defaultGame = Object.assign(defaultProps, this.props.game);
+
+    let newGame = Object.assign({}, this.defaultGame);
     newGame.id = uuidv1();
 
     this.state = newGame;
@@ -196,6 +213,7 @@ export default class Game extends Component {
         />
         <NavBar />
         <div className="container">
+          <h2>{this.state.settings.name}</h2>
           {!this.state.initialized &&
             <button
               className='btn btn-primary'
