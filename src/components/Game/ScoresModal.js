@@ -24,6 +24,8 @@ export default class ScoresModal extends Component {
     this.scoreFields = this.scoreFields.bind(this);
     this.updateScores = this.updateScores.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.applyWhammie = this.applyWhammie.bind(this);
+    this.applyPass = this.applyPass.bind(this);
   }
 
   toggle() {
@@ -37,7 +39,7 @@ export default class ScoresModal extends Component {
     const newScore = event.target.value;
     const testResult = pattern.test(newScore);
 
-    validation[index] = testResult;
+    validation[index] = (newScore.length > 0) && testResult;
 
     //alert(testResult);
 
@@ -54,6 +56,22 @@ export default class ScoresModal extends Component {
   updateScores() {
     this.props.updateScores(this.state.scores);
     this.toggle();
+  }
+
+  applyWhammie(index = null) {
+    if (index === null) return false;
+
+    const { scores } = this.state;
+    scores[index] = 'Whammie';
+    this.setState({scores: scores});
+  }
+
+  applyPass(index = null) {
+    if (index === null) return false;
+
+    const { scores } = this.state;
+    scores[index] = 'Pass';
+    this.setState({ scores: scores });
   }
 
   scoreFields() {
@@ -86,14 +104,14 @@ export default class ScoresModal extends Component {
                 type='text'
                 id={`player${index}Score`}
                 className='form-control'
-                pattern='[0-9]{1,5}'
+                pattern='[0-9]{0,5}'
                 onChange={(event) => this.enterScore(event, index)}
                 value={this.state.scores[index] || ''}
               />
               {(whammies || passes) && 
                 <div className='input-group-append'>
-                  {whammies && <button className='btn btn-outline-secondary'>{gameplay.whammieName}!</button>}
-                  {passes && <button className='btn btn-outline-secondary'>Pass!</button>}
+                  {whammies && <button className='btn btn-outline-secondary' onClick={() => this.applyWhammie(index)}>{gameplay.whammieName}!</button>}
+                  {passes && <button className='btn btn-outline-secondary' onClick={() => this.applyPass(index)}>Pass!</button>}
                 </div>
               }
             </div>

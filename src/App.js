@@ -10,19 +10,27 @@ import { Route } from 'react-router-dom'; // https://www.sitepoint.com/react-rou
 
 const Home = (props) => {
   const gameLinks = games.map((game) => {
-    return { to: game.url, label: game.settings.name };
+    return { to: game.url, label: game.settings.name, description: game.description };
   });
 
   return (
     <div>
       <NavBar />
       <div className='container'>
-        <ul>
+        <h3 className='mb-3'>Pick a game to start playing!</h3>
+        <div className='card-deck'>
           {gameLinks.map((link, index) => {
-            return <li><Link to={link.to}>{link.label}</Link></li>
+            return (
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{link.label}</h5>
+                  <p className="card-text">{link.description}</p>
+                  <p className="card-text"><Link to={link.to} className='btn btn-primary'>Play {link.label}</Link></p>
+                </div>
+              </div>
+            );
           })}
-        </ul>
-        Pick a game from above to start playing!
+        </div>
       </div>
     </div>
   );

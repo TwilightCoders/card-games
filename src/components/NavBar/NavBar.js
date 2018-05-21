@@ -38,7 +38,7 @@ class NavBar extends Component {
     const { links = defaultLinks } = this.props;
 
     return (
-      <Navbar color="light" light expand="md">
+      <Navbar color="light" light expand="md" className='mb-4'>
         <div className="container">
           <NavbarBrand tag={Link} to='/'><i className="fas fa-edit" aria-hidden="true"></i> Card Games</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />

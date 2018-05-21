@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Prompt } from 'react-router-dom';
+import { Prompt, withRouter } from 'react-router-dom';
 //import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
 import NavBar from '../NavBar/NavBar';
@@ -25,7 +25,7 @@ const defaultProps = {
   scoresModalOpen: false,
 };
 
-export default class Game extends Component {
+class Game extends Component {
   constructor(props) {
     super(props);
 
@@ -68,7 +68,9 @@ export default class Game extends Component {
 
     scores.forEach((rounds, round) => {
       rounds.forEach((score, col) => {
-        score *= multiplier;
+        if (score === 'Pass') score = 0;
+        if (score === 'Whammie') score = gameplay.whammieScore;
+        else score *= multiplier;
         if (round === 0) totalScores.push(score + gameplay.startScore);
         else totalScores[col] += score;
       });
@@ -165,7 +167,7 @@ export default class Game extends Component {
     const over = (
       (
         gameplay.preRenderScoreboard &&
-        gameplay.fixedRounds < currentRound
+        gameplay.fixedRounds <= currentRound
       ) || (
         gameplay.winScore !== null &&
         (
@@ -205,10 +207,17 @@ export default class Game extends Component {
       <div>
         <Prompt
           when={this.state.initialized}
-          message={() => {this.confirmDialog(
-            'Are you sure you want to leave this game?',
-            () => this.setState({ initialized: false, started: false })
-          ); return false;}
+          message={
+            location => {
+              // TODO: Get this function to proprly allow navigation changes once the action is clicked on
+              this.confirmDialog(
+                'Are you sure you want to leave this game?',
+                () => {
+                  this.setState({ initialized: false, started: false });
+                }
+              );
+              return false; // This might be a problem - but return to this later
+            }
           }
         />
         <NavBar />
@@ -222,7 +231,6 @@ export default class Game extends Component {
           }
           {this.state.initialized &&
             <Fragment>
-              <h2>{`Game: ${this.state.settings.name}`}</h2>
               {this.makeGameGrid()}
               <div className='row'>
                 {!isGameOver &&
@@ -269,3 +277,5 @@ export default class Game extends Component {
     );
   }
 }
+
+export default withRouter(Game);
