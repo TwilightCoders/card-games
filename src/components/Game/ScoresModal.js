@@ -28,22 +28,29 @@ export default class ScoresModal extends Component {
     this.applyPass = this.applyPass.bind(this);
   }
 
+  // This toggle function will call its siblings 'seedState' function in order to reset the
+  // state of this modal every time it is closed/opened based on the props given to it
+  //
+  // It will then call the parent's toggle function in order to show/hide it
   toggle() {
     this.setState(this.seedState(this.props.players.length));
     this.props.toggle();
   }
 
+  // This function will be called upon change to a text box. The event is passed in, as well as
+  // the player index this is in reference to. This function will extract the target pattern
+  // from the input text box, and test to make sure the entered data passes validation.
+  //
+  // Validation will be kept in state in an array for easy testing later
   enterScore(event, index) {
     let { scores, validation } = this.state;
     const pattern = new RegExp('^' + event.target.pattern + '$', 'u');//  /^[0-9]{0,5}$/
     const newScore = event.target.value;
     const testResult = pattern.test(newScore);
 
-    validation[index] = (newScore.length > 0) && testResult;
+    validation[index] = (newScore.length > 0) || testResult;
 
-    //alert(testResult);
-
-    if (testResult) {
+    if (validation[index]) {
       scores[index] = newScore;
     }
 
@@ -53,27 +60,52 @@ export default class ScoresModal extends Component {
     })
   }
 
+  // This function simply calls the updateScores function that was passed in via props, and also calls
+  // the sibling 'toggle' function as outlined above (to close the modal, and reset it)
   updateScores() {
     this.props.updateScores(this.state.scores);
     this.toggle();
   }
 
+  // This function replaces whatever is typed into the text box of a given player score with a whammie
+  // (which is something that cannot be typed in manually)
   applyWhammie(index = null) {
     if (index === null) return false;
 
     const { scores } = this.state;
-    scores[index] = 'Whammie';
+    scores[index] = 'whammie';
     this.setState({scores: scores});
   }
 
+  // This function replaces whatever is typed into the text box of a given player score with a pass
+  // (which is something that cannot be typed in manually)
   applyPass(index = null) {
     if (index === null) return false;
 
     const { scores } = this.state;
-    scores[index] = 'Pass';
+    scores[index] = 'pass';
     this.setState({ scores: scores });
   }
 
+  // This function seeds state based on the number of players being used. This will just create a very
+  // basic array with a length matching the number of players. It will also create a matching array
+  // called 'validation' which can be used to store the status of each input regarding if the content
+  // is valid or not. This function returns a simple object containing both arrays
+  seedState(numPlayers) {
+    if (numPlayers < 1) return;
+
+    const scores = [];
+    const validation = [];
+
+    for (let i = 0; i < numPlayers; ++i) {
+      validation.push(false);
+      scores.push(null);
+    }
+
+    return { validation, scores };
+  }
+
+  // This function renders the form & inputs for the modal based on the curret state of the modal
   scoreFields() {
     const { players, gameplay } = this.props;
 
@@ -92,7 +124,7 @@ export default class ScoresModal extends Component {
           <div className='form-group'>
             <label for={`player${index}Score`}>{player}:</label>
             <div className='input-group mb-3'>
-              {negatives && 
+              {negatives &&
                 <div className='input-group-prepend'>
                   <span className='input-group-text'>
                     <input type='checkbox' className='mr-2' />
@@ -106,9 +138,9 @@ export default class ScoresModal extends Component {
                 className='form-control'
                 pattern='[0-9]{0,5}'
                 onChange={(event) => this.enterScore(event, index)}
-                value={this.state.scores[index] || ''}
+                value={this.props.scoreLabel(this.state.scores[index])}
               />
-              {(whammies || passes) && 
+              {(whammies || passes) &&
                 <div className='input-group-append'>
                   {whammies && <button className='btn btn-outline-secondary' onClick={() => this.applyWhammie(index)}>{gameplay.whammieName}!</button>}
                   {passes && <button className='btn btn-outline-secondary' onClick={() => this.applyPass(index)}>Pass!</button>}
@@ -121,20 +153,7 @@ export default class ScoresModal extends Component {
     });
   }
 
-  seedState(numPlayers) {
-    if (numPlayers < 1) return;
-
-    const scores = [];
-    const validation = [];
-
-    for (let i = 0; i < numPlayers; ++i) {
-      validation.push(false);
-      scores.push(null);
-    }
-
-    return { validation, scores };
-  }
-
+  // Based on the current state of the app and modal, and using helper functions, the modal is rendered to the screen
   render() {
     const { open, round, gameplay } = this.props;
     const toggle = this.toggle;

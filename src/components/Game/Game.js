@@ -42,6 +42,16 @@ class Game extends Component {
     this.startGame = this.startGame.bind(this);
     this.makeGameGrid = this.makeGameGrid.bind(this);
     this.isGameOver = this.isGameOver.bind(this);
+    this.scoreLabel = this.scoreLabel.bind(this);
+  }
+
+  // Based on a given value, return what the label for that value should be. This ensures passes and whammie
+  // names are displayed correctly without having to hard code that logic into the render function
+  scoreLabel(val) {
+    //if (Number.isInteger(val)) return val;
+    if (val === 'pass') return 'Pass';
+    if (val === 'whammie') return this.state.gameplay.whammieName;
+    return val;
   }
 
   // Based on a number of players, and rounds provided, return an empty 2d array with all the rows & cols for the game set to null
@@ -59,6 +69,7 @@ class Game extends Component {
     return scores;
   }
 
+  // Based on a given 2d array of scores, total each column and return the totals in a new array
   getTotalScores(scores = this.state.scores) {
     let { gameplay } = this.state;
 
@@ -68,19 +79,21 @@ class Game extends Component {
 
     scores.forEach((rounds, round) => {
       rounds.forEach((score, col) => {
-        if (score === 'Pass') score = 0;
-        if (score === 'Whammie') score = gameplay.whammieScore;
+        if (score === 'pass') score = 0;
+        if (score === 'whammie') score = gameplay.whammieScore;
         else score *= multiplier;
+
         if (round === 0) totalScores.push(score + gameplay.startScore);
         else totalScores[col] += score;
       });
     });
 
-    //console.log(totalScores);
-
     return totalScores;
   }
 
+  // This function will update state to match the conditions needed to start the game. The provided array of players will be set
+  // to the game, and the scoreboard will be initialized based on whether it has predefined rounds or not. Finally initialized
+  // and started variables within state will be set to true
   startGame(players) {
     const { gameplay } = this.state;
 
@@ -94,6 +107,7 @@ class Game extends Component {
     })
   }
 
+  // This function will get passed as a prop to the scores modal, which will enable the scores modal to update the scores of the current round
   updateScores(newScores = []) {
     if (newScores.length !== this.state.players.length) return;
 
@@ -117,6 +131,8 @@ class Game extends Component {
     });
   }
 
+  // This is a helper function which will perform the logic to render the scoreboard on the page, reducing the size
+  // and complexity of the render method
   makeGameGrid() {
     if (!this.state.initialized) return null;
 
@@ -141,7 +157,7 @@ class Game extends Component {
               <tr key={`round${roundNumber}`} className={activeRow}>
                 <th scope='row' className='text-center'>{`${gameplay.levelLabels(roundNumber)} - ${players[roundNumber % players.length]}`}</th>
                 {round.map((playerScore, scoreCol) => {
-                  return <td key={`round${roundNumber}col${scoreCol}`} className='text-center'>{playerScore}</td>;
+                  return <td key={`round${roundNumber}col${scoreCol}`} className='text-center'>{this.scoreLabel(playerScore)}</td>;
                 })}
               </tr>
             );
@@ -159,6 +175,7 @@ class Game extends Component {
     return gameGrid;
   }
 
+  // This function will check all the possible reasons for the game to be over, and return a boolean indicating if the game is over or not
   isGameOver(totalScores = this.getTotalScores()) {
     const { gameplay, currentRound, started } = this.state;
 
@@ -182,14 +199,19 @@ class Game extends Component {
     return over;
   }
 
+  // Very simple function that will toggle the state responsible for showing or hiding the initialization modal
   toggleInitModal() {
     this.setState({ initModalOpen: !this.state.initModalOpen });
   }
 
+  // Very simple function that will toggle the state responsible for showing or hiding the scores modal
   toggleScoresModal() {
     this.setState({ scoresModalOpen: !this.state.scoresModalOpen });
   }
 
+  // This function will be provided with a question (a simple string) and an action (a function) that when the user selects
+  // "yes" on the confirm dialog, will be performed. This will also set the necessary state variable to true to actually
+  // display the confirm modal
   confirmDialog(question, action) {
     this.setState({
       confirmDialog: {
@@ -200,7 +222,9 @@ class Game extends Component {
     });
   }
 
+  // Will render the game if it is initialized, or offer the option to start the game if not.
   render() {
+    // Save this value to a variable to avoid calculating it multiple times per render
     const isGameOver = this.isGameOver();
 
     return (
@@ -223,15 +247,16 @@ class Game extends Component {
         <NavBar />
         <div className="container">
           <h2>{this.state.settings.name}</h2>
-          {!this.state.initialized &&
+          {!this.state.initialized && // If this game is not initialized, then render a button that allows you to initialize it
             <button
               className='btn btn-primary'
               onClick={this.toggleInitModal}
             >Initialize Game</button>
           }
-          {this.state.initialized &&
+          {this.state.initialized &&  // If the game is initialized, then render it!
             <Fragment>
               {this.makeGameGrid()}
+              {/* render the buttons to add a score, or reset the game */}
               <div className='row'>
                 {!isGameOver &&
                   <div className='col'>
@@ -271,6 +296,7 @@ class Game extends Component {
             players={this.state.players}
             round={this.state.currentRound}
             updateScores={this.updateScores.bind(this)}
+            scoreLabel={this.scoreLabel}
             />
         }
       </div>
