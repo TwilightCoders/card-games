@@ -26,6 +26,7 @@ export default class ScoresModal extends Component {
     this.toggle = this.toggle.bind(this);
     this.applyWhammie = this.applyWhammie.bind(this);
     this.applyPass = this.applyPass.bind(this);
+    this.validScores = this.validScores.bind(this);
   }
 
   // This toggle function will call its siblings 'seedState' function in order to reset the
@@ -153,6 +154,13 @@ export default class ScoresModal extends Component {
     });
   }
 
+  // This function will tell you if the current scores are all valid, or not
+  validScores() {
+    return this.state.validation.every(curVal => {
+      return curVal === true;
+    });
+  }
+
   // Based on the current state of the app and modal, and using helper functions, the modal is rendered to the screen
   render() {
     const { open, round, gameplay } = this.props;
@@ -175,7 +183,7 @@ export default class ScoresModal extends Component {
           {this.scoreFields()}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.updateScores}>Start Game</Button>{' '}
+          <Button color="primary" onClick={this.updateScores}>Enter Scores</Button>{' '}
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>

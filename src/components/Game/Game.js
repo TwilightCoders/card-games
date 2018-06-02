@@ -3,6 +3,7 @@ import { Prompt, withRouter } from 'react-router-dom';
 //import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
 import NavBar from '../NavBar/NavBar';
+import Scoreboard from './Scoreboard';
 import InitModal from './InitModal';
 import ScoresModal from './ScoresModal';
 import ConfirmModal from './ConfirmModal';
@@ -40,7 +41,7 @@ class Game extends Component {
     this.toggleScoresModal = this.toggleScoresModal.bind(this);
     this.confirmDialog = this.confirmDialog.bind(this);
     this.startGame = this.startGame.bind(this);
-    this.makeGameGrid = this.makeGameGrid.bind(this);
+    //this.makeGameGrid = this.makeGameGrid.bind(this);
     this.isGameOver = this.isGameOver.bind(this);
     this.scoreLabel = this.scoreLabel.bind(this);
   }
@@ -131,49 +132,6 @@ class Game extends Component {
     });
   }
 
-  // This is a helper function which will perform the logic to render the scoreboard on the page, reducing the size
-  // and complexity of the render method
-  makeGameGrid() {
-    if (!this.state.initialized) return null;
-
-    const { players, currentRound, scores, gameplay } = this.state;
-
-    let totalScores = this.getTotalScores();
-
-    const gameGrid = (
-      <table className='table table-bordered table-hover'>
-        <thead>
-          <tr>
-            <th scope='row' className='col-sm-3 col-md-2 text-center'>Round - (Dealer)</th>
-            {players.map((name, index) => {
-              return <th scope='row' key={`nameHeading${index}`} className='text-center'>{name}</th>
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {scores.map((round, roundNumber) => {
-            let activeRow = (roundNumber === currentRound) ? 'table-primary' : '';
-            return (
-              <tr key={`round${roundNumber}`} className={activeRow}>
-                <th scope='row' className='text-center'>{`${gameplay.levelLabels(roundNumber)} - ${players[roundNumber % players.length]}`}</th>
-                {round.map((playerScore, scoreCol) => {
-                  return <td key={`round${roundNumber}col${scoreCol}`} className='text-center'>{this.scoreLabel(playerScore)}</td>;
-                })}
-              </tr>
-            );
-          })}
-          <tr>
-            <th scope='row' className='text-center'>Total Scores:</th>
-            {totalScores.map((score, index) => {
-              return <td key={`totalScores${index}`} className='text-center'>{score}</td>
-            })}
-          </tr>
-        </tbody>
-      </table>
-    );
-
-    return gameGrid;
-  }
 
   // This function will check all the possible reasons for the game to be over, and return a boolean indicating if the game is over or not
   isGameOver(totalScores = this.getTotalScores()) {
@@ -255,7 +213,14 @@ class Game extends Component {
           }
           {this.state.initialized &&  // If the game is initialized, then render it!
             <Fragment>
-              {this.makeGameGrid()}
+              <Scoreboard
+                players={this.state.players}
+                currentRound={this.state.currentRound}
+                scores={this.state.scores}
+                gameplay={this.state.gameplay}
+                totalScores={this.getTotalScores()}
+                scoreLabel={(score) => this.scoreLabel(score)}
+              />
               {/* render the buttons to add a score, or reset the game */}
               <div className='row'>
                 {!isGameOver &&

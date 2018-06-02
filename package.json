@@ -2,7 +2,7 @@
   "name": "card-games",
   "version": "1.1.0",
   "private": true,
-  "homepage": "http://cardgames.jimmyvanveen.com",
+  "homepage": "https://cardgames.jimmyvanveen.com",
   "dependencies": {
     "bootstrap": "^4.1.0",
     "font-awesome": "^4.7.0",
