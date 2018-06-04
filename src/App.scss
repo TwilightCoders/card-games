@@ -1,2 +1,20 @@
 
 @import "node_modules/bootstrap/scss/bootstrap";
+
+$footer-height: 50px;
+
+#gameBoard {
+  padding-bottom: $footer-height;
+}
+
+footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  height: $footer-height;
+  line-height: $footer-height;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 0 5px;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 4px 4px rgba(0,0,0,0.3);
+}

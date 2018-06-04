@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Prompt, withRouter } from 'react-router-dom';
 //import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
@@ -204,7 +204,7 @@ class Game extends Component {
           }
         />
         <NavBar />
-        <div className="container">
+        <div className='container' id='gameBoard'>
           <h2>{this.state.settings.name}</h2>
           {!this.state.initialized && // If this game is not initialized, then render a button that allows you to initialize it
             <button
@@ -213,16 +213,20 @@ class Game extends Component {
             >Initialize Game</button>
           }
           {this.state.initialized &&  // If the game is initialized, then render it!
-            <Fragment>
-              <Scoreboard
-                players={this.state.players}
-                currentRound={this.state.currentRound}
-                scores={this.state.scores}
-                gameplay={this.state.gameplay}
-                totalScores={this.getTotalScores()}
-                scoreLabel={(score) => this.scoreLabel(score)}
-              />
-              {/* render the buttons to add a score, or reset the game */}
+            <Scoreboard
+              players={this.state.players}
+              currentRound={this.state.currentRound}
+              scores={this.state.scores}
+              gameplay={this.state.gameplay}
+              totalScores={this.getTotalScores()}
+              scoreLabel={(score) => this.scoreLabel(score)}
+            />
+          }
+        </div>
+        {/* render the buttons to add a score, or reset the game */}
+        {this.state.initialized && 
+          <footer>
+            <div class='container'>
               <div className='row'>
                 {!isGameOver &&
                   <div className='col'>
@@ -234,14 +238,14 @@ class Game extends Component {
                     className='btn btn-danger btn-block'
                     onClick={() => this.confirmDialog(
                       'Are you sure you want to reset the game?',
-                      () => this.setState({initialized: false})
+                      () => this.setState({ initialized: false })
                     )}
                   >Reset Game</button>
                 </div>
               </div>
-            </Fragment>
-          }
-        </div>
+            </div>
+          </footer>
+        }
         <ConfirmModal
           question={this.state.confirmDialog.question}
           action={this.state.confirmDialog.action}
