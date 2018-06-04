@@ -27,6 +27,7 @@ export default class ScoresModal extends Component {
     this.applyWhammie = this.applyWhammie.bind(this);
     this.applyPass = this.applyPass.bind(this);
     this.validScores = this.validScores.bind(this);
+    this.enterScore = this.enterScore.bind(this);
   }
 
   // This toggle function will call its siblings 'seedState' function in order to reset the
@@ -45,13 +46,11 @@ export default class ScoresModal extends Component {
   // Validation will be kept in state in an array for easy testing later
   enterScore(event, index) {
     let { scores, validation } = this.state;
-    const pattern = new RegExp('^' + event.target.pattern + '$', 'u');//  /^[0-9]{0,5}$/
     const newScore = event.target.value;
-    const testResult = pattern.test(newScore);
 
-    validation[index] = (newScore.length > 0) || testResult;
+    validation[index] = event.target.validity.valid && event.target.value.length > 0;
 
-    if (validation[index]) {
+    if (event.target.validity.valid) {
       scores[index] = newScore;
     }
 
@@ -121,9 +120,9 @@ export default class ScoresModal extends Component {
 
     return players.map((player, index) => {
       return (
-        <Fragment id={`scoreFields${index}`}>
+        <Fragment key={`scoreFields${index}`}>
           <div className='form-group'>
-            <label for={`player${index}Score`}>{player}:</label>
+            <label htmlFor={`player${index}Score`}>{player}:</label>
             <div className='input-group mb-3'>
               {negatives &&
                 <div className='input-group-prepend'>
@@ -134,12 +133,13 @@ export default class ScoresModal extends Component {
                 </div>
               }
               <input
-                type='text'
+                type='tel'
                 id={`player${index}Score`}
                 className='form-control'
                 pattern='[0-9]{0,5}'
                 onChange={(event) => this.enterScore(event, index)}
                 value={this.props.scoreLabel(this.state.scores[index])}
+                inputMode='numeric'
               />
               {(whammies || passes) &&
                 <div className='input-group-append'>

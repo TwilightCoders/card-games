@@ -52,6 +52,7 @@ class Game extends Component {
     //if (Number.isInteger(val)) return val;
     if (val === 'pass') return 'Pass';
     if (val === 'whammie') return this.state.gameplay.whammieName;
+    if (val === null) return '';
     return val;
   }
 
@@ -191,7 +192,7 @@ class Game extends Component {
           when={this.state.initialized}
           message={
             location => {
-              // TODO: Get this function to proprly allow navigation changes once the action is clicked on
+              // TODO: Get this function to proprly allow navigation changes once the action is clicked on - will want to convert to Reach Router
               this.confirmDialog(
                 'Are you sure you want to leave this game?',
                 () => {

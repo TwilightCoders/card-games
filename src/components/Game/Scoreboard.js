@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Scoreboard = (props) => {
   const { players, currentRound, scores, gameplay, totalScores, scoreLabel } = props;
