@@ -16,6 +16,9 @@ export default class ScoresModal extends Component {
   constructor(props) {
     super(props);
 
+    this.whammie = 'whammie';
+    this.pass = 'pass';
+
     // Global vars - used to influence how the scoreboard is rendered
     this.allPositives = this.props.gameplay.scoreTypes.indexOf('negative') >= 0 && this.props.gameplay.scoreTypes.indexOf('positive') >= 0;
 
@@ -73,7 +76,8 @@ export default class ScoresModal extends Component {
     if (index === null) return false;
 
     const { scores } = this.state;
-    scores[index] = 'whammie';
+    if (scores[index] === this.whammie) scores[index] = '';
+    else scores[index] = this.whammie;
     this.setState({scores: scores});
   }
 
@@ -83,7 +87,8 @@ export default class ScoresModal extends Component {
     if (index === null) return false;
 
     const { scores } = this.state;
-    scores[index] = 'pass';
+    if (scores[index] === this.pass) scores[index] = '';
+    else scores[index] = this.pass;
     this.setState({ scores: scores });
   }
 
@@ -136,15 +141,15 @@ export default class ScoresModal extends Component {
                 type='tel'
                 id={`player${index}Score`}
                 className='form-control'
-                pattern='[0-9]{0,5}'
+                pattern={'([0-9]{0,5}|' + this.props.scoreLabel(this.whammie) + '|' + this.props.scoreLabel(this.pass) + ')'}
                 onChange={(event) => this.enterScore(event, index)}
                 value={this.props.scoreLabel(this.state.scores[index])}
                 inputMode='numeric'
               />
               {(whammies || passes) &&
                 <div className='input-group-append'>
-                  {whammies && <button className='btn btn-outline-secondary' onClick={() => this.applyWhammie(index)}>{gameplay.whammieName}!</button>}
-                  {passes && <button className='btn btn-outline-secondary' onClick={() => this.applyPass(index)}>Pass!</button>}
+                  {whammies && <button className={'btn btn-outline-secondary' + (this.state.scores[index] === this.whammie ? ' active' : '')} onClick={() => this.applyWhammie(index)}>{gameplay.whammieName}!</button>}
+                  {passes && <button className={'btn btn-outline-secondary' + (this.state.scores[index] === this.pass ? ' active' : '')} onClick={() => this.applyPass(index)}>Pass!</button>}
                 </div>
               }
             </div>

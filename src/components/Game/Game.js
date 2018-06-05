@@ -7,11 +7,16 @@ import Scoreboard from './Scoreboard';
 import InitModal from './InitModal';
 import ScoresModal from './ScoresModal';
 import ConfirmModal from './ConfirmModal';
+import AlertModal from './AlertModal';
 
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
 // functionality to make a multi-user game possible
 
 const defaultProps = {
+  alertDialog: {
+    open: false,
+    message: 'AlertModal',
+  },
   confirmDialog: {
     open: false,
     question: '',
@@ -127,10 +132,18 @@ class Game extends Component {
 
     const modifier = isGameOver ? 0 : 1;
 
-    this.setState({
+    const newState = {
       scores: scores,
       currentRound: currentRound + modifier,
-    });
+      alertDialog: {
+        open: isGameOver,
+        message: 'Game is over!',
+      }
+    }
+
+    console.log(newState);
+
+    this.setState(newState);
   }
 
 
@@ -226,7 +239,7 @@ class Game extends Component {
         {/* render the buttons to add a score, or reset the game */}
         {this.state.initialized && 
           <footer>
-            <div class='container'>
+            <div className='container'>
               <div className='row'>
                 {!isGameOver &&
                   <div className='col'>
@@ -251,6 +264,11 @@ class Game extends Component {
           action={this.state.confirmDialog.action}
           open={this.state.confirmDialog.open}
           toggle={() => this.setState({ confirmDialog: { open: !this.state.confirmDialog.open } })}
+        />
+        <AlertModal
+          open={this.state.alertDialog.open}
+          message={this.state.alertDialog.message}
+          toggle={() => this.setState({ alertDialog: { open: !this.state.alertDialog.open}})}
         />
         <InitModal
           open={this.state.initModalOpen}
