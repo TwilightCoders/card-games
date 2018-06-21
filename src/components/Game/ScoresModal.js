@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
+/*import {
   //ButtonGroup,
   Button,
   //Form,
@@ -10,7 +10,16 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter
-} from 'reactstrap';
+} from 'reactstrap';*/
+
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+} from 'mdbreact';
 
 export default class ScoresModal extends Component {
   constructor(props) {
@@ -126,9 +135,9 @@ export default class ScoresModal extends Component {
     return players.map((player, index) => {
       return (
         <Fragment key={`scoreFields${index}`}>
-          <div className='form-group'>
-            <label htmlFor={`player${index}Score`}>{player}:</label>
-            <div className='input-group mb-3'>
+          <div className='row'>
+            {/*<label htmlFor={`player${index}Score`}>{player}:</label>*/}
+            <div className='col'>
               {negatives &&
                 <div className='input-group-prepend'>
                   <span className='input-group-text'>
@@ -137,22 +146,28 @@ export default class ScoresModal extends Component {
                   </span>
                 </div>
               }
-              <input
+              <Input
+                label={`${player}:`}
                 type='tel'
                 id={`player${index}Score`}
                 className='form-control'
                 pattern={'([0-9]{0,5}|' + this.props.scoreLabel(this.whammie) + '|' + this.props.scoreLabel(this.pass) + ')'}
                 onChange={(event) => this.enterScore(event, index)}
                 value={this.props.scoreLabel(this.state.scores[index])}
-                inputMode='numeric'
               />
-              {(whammies || passes) &&
+            </div>
+            {(whammies || passes) &&
+              <div className='col'>
+                {whammies && <Button outline color="info" {...(this.state.scores[index] === this.whammie ? {active: true} : null)} onClick={() => this.applyWhammie(index)}>{gameplay.whammieName}!</Button>}
+                {passes && <Button outline color="info" {...(this.state.scores[index] === this.pass ? {active: true} : null)} onClick={() => this.applyPass(index)}>Pass!</Button>}
+              </div>
+            }
+              {/*(whammies || passes) &&
                 <div className='input-group-append'>
                   {whammies && <button className={'btn btn-outline-secondary' + (this.state.scores[index] === this.whammie ? ' active' : '')} onClick={() => this.applyWhammie(index)}>{gameplay.whammieName}!</button>}
                   {passes && <button className={'btn btn-outline-secondary' + (this.state.scores[index] === this.pass ? ' active' : '')} onClick={() => this.applyPass(index)}>Pass!</button>}
                 </div>
-              }
-            </div>
+              */}
           </div>
         </Fragment>
       );
@@ -181,15 +196,15 @@ export default class ScoresModal extends Component {
     }
 
     return (
-      <Modal isOpen={open} toggle={toggle}>
+      <Modal isOpen={open} toggle={toggle} size="lg">
         <ModalHeader toggle={toggle}>Enter Scores for Round {gameplay.levelLabels(round)}</ModalHeader>
         <ModalBody>
           <p>{scoreHeader}</p>
           {this.scoreFields()}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.updateScores}>Enter Scores</Button>{' '}
-          <Button color="secondary" onClick={toggle}>Cancel</Button>
+          <Button color="danger" outline onClick={toggle}>Cancel</Button>{' '}
+          <Button color="primary" onClick={this.updateScores}>Enter Scores</Button>
         </ModalFooter>
       </Modal>
     );

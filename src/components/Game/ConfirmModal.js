@@ -31,8 +31,8 @@ export default class ConfirmModal extends Component {
           <h4>{this.props.question}</h4>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.confirm}>Yes</Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          <Button color="primary" className="btn-raised mr-1" onClick={this.confirm}>Yes</Button>{' '}
+          <Button color="secondary" className="btn-raised" onClick={this.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     );

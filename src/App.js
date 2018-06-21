@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
-//import ThreeThirteen from './components/ThreeThirteen/ThreeeThirteen';
 import games from './games';
 import Game from './components/Game/Game';
 import NavBar from './components/NavBar/NavBar';
@@ -25,7 +24,7 @@ const Home = (props) => {
                 <div className="card-body">
                   <h5 className="card-title">{link.label}</h5>
                   <p className="card-text">{link.description}</p>
-                  <p className="card-text"><Link to={link.to} className='btn btn-primary'>Play {link.label}</Link></p>
+                  <p className="card-text"><Link to={link.to} className='btn btn-raised btn-primary'>Play {link.label}</Link></p>
                 </div>
               </div>
             );

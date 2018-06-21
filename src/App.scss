@@ -1,7 +1,8 @@
 
-@import "node_modules/bootstrap/scss/bootstrap";
+//@import "node_modules/bootstrap/scss/bootstrap";
+//@import "node_modules/mdbootstrap/scss/mdb";
 
-$footer-height: 50px;
+$footer-height: 60px;
 
 #gameBoard {
   padding-bottom: $footer-height;
@@ -15,6 +16,10 @@ footer {
   line-height: $footer-height;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px 0 5px;
-  border-top: 1px solid rgba(0, 0, 0, 0.5);
-  box-shadow: 1px 1px 4px 4px rgba(0,0,0,0.3);
+  //border-top: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 4px 3px rgba(0,0,0,0.3);
+}
+
+nav.fixed-bottom .row {
+  width: 100%;
 }

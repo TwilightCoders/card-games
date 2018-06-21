@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { Prompt, withRouter } from 'react-router-dom';
 //import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
-import NavBar from '../NavBar/NavBar';
+import MainNav from '../NavBar/NavBar';
 import Scoreboard from './Scoreboard';
 import InitModal from './InitModal';
 import ScoresModal from './ScoresModal';
 import ConfirmModal from './ConfirmModal';
 import AlertModal from './AlertModal';
+import {
+  Button,
+} from 'mdbreact';
 
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
 // functionality to make a multi-user game possible
@@ -216,12 +219,12 @@ class Game extends Component {
             }
           }
         />
-        <NavBar />
+        <MainNav />
         <div className='container' id='gameBoard'>
           <h2>{this.state.settings.name}</h2>
           {!this.state.initialized && // If this game is not initialized, then render a button that allows you to initialize it
             <button
-              className='btn btn-primary'
+              className='btn btn-raised btn-primary'
               onClick={this.toggleInitModal}
             >Initialize Game</button>
           }
@@ -243,17 +246,22 @@ class Game extends Component {
               <div className='row'>
                 {!isGameOver &&
                   <div className='col'>
-                    <button className='btn btn-primary btn-block' onClick={this.toggleScoresModal}>Enter Scores</button>
+                    <Button
+                      block
+                      color="primary"
+                      onClick={this.toggleScoresModal}
+                    >Enter Scores</Button>
                   </div>
                 }
                 <div className='col'>
-                  <button
-                    className='btn btn-danger btn-block'
+                  <Button
+                    block
+                    color="danger"
                     onClick={() => this.confirmDialog(
                       'Are you sure you want to reset the game?',
                       () => this.setState({ initialized: false })
                     )}
-                  >Reset Game</button>
+                  >Reset Game</Button>
                 </div>
               </div>
             </div>

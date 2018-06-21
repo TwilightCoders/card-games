@@ -1,16 +1,26 @@
 import React, { Component, Fragment } from 'react';
-import {
-  ButtonGroup,
-  Button,
+/*import {
+  //ButtonGroup,
+  //Button,
   //Form,
   //FormGroup,
+  //Input,
+  //Label,
+  //Modal,
+  //ModalHeader,
+  //ModalBody,
+  //ModalFooter
+} from 'reactstrap';*/
+
+import {
+  //ButtonGroup,
+  Button,
   Input,
-  Label,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter
-} from 'reactstrap';
+} from 'mdbreact';
 
 /*const defaultData = {
   possiblePlayers: 6,
@@ -158,11 +168,16 @@ export default class InitModal extends Component {
 
     for (let i = 0; i < possiblePlayers.max; ++i) {
       if (i >= (possiblePlayers.min - 1)) {
+        let active = this.state.numPlayers === (i + 1);
         numPlayersGroup.push(
           <Button
+            {...(!active ? {outline: true} : null)}
             key={`numPlayerSelect${i}`}
             onClick={() => this.togglePlayers(i + 1)}
-            active={this.state.numPlayers === (i + 1)}
+            active={active}
+            color="primary"
+            light
+            className='z-depth-0'
           >
             {i + 1}
           </Button>
@@ -171,8 +186,8 @@ export default class InitModal extends Component {
       let id = `player${i + 1}name`;
       let playerName = (
         <Fragment key={`playerName${i}`}>
-          <Label for={id}>Player {i + 1}</Label>
-          <Input id={id} value={players[i]} onChange={(e) => this.changeName(e, i)} />
+          {/*<Label for={id}>Player {i + 1}</Label>*/}
+          <Input id={id} label={`Player ${i + 1}`} value={players[i]} onChange={(e) => this.changeName(e, i)} />
         </Fragment>
       );
 
@@ -190,19 +205,19 @@ export default class InitModal extends Component {
     this.renderPlayerInfo();
 
     return (
-      <Modal isOpen={open} toggle={this.toggle}>
+      <Modal isOpen={open} toggle={this.toggle} size='lg'>
         <ModalHeader toggle={this.toggle}>Initialize {settings.name}!</ModalHeader>
         <ModalBody>
           <h3>Select the number of players:</h3>
-          <ButtonGroup>
+          {/*<ButtonGroup className="mb-3">*/}
             {this.playerCountToggle}
-          </ButtonGroup>
+          {/*</ButtonGroup>*/}
           <h3>Enter player names:</h3>
           {this.playerNameInputs}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.startGame}>Start Game</Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          <Button outline color='danger' onClick={this.toggle}>Cancel</Button>{' '}
+          <Button color="primary" onClick={this.startGame}>Start Game</Button>
         </ModalFooter>
       </Modal>
     );

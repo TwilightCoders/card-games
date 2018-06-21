@@ -4,7 +4,7 @@ const Scoreboard = (props) => {
   const { players, currentRound, scores, gameplay, totalScores, scoreLabel } = props;
 
   const gameGrid = (
-    <table className='table table-bordered table-hover'>
+    <table className='table table-bordered'>
       <thead>
         <tr>
           <th scope='row' className='col-sm-3 col-md-2 text-center'>Round - (Dealer)</th>
@@ -25,7 +25,7 @@ const Scoreboard = (props) => {
             </tr>
           );
         })}
-        <tr>
+        <tr className='table-warning'>
           <th scope='row' className='text-center'>Total Scores:</th>
           {totalScores.map((score, index) => {
             return <td key={`totalScores${index}`} className='text-center'>{score}</td>
