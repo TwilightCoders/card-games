@@ -3,8 +3,8 @@
 This app will keep track of scores for several card games. At the moment, these games are supported by the app:
 
 * Three-Thirteen
+* Donut
 * TODO: Richet Lieux
-* TODO: Donut
 * TODO: Basic Card Game, no preset rules
 
 Each of these games has its own page to be used to interact with the app. Each game has a pop-up which will display the rules of the game,
