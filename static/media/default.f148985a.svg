@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg2" sodipodi:docname="Avatar.svg" inkscape:version="0.48.0 r9654" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:cc="http://creativecommons.org/ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:dc="http://purl.org/dc/elements/1.1/"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100.8px" height="100.8px"
+	 viewBox="0 0 100.8 100.8" enable-background="new 0 0 100.8 100.8" xml:space="preserve">
+<title  id="title4019">Avatar</title>
+<sodipodi:namedview  id="base" inkscape:current-layer="layer1" inkscape:pageopacity="0.0" inkscape:window-width="1243" inkscape:window-height="690" inkscape:window-maximized="0" inkscape:document-units="px" inkscape:window-y="24" inkscape:window-x="8" inkscape:pageshadow="2" pagecolor="#ffffff" bordercolor="#666666" showgrid="false" inkscape:cx="428.18298" borderopacity="1.0" inkscape:cy="500" inkscape:zoom="0.33266667">
+	</sodipodi:namedview>
+<g id="layer1" transform="translate(0,-52.36218)" inkscape:groupmode="layer" inkscape:label="Layer 1">
+	<g id="g3994" transform="matrix(0.81107703,0,0,0.81107703,95.361272,348.97614)">
+		<path id="path3050-4-7" inkscape:connector-curvature="0" sodipodi:nodetypes="scscs" fill="#A5A5A5" d="M-55.249-310.002
+			c-21.996,0-39.827,18.447-39.525,42.489c0.302,12.37,17.234,19.098,39.314,19.098c22.08,0,39.337-7.372,39.686-19.42
+			C-15.425-291.555-33.253-310.002-55.249-310.002z"/>
+		<path id="path3050-4" inkscape:connector-curvature="0" sodipodi:nodetypes="scscs" fill="#CCCCCC" d="M-55.272-312.041
+			c-21.996,0-39.827,18.448-39.525,42.49c0.302,12.368,17.235,19.097,39.314,19.097c22.081,0,39.338-7.372,39.686-19.42
+			C-15.449-293.593-33.276-312.041-55.272-312.041L-55.272-312.041z"/>
+		<g>
+			<defs>
+				<path id="SVGID_1_" d="M-55.571-311.612c-21.995,0-39.827,18.448-39.525,42.49c0.302,12.368,17.235,19.097,39.314,19.097
+					c22.08,0,39.337-7.372,39.685-19.42C-15.747-293.164-33.576-311.612-55.571-311.612z"/>
+			</defs>
+			<clipPath id="SVGID_2_">
+				<use xlink:href="#SVGID_1_"  overflow="visible"/>
+			</clipPath>
+			
+				<path id="path3050-7" sodipodi:cy="450.90179" sodipodi:type="arc" sodipodi:cx="479.45892" sodipodi:rx="190.88176" sodipodi:ry="255.51102" clip-path="url(#SVGID_2_)" fill="#7D7D7D" d="
+				M-31.219-327.491c0,16.356-11.058,29.614-24.698,29.614c-13.64,0-24.698-13.258-24.698-29.614
+				c0-16.354,11.058-29.613,24.698-29.613C-42.276-357.105-31.219-343.846-31.219-327.491L-31.219-327.491z"/>
+		</g>
+		
+			<path id="path3050" sodipodi:cy="450.90179" sodipodi:type="arc" sodipodi:cx="479.45892" sodipodi:rx="190.88176" sodipodi:ry="255.51102" fill="#CCCCCC" d="
+			M-31.307-329.101c0,16.355-11.058,29.613-24.697,29.613c-13.64,0-24.698-13.258-24.698-29.613s11.058-29.613,24.698-29.613
+			C-42.364-358.714-31.307-345.456-31.307-329.101L-31.307-329.101z"/>
+	</g>
+</g>
+</svg>
