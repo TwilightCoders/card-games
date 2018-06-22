@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Prompt, withRouter } from 'react-router-dom';
 //import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
@@ -8,6 +8,7 @@ import InitModal from './InitModal';
 import ScoresModal from './ScoresModal';
 import ConfirmModal from './ConfirmModal';
 import AlertModal from './AlertModal';
+import AvatarSelect from '../AvatarSelect/AvatarSelect';
 import {
   Button,
 } from 'mdbreact';
@@ -32,6 +33,7 @@ const defaultProps = {
   players: [],
   initModalOpen: false,
   scoresModalOpen: false,
+  avatarModalOpen: false,
 };
 
 class Game extends Component {
@@ -223,10 +225,13 @@ class Game extends Component {
         <div className='container' id='gameBoard'>
           <h2>{this.state.settings.name}</h2>
           {!this.state.initialized && // If this game is not initialized, then render a button that allows you to initialize it
-            <button
-              className='btn btn-raised btn-primary'
-              onClick={this.toggleInitModal}
-            >Initialize Game</button>
+            <Fragment>
+              <button
+                className='btn btn-raised btn-primary'
+                onClick={this.toggleInitModal}
+              >Initialize Game</button>
+              <Button color='warning' onClick={() => this.setState({avatarModalOpen: true})}>Open AvatarSelect</Button>
+            </Fragment>
           }
           {this.state.initialized &&  // If the game is initialized, then render it!
             <Scoreboard
@@ -277,6 +282,10 @@ class Game extends Component {
           open={this.state.alertDialog.open}
           message={this.state.alertDialog.message}
           toggle={() => this.setState({ alertDialog: { open: !this.state.alertDialog.open}})}
+        />
+        <AvatarSelect
+          open={this.state.avatarModalOpen}
+          toggle={() => this.setState((currState, currProps) => ({avatarModalOpen: !currState.avatarModalOpen}))}
         />
         <InitModal
           open={this.state.initModalOpen}
