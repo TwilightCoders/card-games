@@ -1,20 +1,12 @@
-import React, { Component, Fragment } from 'react';
-/*import {
-  //ButtonGroup,
-  //Button,
-  //Form,
-  //FormGroup,
-  //Input,
-  //Label,
-  //Modal,
-  //ModalHeader,
-  //ModalBody,
-  //ModalFooter
-} from 'reactstrap';*/
+import React, { Component } from 'react';
 
 import {
   //ButtonGroup,
   Button,
+  Card,
+  CardBody,
+  CardText,
+  CardTitle,
   Input,
   Modal,
   ModalHeader,
@@ -22,12 +14,7 @@ import {
   ModalFooter
 } from 'mdbreact';
 
-/*const defaultData = {
-  possiblePlayers: 6,
-  numPlayers: 2,
-  names: ['', ''],
-  validation: [false, false]
-};*/
+const defaultAvatar = require('../../avatars/default.svg');
 
 export default class InitModal extends Component {
   constructor(props) {
@@ -184,14 +171,26 @@ export default class InitModal extends Component {
         );
       }
       let id = `player${i + 1}name`;
-      let playerName = (
-        <Fragment key={`playerName${i}`}>
-          {/*<Label for={id}>Player {i + 1}</Label>*/}
-          <Input id={id} label={`Player ${i + 1}`} value={players[i]} onChange={(e) => this.changeName(e, i)} />
-        </Fragment>
+      
+      let playerEdit = (
+        <div className='col-12 col-md-6 col-lg-4 mb-3' key={`playerName${i}`}>
+          <Card className='text-center'>
+            <CardBody>
+              <div className='row'>
+                <div className='col-4'>
+                  <img src={defaultAvatar} alt='defaultAvatar' className='rounded-circle z-depth-1 m-3 indigo d-inline img-fluid' />
+                </div>
+                <div className='col'>
+                  <CardTitle>{`Player ${i + 1}`}</CardTitle>
+                  <CardText><Input id={id} label='Name' value={players[i]} onChange={(e) => this.changeName(e, i)} /></CardText>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
       );
 
-      if (i < numPlayers) playerNames.push(playerName);
+      if (i < numPlayers) playerNames.push(playerEdit);
     }
 
     this.playerCountToggle = numPlayersGroup;
@@ -209,11 +208,11 @@ export default class InitModal extends Component {
         <ModalHeader toggle={this.toggle}>Initialize {settings.name}!</ModalHeader>
         <ModalBody>
           <h3>Select the number of players:</h3>
-          {/*<ButtonGroup className="mb-3">*/}
-            {this.playerCountToggle}
-          {/*</ButtonGroup>*/}
-          <h3>Enter player names:</h3>
-          {this.playerNameInputs}
+          {this.playerCountToggle}
+          <h3>Configure Players</h3>
+          <div className='row'>
+            {this.playerNameInputs}
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button outline color='danger' onClick={this.toggle}>Cancel</Button>{' '}

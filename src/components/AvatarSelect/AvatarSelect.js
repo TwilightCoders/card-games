@@ -35,7 +35,7 @@ export default class AvatarSelect extends Component {
         <ModalBody>
         	<h3>Select Color:</h3>
         	<div className='row pb-3 pl-3'>
-	        	<div style={{width: circleSize, height: circleSize}} className='indigo rounded-circle d-inline m-1' onClick={()=>this.setColor('indigo')}></div>{/*mask pattern-7*/}
+	        	<div style={{width: circleSize, height: circleSize, cursor: 'pointer'}} className='indigo rounded-circle d-inline m-1' onClick={()=>this.setColor('indigo')}></div>{/*mask pattern-7*/}
 	        	<div style={{width: circleSize, height: circleSize}} className='red rounded-circle d-inline m-1' onClick={()=>this.setColor('red')}></div>
 	        	<div style={{width: circleSize, height: circleSize}} className='orange rounded-circle d-inline m-1' onClick={()=>this.setColor('orange')}></div>
 	        	<div style={{width: circleSize, height: circleSize}} className='yellow rounded-circle d-inline m-1' onClick={()=>this.setColor('yellow')}></div>
