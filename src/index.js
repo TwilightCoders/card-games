@@ -8,9 +8,18 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
+import { PlayersContext, PlayersProvider } from './contexts/Players';
+
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <PlayersProvider>
+      <App />
+    </PlayersProvider>
+    {/*<PlayersProvider>
+      <PlayersContext.Consumer>
+        {({players, images, colorOptions}) => <App players={players} images={images} colorOptions={colorOptions} />}
+      </PlayersContext.Consumer>
+    </PlayersProvider>*/}
   </BrowserRouter>  
   , document.getElementById('root'));
 

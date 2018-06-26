@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import {
   //ButtonGroup,
   Button,
   Card,
   CardBody,
-  CardText,
+  //CardText,
   CardTitle,
   Input,
   Modal,
@@ -14,7 +14,9 @@ import {
   ModalFooter
 } from 'mdbreact';
 
-const defaultAvatar = require('../../avatars/default.svg');
+import AvatarSelect from '../AvatarSelect';
+
+//import { PlayersContext, AvatarContext } from '../Players';
 
 export default class InitModal extends Component {
   constructor(props) {
@@ -36,7 +38,7 @@ export default class InitModal extends Component {
     const defaultPlayers = possiblePlayers.min;
 
     // Seed a list of player names based on the amount of players passed in
-    let playerNames = this.seedPlayerNames(defaultPlayers);
+    let players = this.seedPlayers(defaultPlayers);
 
     // Seed the validation array as well
     let validation = this.seedValidation(defaultPlayers);
@@ -48,9 +50,11 @@ export default class InitModal extends Component {
     this.defaultState = {
       gameName: name,
       possiblePlayers: possiblePlayers,
-      players: playerNames,
+      players: players,
       numPlayers: possiblePlayers.min,
       validation: validation,
+      editingPlayer: null,
+      avatarSelect: false,
     };
 
     // Copy the default state, and assign that to state
@@ -64,17 +68,17 @@ export default class InitModal extends Component {
   }
 
   getDefaultState() {
-    const state = this.defaultState;
-
-    state.players = state.players.splice();
-
-    return state;
+    return Object.assign({}, this.defaultState);
+  }
+  
+  getDefaultPlayer() {
+    return {color: null, name: '', avatar: this.props.defaultAvatar};
   }
 
-  seedPlayerNames(maxPlayers) {
+  seedPlayers(maxPlayers) {
     let players = [];
     for (let player = 0; player < maxPlayers; ++player) {
-      players.push('');
+      players.push(this.getDefaultPlayer());
     }
     return players;
   }
@@ -90,7 +94,7 @@ export default class InitModal extends Component {
   changeName(event, id) {
     let { players, validation } = this.state;
     let newName = event.target.value;
-    players[id] = newName;
+    players[id].name = newName;
     validation[id] = newName !== '';
 
     this.setState({ players, validation });
@@ -120,7 +124,7 @@ export default class InitModal extends Component {
         newNames.push(this.state.players[i]);
         newValidation.push(true);
       } else {
-        newNames.push('');
+        newNames.push(this.getDefaultPlayer());
         newValidation.push(false);
       }
     }
@@ -131,7 +135,25 @@ export default class InitModal extends Component {
       validation: newValidation
     });
   }
-
+  
+  applyAvatar(avatar, color, playerIndex) {
+    this.setState(state => {
+      const players = state.players;
+      
+      players[playerIndex].avatar = color;
+      players[playerIndex].color = color;
+      return {
+        players: players
+      };
+    })
+  }
+  
+  getAvatar(playerIndex) {
+    this.setState({
+      avatarSelect: true,
+      editingPlayer: playerIndex,
+    });
+  }
 
   startGame() {
     const answer = this.checkValidation() ? 'yes' : 'no';
@@ -152,7 +174,7 @@ export default class InitModal extends Component {
       players,
       numPlayers
     } = this.state;
-
+    
     for (let i = 0; i < possiblePlayers.max; ++i) {
       if (i >= (possiblePlayers.min - 1)) {
         let active = this.state.numPlayers === (i + 1);
@@ -163,7 +185,7 @@ export default class InitModal extends Component {
             onClick={() => this.togglePlayers(i + 1)}
             active={active}
             color="primary"
-            light
+            light='true'
             className='z-depth-0'
           >
             {i + 1}
@@ -172,17 +194,22 @@ export default class InitModal extends Component {
       }
       let id = `player${i + 1}name`;
       
-      let playerEdit = (
+      let playerEdit = (i >= numPlayers) ? null : (
         <div className='col-12 col-md-6 col-lg-4 mb-3' key={`playerName${i}`}>
           <Card className='text-center'>
             <CardBody>
               <div className='row'>
                 <div className='col-4'>
-                  <img src={defaultAvatar} alt='defaultAvatar' className='rounded-circle z-depth-1 m-3 indigo d-inline img-fluid' />
+                  <img
+                    src={players[i].avatar}
+                    onClick={() => this.getAvatar(i)}
+                    alt='player avatar'
+                    className={`rounded-circle z-depth-1 m-3 d-inline img-fluid ${players[i].color}`}
+                  />
                 </div>
                 <div className='col'>
                   <CardTitle>{`Player ${i + 1}`}</CardTitle>
-                  <CardText><Input id={id} label='Name' value={players[i]} onChange={(e) => this.changeName(e, i)} /></CardText>
+                  <div className='card-text'><Input id={id} label='Name' value={players[i].name} onChange={(e) => this.changeName(e, i)} /></div>
                 </div>
               </div>
             </CardBody>
@@ -204,21 +231,29 @@ export default class InitModal extends Component {
     this.renderPlayerInfo();
 
     return (
-      <Modal isOpen={open} toggle={this.toggle} size='lg'>
-        <ModalHeader toggle={this.toggle}>Initialize {settings.name}!</ModalHeader>
-        <ModalBody>
-          <h3>Select the number of players:</h3>
-          {this.playerCountToggle}
-          <h3>Configure Players</h3>
-          <div className='row'>
-            {this.playerNameInputs}
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button outline color='danger' onClick={this.toggle}>Cancel</Button>{' '}
-          <Button color="primary" onClick={this.startGame}>Start Game</Button>
-        </ModalFooter>
-      </Modal>
+      <Fragment>
+        <Modal isOpen={open} toggle={this.toggle} size='lg'>
+          <ModalHeader toggle={this.toggle}>Initialize {settings.name}!</ModalHeader>
+          <ModalBody>
+            <h3>Select the number of players:</h3>
+            {this.playerCountToggle}
+            <h3>Configure Players</h3>
+            <div className='row'>
+              {this.playerNameInputs}
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button outline color='danger' onClick={this.toggle}>Cancel</Button>{' '}
+            <Button color="primary" onClick={this.startGame}>Start Game</Button>
+          </ModalFooter>
+        </Modal>
+        <AvatarSelect
+          open={this.state.avatarSelect}
+          player={this.state.editingPlayer}
+          assign={(avatar, color, player) => this.applyAvatar(avatar, color, player)}
+          toggle={() => this.setState(state => ({avatarSelect: !state.avatarSelect}))}
+        />
+      </Fragment>
     );
   }
 

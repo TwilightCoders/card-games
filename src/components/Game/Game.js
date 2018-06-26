@@ -1,17 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import { Prompt, withRouter } from 'react-router-dom';
-//import { donut as game } from '../../games';
 import uuidv1 from 'uuid/v1';
 import MainNav from '../NavBar/NavBar';
 import Scoreboard from './Scoreboard';
-import InitModal from './InitModal';
-import ScoresModal from './ScoresModal';
-import ConfirmModal from './ConfirmModal';
-import AlertModal from './AlertModal';
-import AvatarSelect from '../AvatarSelect/AvatarSelect';
+import InitModal from '../InitModal';
+import ScoresModal from '../ScoresModal/ScoresModal';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
+import AlertModal from '../AlertModal/AlertModal';
+//import AvatarSelect from '../AvatarSelect/AvatarSelect';
 import {
   Button,
 } from 'mdbreact';
+
+import { PlayersContext } from '../../contexts/Players';
 
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
 // functionality to make a multi-user game possible
@@ -30,7 +31,7 @@ const defaultProps = {
   started: false,
   currentRound: 0,
   scores: [],
-  players: [],
+  //players: [],
   initModalOpen: false,
   scoresModalOpen: false,
   avatarModalOpen: false,
@@ -40,9 +41,11 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
+    //const { value } = this.props;
+
     this.defaultGame = Object.assign(defaultProps, this.props.game);
 
-    let newGame = Object.assign({}, this.defaultGame);
+    let newGame = Object.assign({players: props.players}, this.defaultGame);
     newGame.id = uuidv1();
 
     this.state = newGame;
@@ -56,6 +59,7 @@ class Game extends Component {
     this.scoreLabel = this.scoreLabel.bind(this);
   }
 
+  
   // Based on a given value, return what the label for that value should be. This ensures passes and whammie
   // names are displayed correctly without having to hard code that logic into the render function
   scoreLabel(val) {
@@ -111,8 +115,10 @@ class Game extends Component {
 
     const numRounds = gameplay.preRenderScoreboard ? gameplay.fixedRounds : 1;
 
+    this.props.updatePlayers(players);
+
     this.setState({
-      players: players,
+      //players: players,
       initialized: true,
       started: true,
       scores: this.seedScores(players.length, numRounds)
@@ -178,7 +184,7 @@ class Game extends Component {
 
   // Very simple function that will toggle the state responsible for showing or hiding the initialization modal
   toggleInitModal() {
-    this.setState({ initModalOpen: !this.state.initModalOpen });
+    this.setState(state => ({ initModalOpen: !state.initModalOpen }));
   }
 
   // Very simple function that will toggle the state responsible for showing or hiding the scores modal
@@ -205,7 +211,7 @@ class Game extends Component {
     const isGameOver = this.isGameOver();
 
     return (
-      <div>
+      <Fragment>
         <Prompt
           when={this.state.initialized}
           message={
@@ -283,10 +289,10 @@ class Game extends Component {
           message={this.state.alertDialog.message}
           toggle={() => this.setState({ alertDialog: { open: !this.state.alertDialog.open}})}
         />
-        <AvatarSelect
+        {/*<AvatarSelect
           open={this.state.avatarModalOpen}
           toggle={() => this.setState((currState, currProps) => ({avatarModalOpen: !currState.avatarModalOpen}))}
-        />
+        />*/}
         <InitModal
           open={this.state.initModalOpen}
           toggle={() => this.toggleInitModal()}
@@ -304,7 +310,7 @@ class Game extends Component {
             scoreLabel={this.scoreLabel}
             />
         }
-      </div>
+      </Fragment>
     );
   }
 }

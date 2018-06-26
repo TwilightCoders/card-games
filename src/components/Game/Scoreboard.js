@@ -8,8 +8,13 @@ const Scoreboard = (props) => {
       <thead>
         <tr>
           <th scope='row' className='col-sm-3 col-md-2 text-center'>Round - (Dealer)</th>
-          {players.map((name, index) => {
-            return <th scope='row' key={`nameHeading${index}`} className='text-center'>{name}</th>
+          {players.map((player, index) => {
+            return (
+              <th scope='row' key={`nameHeading${index}`} className='text-center'>
+                <img src={player.avatar} style={{height: '3em'}} className={`rounded-circle z-depth-1 mr-3 d-inline ${player.color}`} alt={`Player ${index} avatar`} />
+                {player.name}
+              </th>
+            );
           })}
         </tr>
       </thead>
@@ -18,7 +23,7 @@ const Scoreboard = (props) => {
           let activeRow = (roundNumber === currentRound) ? 'table-primary' : '';
           return (
             <tr key={`round${roundNumber}`} className={activeRow}>
-              <th scope='row' className='text-center'>{`${gameplay.levelLabels(roundNumber)} - ${players[roundNumber % players.length]}`}</th>
+              <th scope='row' className='text-center'>{`${gameplay.levelLabels(roundNumber)} - ${players[roundNumber % players.length].name}`}</th>
               {round.map((playerScore, scoreCol) => {
                 return <td key={`round${roundNumber}col${scoreCol}`} className='text-center'>{scoreLabel(playerScore)}</td>;
               })}

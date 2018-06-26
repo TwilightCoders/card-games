@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
-import games from './games';
-import Game from './components/Game/Game';
+import games from './contexts/games';
+import Game from './components/Game';
 import NavBar from './components/NavBar/NavBar';
 import { Route } from 'react-router-dom'; // https://www.sitepoint.com/react-router-v4-complete-guide/
 
