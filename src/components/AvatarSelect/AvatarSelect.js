@@ -16,34 +16,55 @@ const circleSize = '2em';
 export default class AvatarSelect extends Component {
 	defaultState = {
 		color: null,
-		avatar: null,
+    avatar: null,
 	}
 	
-	state = Object.assign({}, this.defaultState);
+  state = Object.assign({}, this.defaultState);
 	
 	setColor(color) {
 		this.setState({color: color});
 	}
 	
 	alertAvatar() {
-		//alert(`You chose avatar: ${this.state.avatar}, and the color is ${this.state.color}`);
-		this.props.assign(this.state.avatar, this.state.color, this.props.player);
+    //alert(`You chose avatar: ${this.state.avatar}, and the color is ${this.state.color}`);
+    const playerInfo = this.getPlayerInfo();
+
+		this.props.assign(playerInfo.avatar, playerInfo.color, this.props.player.index);
 		this.setState(Object.assign({}, this.defaultState));
 		this.props.toggle();
-	}
+  }
+  
+  getPlayerInfo() {
+    const playerInfo = { color: this.state.color, avatar: this.state.avatar };
+
+    if (this.props.open && (playerInfo.color === null || playerInfo.avatar === null) && this.props.player) {
+      playerInfo.color = playerInfo.color || this.props.player.color;
+      playerInfo.avatar = playerInfo.avatar || this.props.player.avatar;
+    }
+
+    return playerInfo;
+  }
 	
 	render() {
+    const playerInfo = this.getPlayerInfo();
+
 		return (
 			<PlayersContext.Consumer>
 				{value => (
           <Modal isOpen={this.props.open} toggle={this.props.toggle} backdrop={false}>
 		        <ModalHeader toggle={this.props.toggle}>Avatars!</ModalHeader>
 		        <ModalBody>
+              <h4>Passed in props</h4>
+              <div className='row'>
+                <div className='col'>
+                  {/*JSON.stringify(this.props)*/}
+                </div>
+              </div>
 		        	<h3>Select Color:</h3>
 		        	<div className='row pb-3 pl-3'>
 		        		{value.colorOptions.map(color => {
 		        			const addBorder = (color === 'white') ? 'border-top border-bottom border-right border-left border-dark' : '';
-		        			const active = (color === this.state.color) ? 'z-depth-2' : '';
+		        			const active = (color === playerInfo.color) ? 'z-depth-2' : '';
 		        			const classNames = `${color} rounded-circle d-inline m-1 ${addBorder} ${active}`;
 		        			return (
 		        				<div
@@ -62,7 +83,7 @@ export default class AvatarSelect extends Component {
 		          					src={image}
 		          					alt={`avatar ${index}`}
 		          					onClick={() => this.setState({avatar: image})}
-		          					className={`rounded-circle m-3 ${this.state.color} ${(image === this.state.avatar ? 'z-depth-2 selected' : '')}`} />
+		          					className={`rounded-circle m-3 ${playerInfo.color} ${(image === playerInfo.avatar ? 'z-depth-2 selected' : '')}`} />
 		          			</div>
 		          		);
 		          	})}
@@ -71,7 +92,7 @@ export default class AvatarSelect extends Component {
 		          			src={defaultAvatar}
 		          			alt='Default Avatar'
 		          			onClick={() => this.setState({avatar: defaultAvatar})}
-		          			className={`rounded-circle m-3 ${this.state.color} ${(defaultAvatar === this.state.avatar ? 'z-depth-2 selected' : '')}`} />
+		          			className={`rounded-circle m-3 ${playerInfo.color} ${(defaultAvatar === playerInfo.avatar ? 'z-depth-2 selected' : '')}`} />
 		          	</div>
 		          </div>
 		        </ModalBody>

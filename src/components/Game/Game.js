@@ -12,7 +12,7 @@ import {
   Button,
 } from 'mdbreact';
 
-import { PlayersContext } from '../../contexts/Players';
+//import { PlayersContext } from '../../contexts/Players';
 
 // Generate UUID, and append that UUID to the game once initialized so that we can use this
 // functionality to make a multi-user game possible
@@ -236,12 +236,11 @@ class Game extends Component {
                 className='btn btn-raised btn-primary'
                 onClick={this.toggleInitModal}
               >Initialize Game</button>
-              <Button color='warning' onClick={() => this.setState({avatarModalOpen: true})}>Open AvatarSelect</Button>
             </Fragment>
           }
           {this.state.initialized &&  // If the game is initialized, then render it!
             <Scoreboard
-              players={this.state.players}
+              players={this.props.players}
               currentRound={this.state.currentRound}
               scores={this.state.scores}
               gameplay={this.state.gameplay}
@@ -289,10 +288,6 @@ class Game extends Component {
           message={this.state.alertDialog.message}
           toggle={() => this.setState({ alertDialog: { open: !this.state.alertDialog.open}})}
         />
-        {/*<AvatarSelect
-          open={this.state.avatarModalOpen}
-          toggle={() => this.setState((currState, currProps) => ({avatarModalOpen: !currState.avatarModalOpen}))}
-        />*/}
         <InitModal
           open={this.state.initModalOpen}
           toggle={() => this.toggleInitModal()}

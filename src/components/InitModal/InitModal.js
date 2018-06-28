@@ -63,7 +63,6 @@ export default class InitModal extends Component {
 
   // Use an internal toggle method to perform some cleanup, since hiding a modal is different than unmounting it
   toggle() {
-    console.log('InitModal toggle called');
     this.setState(this.getDefaultState());
     this.props.toggle();
   }
@@ -113,7 +112,6 @@ export default class InitModal extends Component {
     return validated;
   }
 
-
   togglePlayers(num = 2) {
     if (num < this.state.possiblePlayers.min || num > this.state.possiblePlayers.max) return;
 
@@ -150,10 +148,10 @@ export default class InitModal extends Component {
   }
   
   getAvatar(playerIndex) {
-    this.setState({
+    this.setState(state => ({
       avatarSelect: true,
-      editingPlayer: playerIndex,
-    });
+      editingPlayer: {index: playerIndex, color: state.players[playerIndex].color, avatar: state.players[playerIndex].avatar},
+    }));
   }
 
   startGame() {
@@ -200,16 +198,20 @@ export default class InitModal extends Component {
           <Card className='text-center'>
             <CardBody>
               <div className='row'>
-                <div className='col-4'>
+                <div className='col-5'>
                   <img
                     src={players[i].avatar}
                     onClick={() => this.getAvatar(i)}
                     alt='player avatar'
-                    className={`rounded-circle z-depth-1 m-3 d-inline img-fluid ${players[i].color}`}
+                    className={`rounded-circle z-depth-1 mr-1 d-inline img-fluid ${players[i].color}`}
                   />
                 </div>
                 <div className='col'>
                   <CardTitle>{`Player ${i + 1}`}</CardTitle>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col'>
                   <div className='card-text'><Input id={id} label='Name' value={players[i].name} onChange={(e) => this.changeName(e, i)} /></div>
                 </div>
               </div>
@@ -252,7 +254,7 @@ export default class InitModal extends Component {
           open={this.state.avatarSelect}
           player={this.state.editingPlayer}
           assign={(avatar, color, player) => this.applyAvatar(avatar, color, player)}
-          toggle={() => { this.setState(state => ({ avatarSelect: !state.avatarSelect })); console.log('AvatarSelect toggle called');}}
+          toggle={() => { this.setState(state => ({ avatarSelect: !state.avatarSelect }))}}
         />
       </Fragment>
     );

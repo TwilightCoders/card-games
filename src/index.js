@@ -8,7 +8,8 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 
-import { PlayersContext, PlayersProvider } from './contexts/Players';
+import { PlayersProvider } from './contexts/Players';
+//import { PlayersContext, PlayersProvider } from './contexts/Players';
 
 ReactDOM.render(
   <BrowserRouter>

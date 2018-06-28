@@ -38,7 +38,7 @@ export class PlayersProvider extends Component {
       return newPlayer;
     });
 
-    this.setState(state => ({players: newPlayers}));
+    this.setState({players: newPlayers});
   }
 
   render() {
@@ -48,7 +48,7 @@ export class PlayersProvider extends Component {
           // Add current state variables
           ...this.state,
           // Functions as well
-          updatePlayers: this.updatePlayers,
+          updatePlayers: this.updatePlayers.bind(this),
         }}
       >
         {this.props.children}
