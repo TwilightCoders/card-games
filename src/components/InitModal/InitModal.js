@@ -63,6 +63,7 @@ export default class InitModal extends Component {
 
   // Use an internal toggle method to perform some cleanup, since hiding a modal is different than unmounting it
   toggle() {
+    console.log('InitModal toggle called');
     this.setState(this.getDefaultState());
     this.props.toggle();
   }
@@ -140,7 +141,7 @@ export default class InitModal extends Component {
     this.setState(state => {
       const players = state.players;
       
-      players[playerIndex].avatar = color;
+      players[playerIndex].avatar = avatar;
       players[playerIndex].color = color;
       return {
         players: players
@@ -251,7 +252,7 @@ export default class InitModal extends Component {
           open={this.state.avatarSelect}
           player={this.state.editingPlayer}
           assign={(avatar, color, player) => this.applyAvatar(avatar, color, player)}
-          toggle={() => this.setState(state => ({avatarSelect: !state.avatarSelect}))}
+          toggle={() => { this.setState(state => ({ avatarSelect: !state.avatarSelect })); console.log('AvatarSelect toggle called');}}
         />
       </Fragment>
     );

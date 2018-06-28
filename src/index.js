@@ -15,12 +15,19 @@ ReactDOM.render(
     <PlayersProvider>
       <App />
     </PlayersProvider>
-    {/*<PlayersProvider>
+  </BrowserRouter>  
+  , 
+  document.getElementById('root')
+);
+
+/*
+  <BrowserRouter>
+    <PlayersProvider>
       <PlayersContext.Consumer>
         {({players, images, colorOptions}) => <App players={players} images={images} colorOptions={colorOptions} />}
       </PlayersContext.Consumer>
-    </PlayersProvider>*/}
-  </BrowserRouter>  
-  , document.getElementById('root'));
+    </PlayersProvider>
+  </BrowserRouter > 
+*/
 
 registerServiceWorker();

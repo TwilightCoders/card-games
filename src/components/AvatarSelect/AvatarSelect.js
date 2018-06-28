@@ -26,7 +26,7 @@ export default class AvatarSelect extends Component {
 	}
 	
 	alertAvatar() {
-		alert(`You chose avatar: ${this.state.avatar}, and the color is ${this.state.color}`);
+		//alert(`You chose avatar: ${this.state.avatar}, and the color is ${this.state.color}`);
 		this.props.assign(this.state.avatar, this.state.color, this.props.player);
 		this.setState(Object.assign({}, this.defaultState));
 		this.props.toggle();
@@ -36,7 +36,7 @@ export default class AvatarSelect extends Component {
 		return (
 			<PlayersContext.Consumer>
 				{value => (
-					<Modal isOpen={this.props.open} toggle={this.props.toggle}>
+          <Modal isOpen={this.props.open} toggle={this.props.toggle} backdrop={false}>
 		        <ModalHeader toggle={this.props.toggle}>Avatars!</ModalHeader>
 		        <ModalBody>
 		        	<h3>Select Color:</h3>
