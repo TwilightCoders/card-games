@@ -147,7 +147,7 @@ export default class ScoresModal extends Component {
                 </div>
               }
               <Input
-                label={`${player}:`}
+                label={`${player.name}:`}
                 type='tel'
                 id={`player${index}Score`}
                 className='form-control'

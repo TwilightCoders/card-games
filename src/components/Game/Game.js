@@ -127,7 +127,7 @@ class Game extends Component {
 
   // This function will get passed as a prop to the scores modal, which will enable the scores modal to update the scores of the current round
   updateScores(newScores = []) {
-    if (newScores.length !== this.state.players.length) return;
+    if (newScores.length !== this.props.players.length) return;
 
     const { scores, currentRound } = this.state;
 
@@ -299,7 +299,7 @@ class Game extends Component {
             toggle={() => this.toggleScoresModal()}
             settings={this.state.settings}
             gameplay={this.state.gameplay}
-            players={this.state.players}
+            players={this.props.players}
             round={this.state.currentRound}
             updateScores={this.updateScores.bind(this)}
             scoreLabel={this.scoreLabel}
