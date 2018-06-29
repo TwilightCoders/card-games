@@ -20,7 +20,7 @@ const Home = (props) => {
         <div className='card-deck'>
           {gameLinks.map((link, index) => {
             return (
-              <div className="card">
+              <div className="card" key={`gameLinks${index}`}>
                 <div className="card-body">
                   <h5 className="card-title">{link.label}</h5>
                   <p className="card-text">{link.description}</p>

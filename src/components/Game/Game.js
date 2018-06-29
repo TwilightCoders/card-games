@@ -6,7 +6,7 @@ import Scoreboard from './Scoreboard';
 import InitModal from '../InitModal';
 import ScoresModal from '../ScoresModal/ScoresModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
-import AlertModal from '../AlertModal/AlertModal';
+import AlertModal from '../AlertModal';
 //import AvatarSelect from '../AvatarSelect/AvatarSelect';
 import {
   Button,
@@ -57,6 +57,7 @@ class Game extends Component {
     //this.makeGameGrid = this.makeGameGrid.bind(this);
     this.isGameOver = this.isGameOver.bind(this);
     this.scoreLabel = this.scoreLabel.bind(this);
+    this.toggleAlertModal = this.toggleAlertModal.bind(this);
   }
 
   
@@ -192,6 +193,15 @@ class Game extends Component {
     this.setState({ scoresModalOpen: !this.state.scoresModalOpen });
   }
 
+  toggleAlertModal(message) {
+    this.setState(state => ({
+      alertDialog: {
+        open: !state.alertDialog.open,
+        message: message,
+      }
+    }));
+  }
+
   // This function will be provided with a question (a simple string) and an action (a function) that when the user selects
   // "yes" on the confirm dialog, will be performed. This will also set the necessary state variable to true to actually
   // display the confirm modal
@@ -283,11 +293,7 @@ class Game extends Component {
           open={this.state.confirmDialog.open}
           toggle={() => this.setState({ confirmDialog: { open: !this.state.confirmDialog.open } })}
         />
-        <AlertModal
-          open={this.state.alertDialog.open}
-          message={this.state.alertDialog.message}
-          toggle={() => this.setState({ alertDialog: { open: !this.state.alertDialog.open}})}
-        />
+        <AlertModal />
         <InitModal
           open={this.state.initModalOpen}
           toggle={() => this.toggleInitModal()}

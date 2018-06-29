@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-
 import {
   //ButtonGroup,
   Button,
@@ -26,6 +25,7 @@ export default class InitModal extends Component {
     this.toggle = this.toggle.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
     this.startGame = this.startGame.bind(this);
+    this.alertToggle = this.alertToggle.bind(this);
 
     // Global private vars:
     this.playerCountToggle = [];
@@ -55,10 +55,22 @@ export default class InitModal extends Component {
       validation: validation,
       editingPlayer: null,
       avatarSelect: false,
+      alertOpen: false,
+      alertMessage: '',
     };
 
     // Copy the default state, and assign that to state
     this.state = this.getDefaultState();
+  }
+
+  alertToggle(message = '') {
+    this.setState(state => {
+      const alertMessage = (message !== '') ? message : this.state.alertMessage;
+      return {
+        alertOpen: !state.alertOpen,
+        alertMessage: alertMessage,
+      }
+    });
   }
 
   // Use an internal toggle method to perform some cleanup, since hiding a modal is different than unmounting it
@@ -155,9 +167,10 @@ export default class InitModal extends Component {
   }
 
   startGame() {
-    const answer = this.checkValidation() ? 'yes' : 'no';
+    const answer = this.checkValidation();// ? 'yes' : 'no';
 
-    if (!answer) return alert('Player names not set up correctly!');
+    // Figure out why I can't get alertToggle to work later
+    if (!answer) return this.props.alertToggle('Player names not set up correctly!');//this.props.alertToggle('Player names not set up correctly!!!!');
 
     this.props.startGame(this.state.players.slice());
     this.toggle();
@@ -197,22 +210,23 @@ export default class InitModal extends Component {
         <div className='col-12 col-md-6 col-lg-4 mb-3' key={`playerName${i}`}>
           <Card className='text-center'>
             <CardBody>
-              <div className='row'>
-                <div className='col-5'>
+              <div className='row no-gutters'>
+                <div className='col-4'>
                   <img
                     src={players[i].avatar}
-                    onClick={() => this.getAvatar(i)}
                     alt='player avatar'
                     className={`rounded-circle z-depth-1 mr-1 d-inline img-fluid ${players[i].color}`}
+                    onClick={() => this.getAvatar(i)}
                   />
                 </div>
                 <div className='col'>
                   <CardTitle>{`Player ${i + 1}`}</CardTitle>
                 </div>
               </div>
-              <div className='row'>
-                <div className='col'>
-                  <div className='card-text'><Input id={id} label='Name' value={players[i].name} onChange={(e) => this.changeName(e, i)} /></div>
+              <div className='row no-gutters'>
+                <div className='col mt-2'>
+                  <Button block onClick={() => this.getAvatar(i)} color='info' size='sm'>[ Change Avatar ]</Button>
+                  <div className='card-text'><Input tabIndex={i + 1} id={id} label='Name' value={players[i].name} onChange={(e) => this.changeName(e, i)} /></div>
                 </div>
               </div>
             </CardBody>

@@ -1,9 +1,14 @@
 import React from 'react';
 import { PlayersContext } from '../../contexts/Players';
-import InitModal from './InitModal';
+import { AlertContext } from '../../contexts/Alerts';
+import InitModal from "./InitModal";
 
 export default props => (
-  <PlayersContext.Consumer>
-    {({ images, colorOptions, players, updatePlayers, defaultAvatar }) => <InitModal {...props} players={players} updatePlayers={updatePlayers} images={images} defaultAvatar={defaultAvatar} />}
-  </PlayersContext.Consumer>
+  <AlertContext.Consumer>
+    {({alertToggle}) =>
+      <PlayersContext.Consumer>
+        {({ images, colorOptions, players, updatePlayers, defaultAvatar }) => <InitModal {...props} players={players} updatePlayers={updatePlayers} images={images} defaultAvatar={defaultAvatar} alertToggle={alertToggle} />}
+      </PlayersContext.Consumer>
+    }
+  </AlertContext.Consumer>
 );

@@ -1,16 +1,4 @@
 import React, { Component, Fragment } from 'react';
-/*import {
-  //ButtonGroup,
-  Button,
-  //Form,
-  //FormGroup,
-  //Input,
-  //Label,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from 'reactstrap';*/
 
 import {
   Button,

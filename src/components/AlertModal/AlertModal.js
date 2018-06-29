@@ -4,7 +4,7 @@ import {
   Modal,
   ModalBody,
   ModalFooter
-} from 'reactstrap';
+} from 'mdbreact';
 
 export default class ConfirmModal extends Component {
   constructor(props) {

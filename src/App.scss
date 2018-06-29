@@ -43,3 +43,13 @@ nav.fixed-bottom .row {
 #avatarSelect img.selected {
   filter: grayscale(0%);
 }
+
+.flat-button {
+  background: inherit;
+  border: none;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.6em;
+}
