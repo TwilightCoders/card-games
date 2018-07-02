@@ -3,11 +3,34 @@ import { PlayersContext } from '../../contexts/Players';
 import { AlertContext } from '../../contexts/Alerts';
 import InitModal from "./InitModal";
 
+/*export default props => (
+  <PlayersContext.Consumer>
+    {({ images, colorOptions, players, updatePlayers, defaultAvatar }) =>
+      <InitModal
+        {...props}
+        players={players}
+        updatePlayers={updatePlayers}
+        images={images}
+        defaultAvatar={defaultAvatar}
+      />
+    }
+  </PlayersContext.Consumer>
+);*/
+
 export default props => (
   <AlertContext.Consumer>
     {({alertToggle}) =>
       <PlayersContext.Consumer>
-        {({ images, colorOptions, players, updatePlayers, defaultAvatar }) => <InitModal {...props} players={players} updatePlayers={updatePlayers} images={images} defaultAvatar={defaultAvatar} alertToggle={alertToggle} />}
+        {({ images, colorOptions, players, updatePlayers, defaultAvatar }) =>
+          <InitModal
+            {...props}
+            players={players}
+            updatePlayers={updatePlayers}
+            images={images}
+            defaultAvatar={defaultAvatar}
+            alertToggle={alertToggle}
+          />
+        }
       </PlayersContext.Consumer>
     }
   </AlertContext.Consumer>

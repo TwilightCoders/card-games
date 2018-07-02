@@ -293,12 +293,26 @@ class Game extends Component {
           open={this.state.confirmDialog.open}
           toggle={() => this.setState({ confirmDialog: { open: !this.state.confirmDialog.open } })}
         />
-        <AlertModal />
+        {/*<AlertContext.Consumer>
+          {({ alertOpen }) =>
+            {
+              if (alertOpen) console.log('alert open');
+              return alertOpen && <AlertModal />
+            }
+          }
+        </AlertContext.Consumer>*/}
+        <AlertModal
+          open={this.state.alertDialog.open}
+          message={this.state.alertDialog.message}
+          toggle={message => this.toggleAlertModal(message)}
+        />
         <InitModal
           open={this.state.initModalOpen}
           toggle={() => this.toggleInitModal()}
           settings={this.state.settings}
-          startGame={this.startGame} />
+          startGame={this.startGame}
+          alertToggle={message => this.toggleAlertModal(message)}
+        />
         {this.state.initialized && !isGameOver &&
           <ScoresModal
             open={this.state.scoresModalOpen}

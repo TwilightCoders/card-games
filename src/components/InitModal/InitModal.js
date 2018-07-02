@@ -168,9 +168,9 @@ export default class InitModal extends Component {
 
   startGame() {
     const answer = this.checkValidation();// ? 'yes' : 'no';
-
+    
     // Figure out why I can't get alertToggle to work later
-    if (!answer) return this.props.alertToggle('Player names not set up correctly!');//this.props.alertToggle('Player names not set up correctly!!!!');
+    if (!answer) return this.props.alertToggle('Player names not set up correctly!');
 
     this.props.startGame(this.state.players.slice());
     this.toggle();

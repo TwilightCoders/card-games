@@ -8,15 +8,28 @@ export class AlertProvider extends Component {
     alertMessage: 'Alert Modal!',
   };
 
-  toggleAlert(message = '') {
+  alertToggle = (message = '') => {
     this.setState(state => {
-      const alertMessage = (message === '') ? state.message : message;
+      const alertMessage = (message === '') ? state.alertMessage : message;
       return {
         alertOpen: !state.alertOpen,
         alertMessage: alertMessage
       }
     });
   }
+
+  /*alertToggle = () => {
+    this.setState(state => {
+      console.log('setting alertOpen to ' + !state.alertOpen);
+      return {
+        alertOpen: !state.alertOpen
+      };
+    })
+  }
+
+  setMessage = (message) => {
+    this.setState({alertMessage: message});
+  }*/
 
   render() {
     return (
@@ -25,7 +38,7 @@ export class AlertProvider extends Component {
           // Add current state variables
           ...this.state,
           // Functions as well
-          alertToggle: this.toggleAlert.bind(this)
+          alertToggle: this.alertToggle,
         }}
       >
         {this.props.children}
