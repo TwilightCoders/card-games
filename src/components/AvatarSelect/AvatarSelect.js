@@ -21,11 +21,11 @@ export default class AvatarSelect extends Component {
 	
   state = Object.assign({}, this.defaultState);
 	
-	setColor(color) {
+	setColor = (color) => {
 		this.setState({color: color});
 	}
 	
-	alertAvatar() {
+	alertAvatar = () => {
     //alert(`You chose avatar: ${this.state.avatar}, and the color is ${this.state.color}`);
     const playerInfo = this.getPlayerInfo();
 
@@ -34,7 +34,7 @@ export default class AvatarSelect extends Component {
 		this.props.toggle();
   }
   
-  getPlayerInfo() {
+  getPlayerInfo = () => {
     const playerInfo = { color: this.state.color, avatar: this.state.avatar };
 
     if (this.props.open && (playerInfo.color === null || playerInfo.avatar === null) && this.props.player) {
@@ -54,12 +54,6 @@ export default class AvatarSelect extends Component {
           <Modal isOpen={this.props.open} toggle={this.props.toggle} backdrop={false}>
 		        <ModalHeader toggle={this.props.toggle}>Avatars!</ModalHeader>
 		        <ModalBody>
-              <h4>Passed in props</h4>
-              <div className='row'>
-                <div className='col'>
-                  {/*JSON.stringify(this.props)*/}
-                </div>
-              </div>
 		        	<h3>Select Color:</h3>
 		        	<div className='row pb-3 pl-3'>
 		        		{value.colorOptions.map(color => {
@@ -98,7 +92,7 @@ export default class AvatarSelect extends Component {
 		        </ModalBody>
 		        <ModalFooter>
 		          <Button outline color='danger' onClick={this.props.toggle}>Cancel</Button>{' '}
-		          <Button color="primary" onClick={this.alertAvatar.bind(this)}>Select Avatar</Button>
+		          <Button color="primary" onClick={this.alertAvatar}>Select Avatar</Button>
 		        </ModalFooter>
 		      </Modal>
 		  	)}

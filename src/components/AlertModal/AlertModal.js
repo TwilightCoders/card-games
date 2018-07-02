@@ -6,7 +6,7 @@ import {
   ModalFooter
 } from 'mdbreact';
 
-const AlertModal = (props) => {
+export default props => {
   return (
     <Modal isOpen={props.open} backdrop={false} toggle={props.toggle}>
       <ModalBody>
@@ -18,5 +18,3 @@ const AlertModal = (props) => {
     </Modal>
   );
 }
-
-export default AlertModal;

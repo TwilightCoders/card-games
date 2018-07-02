@@ -19,19 +19,12 @@ const defaultLinks = [
 ];
 
 class NavBar extends Component {
-  constructor(props) {
-    super(props);
+  state = { isOpen: false };
 
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false
-    };
-  }
-
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+  toggle = () => {
+    this.setState(state => ({
+      isOpen: !state.isOpen
+    }));
   }
 
   render() {

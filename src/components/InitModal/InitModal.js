@@ -21,12 +21,6 @@ export default class InitModal extends Component {
   constructor(props) {
     super(props);
 
-    // Bind 'this' to the needed methods
-    this.toggle = this.toggle.bind(this);
-    this.checkValidation = this.checkValidation.bind(this);
-    this.startGame = this.startGame.bind(this);
-    this.alertToggle = this.alertToggle.bind(this);
-
     // Global private vars:
     this.playerCountToggle = [];
     this.playerNameInputs = [];
@@ -42,9 +36,6 @@ export default class InitModal extends Component {
 
     // Seed the validation array as well
     let validation = this.seedValidation(defaultPlayers);
-
-    // Set the player count selection to a class variable so it can be accessed multiple times without re-calculating it
-    //this.playerCountSelection = this.seedPlayerCount(possiblePlayers.min, possiblePlayers.max);
 
     // Set the default state so that we can reset it every time we toggle the modal
     this.defaultState = {
@@ -63,7 +54,7 @@ export default class InitModal extends Component {
     this.state = this.getDefaultState();
   }
 
-  alertToggle(message = '') {
+  alertToggle = (message = '') => {
     this.setState(state => {
       const alertMessage = (message !== '') ? message : this.state.alertMessage;
       return {
@@ -74,20 +65,20 @@ export default class InitModal extends Component {
   }
 
   // Use an internal toggle method to perform some cleanup, since hiding a modal is different than unmounting it
-  toggle() {
+  toggle = () => {
     this.setState(this.getDefaultState());
     this.props.toggle();
   }
 
-  getDefaultState() {
+  getDefaultState = () => {
     return Object.assign({}, this.defaultState);
   }
   
-  getDefaultPlayer() {
+  getDefaultPlayer = () => {
     return {color: null, name: '', avatar: this.props.defaultAvatar};
   }
 
-  seedPlayers(maxPlayers) {
+  seedPlayers = (maxPlayers) => {
     let players = [];
     for (let player = 0; player < maxPlayers; ++player) {
       players.push(this.getDefaultPlayer());
@@ -95,7 +86,7 @@ export default class InitModal extends Component {
     return players;
   }
 
-  seedValidation(maxPlayers) {
+  seedValidation = (maxPlayers) => {
     let validation = [];
     for (let player = 0; player < maxPlayers; ++player) {
       validation.push(false);
@@ -103,7 +94,7 @@ export default class InitModal extends Component {
     return validation;
   }
 
-  changeName(event, id) {
+  changeName = (event, id) => {
     let { players, validation } = this.state;
     let newName = event.target.value;
     players[id].name = newName;
@@ -112,7 +103,7 @@ export default class InitModal extends Component {
     this.setState({ players, validation });
   }
 
-  checkValidation() {
+  checkValidation = () => {
     let { validation } = this.state;
 
     if (validation.length === 1) return validation[0];
@@ -124,7 +115,7 @@ export default class InitModal extends Component {
     return validated;
   }
 
-  togglePlayers(num = 2) {
+  togglePlayers = (num = 2) => {
     if (num < this.state.possiblePlayers.min || num > this.state.possiblePlayers.max) return;
 
     let newNames = [];
@@ -147,7 +138,7 @@ export default class InitModal extends Component {
     });
   }
   
-  applyAvatar(avatar, color, playerIndex) {
+  applyAvatar = (avatar, color, playerIndex) => {
     this.setState(state => {
       const players = state.players;
       
@@ -159,14 +150,14 @@ export default class InitModal extends Component {
     })
   }
   
-  getAvatar(playerIndex) {
+  getAvatar = (playerIndex) => {
     this.setState(state => ({
       avatarSelect: true,
       editingPlayer: {index: playerIndex, color: state.players[playerIndex].color, avatar: state.players[playerIndex].avatar},
     }));
   }
 
-  startGame() {
+  startGame = () => {
     const answer = this.checkValidation();// ? 'yes' : 'no';
     
     // Figure out why I can't get alertToggle to work later
@@ -176,7 +167,7 @@ export default class InitModal extends Component {
     this.toggle();
   }
 
-  renderPlayerInfo() {
+  renderPlayerInfo = () => {
     let numPlayersGroup = [];
     let playerNames = [];
 
@@ -273,18 +264,4 @@ export default class InitModal extends Component {
       </Fragment>
     );
   }
-
-  /*
-
-  startGame() {
-    let errors = this.state.validation.reduce((accum, value) => {
-      return accum && value;
-    });
-
-    if (!errors) { return alert('Not all fields filled out!'); }
-
-    this.props.startGame(this.state.names);
-
-    this.resetState();
-  }*/
 }

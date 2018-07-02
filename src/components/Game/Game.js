@@ -1,21 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { Prompt, withRouter } from 'react-router-dom';
-import uuidv1 from 'uuid/v1';
+//import uuidv1 from 'uuid/v1';
 import MainNav from '../NavBar/NavBar';
 import Scoreboard from './Scoreboard';
 import InitModal from '../InitModal';
 import ScoresModal from '../ScoresModal/ScoresModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import AlertModal from '../AlertModal';
-//import AvatarSelect from '../AvatarSelect/AvatarSelect';
 import {
   Button,
 } from 'mdbreact';
 
-//import { PlayersContext } from '../../contexts/Players';
-
-// Generate UUID, and append that UUID to the game once initialized so that we can use this
-// functionality to make a multi-user game possible
 
 const defaultProps = {
   alertDialog: {
@@ -31,7 +26,7 @@ const defaultProps = {
   started: false,
   currentRound: 0,
   scores: [],
-  //players: [],
+  //players: [],  // This is now being controlled by Context API
   initModalOpen: false,
   scoresModalOpen: false,
   avatarModalOpen: false,
@@ -41,29 +36,18 @@ class Game extends Component {
   constructor(props) {
     super(props);
 
-    //const { value } = this.props;
-
     this.defaultGame = Object.assign(defaultProps, this.props.game);
 
     let newGame = Object.assign({players: props.players}, this.defaultGame);
-    newGame.id = uuidv1();
+    //newGame.id = uuidv1();
 
     this.state = newGame;
-
-    this.toggleInitModal = this.toggleInitModal.bind(this);
-    this.toggleScoresModal = this.toggleScoresModal.bind(this);
-    this.confirmDialog = this.confirmDialog.bind(this);
-    this.startGame = this.startGame.bind(this);
-    //this.makeGameGrid = this.makeGameGrid.bind(this);
-    this.isGameOver = this.isGameOver.bind(this);
-    this.scoreLabel = this.scoreLabel.bind(this);
-    this.toggleAlertModal = this.toggleAlertModal.bind(this);
   }
 
   
   // Based on a given value, return what the label for that value should be. This ensures passes and whammie
   // names are displayed correctly without having to hard code that logic into the render function
-  scoreLabel(val) {
+  scoreLabel = (val) => {
     //if (Number.isInteger(val)) return val;
     if (val === 'pass') return 'Pass';
     if (val === 'whammie') return this.state.gameplay.whammieName;
@@ -72,7 +56,7 @@ class Game extends Component {
   }
 
   // Based on a number of players, and rounds provided, return an empty 2d array with all the rows & cols for the game set to null
-  seedScores(numPlayers, numRounds) {
+  seedScores = (numPlayers, numRounds) => {
     let scores = [];
     
     for (let roundNumber = 0; roundNumber < numRounds; ++roundNumber) {
@@ -87,7 +71,7 @@ class Game extends Component {
   }
 
   // Based on a given 2d array of scores, total each column and return the totals in a new array
-  getTotalScores(scores = this.state.scores) {
+  getTotalScores = (scores = this.state.scores) => {
     let { gameplay } = this.state;
 
     let totalScores = [];
@@ -111,7 +95,7 @@ class Game extends Component {
   // This function will update state to match the conditions needed to start the game. The provided array of players will be set
   // to the game, and the scoreboard will be initialized based on whether it has predefined rounds or not. Finally initialized
   // and started variables within state will be set to true
-  startGame(players) {
+  startGame = (players) => {
     const { gameplay } = this.state;
 
     const numRounds = gameplay.preRenderScoreboard ? gameplay.fixedRounds : 1;
@@ -127,7 +111,7 @@ class Game extends Component {
   }
 
   // This function will get passed as a prop to the scores modal, which will enable the scores modal to update the scores of the current round
-  updateScores(newScores = []) {
+  updateScores = (newScores = []) => {
     if (newScores.length !== this.props.players.length) return;
 
     const { scores, currentRound } = this.state;
@@ -160,7 +144,7 @@ class Game extends Component {
 
 
   // This function will check all the possible reasons for the game to be over, and return a boolean indicating if the game is over or not
-  isGameOver(totalScores = this.getTotalScores()) {
+  isGameOver = (totalScores = this.getTotalScores()) => {
     const { gameplay, currentRound, started } = this.state;
 
     if (!started) return true;
@@ -184,16 +168,16 @@ class Game extends Component {
   }
 
   // Very simple function that will toggle the state responsible for showing or hiding the initialization modal
-  toggleInitModal() {
+  toggleInitModal = () => {
     this.setState(state => ({ initModalOpen: !state.initModalOpen }));
   }
 
   // Very simple function that will toggle the state responsible for showing or hiding the scores modal
-  toggleScoresModal() {
+  toggleScoresModal = () => {
     this.setState({ scoresModalOpen: !this.state.scoresModalOpen });
   }
 
-  toggleAlertModal(message) {
+  toggleAlertModal = (message) => {
     this.setState(state => ({
       alertDialog: {
         open: !state.alertDialog.open,
@@ -205,7 +189,7 @@ class Game extends Component {
   // This function will be provided with a question (a simple string) and an action (a function) that when the user selects
   // "yes" on the confirm dialog, will be performed. This will also set the necessary state variable to true to actually
   // display the confirm modal
-  confirmDialog(question, action) {
+  confirmDialog = (question, action) => {
     this.setState({
       confirmDialog: {
         open: true,
@@ -293,19 +277,7 @@ class Game extends Component {
           open={this.state.confirmDialog.open}
           toggle={() => this.setState({ confirmDialog: { open: !this.state.confirmDialog.open } })}
         />
-        {/*<AlertContext.Consumer>
-          {({ alertOpen }) =>
-            {
-              if (alertOpen) console.log('alert open');
-              return alertOpen && <AlertModal />
-            }
-          }
-        </AlertContext.Consumer>*/}
-        <AlertModal
-          open={this.state.alertDialog.open}
-          message={this.state.alertDialog.message}
-          toggle={message => this.toggleAlertModal(message)}
-        />
+        <AlertModal />
         <InitModal
           open={this.state.initModalOpen}
           toggle={() => this.toggleInitModal()}

@@ -20,21 +20,13 @@ export default class ScoresModal extends Component {
     this.allPositives = this.props.gameplay.scoreTypes.indexOf('negative') >= 0 && this.props.gameplay.scoreTypes.indexOf('positive') >= 0;
 
     this.state = this.seedState(this.props.players.length);
-
-    this.scoreFields = this.scoreFields.bind(this);
-    this.updateScores = this.updateScores.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.applyWhammie = this.applyWhammie.bind(this);
-    this.applyPass = this.applyPass.bind(this);
-    this.validScores = this.validScores.bind(this);
-    this.enterScore = this.enterScore.bind(this);
   }
 
   // This toggle function will call its siblings 'seedState' function in order to reset the
   // state of this modal every time it is closed/opened based on the props given to it
   //
   // It will then call the parent's toggle function in order to show/hide it
-  toggle() {
+  toggle = () => {
     this.setState(this.seedState(this.props.players.length));
     this.props.toggle();
   }
@@ -44,7 +36,7 @@ export default class ScoresModal extends Component {
   // from the input text box, and test to make sure the entered data passes validation.
   //
   // Validation will be kept in state in an array for easy testing later
-  enterScore(event, index) {
+  enterScore = (event, index) => {
     let { scores, validation } = this.state;
     const newScore = event.target.value;
 
@@ -62,14 +54,14 @@ export default class ScoresModal extends Component {
 
   // This function simply calls the updateScores function that was passed in via props, and also calls
   // the sibling 'toggle' function as outlined above (to close the modal, and reset it)
-  updateScores() {
+  updateScores = () => {
     this.props.updateScores(this.state.scores);
     this.toggle();
   }
 
   // This function replaces whatever is typed into the text box of a given player score with a whammie
   // (which is something that cannot be typed in manually)
-  applyWhammie(index = null) {
+  applyWhammie = (index = null) => {
     if (index === null) return false;
 
     const { scores } = this.state;
@@ -80,7 +72,7 @@ export default class ScoresModal extends Component {
 
   // This function replaces whatever is typed into the text box of a given player score with a pass
   // (which is something that cannot be typed in manually)
-  applyPass(index = null) {
+  applyPass = (index = null) => {
     if (index === null) return false;
 
     const { scores } = this.state;
@@ -93,7 +85,7 @@ export default class ScoresModal extends Component {
   // basic array with a length matching the number of players. It will also create a matching array
   // called 'validation' which can be used to store the status of each input regarding if the content
   // is valid or not. This function returns a simple object containing both arrays
-  seedState(numPlayers) {
+  seedState = (numPlayers) => {
     if (numPlayers < 1) return;
 
     const scores = [];
@@ -108,7 +100,7 @@ export default class ScoresModal extends Component {
   }
 
   // This function renders the form & inputs for the modal based on the curret state of the modal
-  scoreFields() {
+  scoreFields = () => {
     const { players, gameplay } = this.props;
 
     const negatives = (
@@ -163,7 +155,7 @@ export default class ScoresModal extends Component {
   }
 
   // This function will tell you if the current scores are all valid, or not
-  validScores() {
+  validScores = () => {
     return this.state.validation.every(curVal => {
       return curVal === true;
     });

@@ -18,19 +18,6 @@ export class AlertProvider extends Component {
     });
   }
 
-  /*alertToggle = () => {
-    this.setState(state => {
-      console.log('setting alertOpen to ' + !state.alertOpen);
-      return {
-        alertOpen: !state.alertOpen
-      };
-    })
-  }
-
-  setMessage = (message) => {
-    this.setState({alertMessage: message});
-  }*/
-
   render() {
     return (
       <AlertContext.Provider

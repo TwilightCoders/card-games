@@ -9,7 +9,6 @@ import registerServiceWorker from './registerServiceWorker';
 
 import { PlayersProvider } from './contexts/Players';
 import { AlertProvider } from './contexts/Alerts';
-//import { PlayersContext, PlayersProvider } from './contexts/Players';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -22,15 +21,5 @@ ReactDOM.render(
   , 
   document.getElementById('root')
 );
-
-/*
-  <BrowserRouter>
-    <PlayersProvider>
-      <PlayersContext.Consumer>
-        {({players, images, colorOptions}) => <App players={players} images={images} colorOptions={colorOptions} />}
-      </PlayersContext.Consumer>
-    </PlayersProvider>
-  </BrowserRouter > 
-*/
 
 registerServiceWorker();
