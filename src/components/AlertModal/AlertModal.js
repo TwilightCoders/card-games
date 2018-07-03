@@ -8,7 +8,7 @@ import {
 
 export default props => {
   return (
-    <Modal isOpen={props.open} backdrop={false} toggle={props.toggle}>
+    <Modal isOpen={props.open} backdrop={(props.backdrop ? props.backdrop : false)} toggle={props.toggle}>
       <ModalBody>
         <h4>{props.message}</h4>
       </ModalBody>

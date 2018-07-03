@@ -4,8 +4,8 @@ import AlertModal from './AlertModal';
 
 export default props => (
   <AlertContext.Consumer>
-    {({ alertOpen, alertMessage, alertToggle }) => (
-      <AlertModal {...props} open={alertOpen} message={alertMessage} toggle={alertToggle} />
+    {({ alertOpen, alertMessage, alertToggle, backdrop }) => (
+      <AlertModal {...props} open={alertOpen} message={alertMessage} toggle={alertToggle} backdrop={backdrop} />
     )}
   </AlertContext.Consumer>
 );

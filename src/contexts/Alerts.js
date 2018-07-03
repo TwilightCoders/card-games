@@ -6,14 +6,16 @@ export class AlertProvider extends Component {
   state = {
     alertOpen: false,
     alertMessage: 'Alert Modal!',
+    backdrop: true,
   };
 
-  alertToggle = (message = '') => {
+  alertToggle = (message = '', backdrop = true) => {
     this.setState(state => {
       const alertMessage = (message === '') ? state.alertMessage : message;
       return {
         alertOpen: !state.alertOpen,
-        alertMessage: alertMessage
+        alertMessage: alertMessage,
+        backdrop: backdrop,
       }
     });
   }
