@@ -71,17 +71,19 @@ export default class InitModal extends Component {
   }
 
   getDefaultState = () => {
-    return Object.assign({}, this.defaultState);
+    const newState = Object.assign({}, this.defaultState);
+    newState.players = this.seedPlayers(this.props.settings.possiblePlayers.min);
+    return newState;
   }
   
   getDefaultPlayer = () => {
-    return {color: null, name: '', avatar: this.props.defaultAvatar};
+    return {color: this.props.colorOptions[0], name: '', avatar: this.props.defaultAvatar};
   }
 
   seedPlayers = (maxPlayers) => {
     let players = [];
     for (let player = 0; player < maxPlayers; ++player) {
-      players.push(this.getDefaultPlayer());
+      players.push(Object.assign({}, this.getDefaultPlayer()));
     }
     return players;
   }
@@ -216,7 +218,7 @@ export default class InitModal extends Component {
               </div>
               <div className='row no-gutters'>
                 <div className='col mt-2'>
-                  <Button block onClick={() => this.getAvatar(i)} color='info' size='sm'>[ Change Avatar ]</Button>
+                  <Button block onClick={() => this.getAvatar(i)} color='info' size='sm'>Change Avatar</Button>
                   <div className='card-text'><Input tabIndex={i + 1} id={id} label='Name' value={players[i].name} onChange={(e) => this.changeName(e, i)} /></div>
                 </div>
               </div>

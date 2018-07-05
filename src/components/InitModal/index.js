@@ -15,6 +15,7 @@ export default props => (
             images={images}
             defaultAvatar={defaultAvatar}
             alertToggle={alertToggle}
+            colorOptions={colorOptions}
           />
         }
       </PlayersContext.Consumer>
