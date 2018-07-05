@@ -72,7 +72,8 @@ export default class InitModal extends Component {
 
   getDefaultState = () => {
     const newState = Object.assign({}, this.defaultState);
-    newState.players = this.seedPlayers(this.props.settings.possiblePlayers.min);
+    newState.players = this.seedPlayers(newState.possiblePlayers.min);
+    newState.validation = this.seedValidation(newState.numPlayers);
     return newState;
   }
   
@@ -114,6 +115,8 @@ export default class InitModal extends Component {
       return accum && value;
     });
 
+    console.log(validation);
+
     return validated;
   }
 
@@ -125,8 +128,9 @@ export default class InitModal extends Component {
 
     for (let i = 0; i < num; ++i) {
       if (i < this.state.players.length) {
-        newNames.push(this.state.players[i]);
-        newValidation.push(true);
+        const player = this.state.players[i];
+        newNames.push(Object.assign({}, player));
+        newValidation.push(player.name !== '' && player.name !== null);
       } else {
         newNames.push(this.getDefaultPlayer());
         newValidation.push(false);
