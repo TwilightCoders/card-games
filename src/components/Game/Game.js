@@ -4,7 +4,7 @@ import { Prompt, withRouter } from 'react-router-dom';
 import MainNav from '../NavBar/NavBar';
 import Scoreboard from './Scoreboard';
 import InitModal from '../InitModal';
-import ScoresModal from '../ScoresModal/ScoresModal';
+import ScoresModal from '../ScoresModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import AlertModal from '../AlertModal';
 import {
@@ -291,9 +291,8 @@ class Game extends Component {
             toggle={() => this.toggleScoresModal()}
             settings={this.state.settings}
             gameplay={this.state.gameplay}
-            players={this.props.players}
             round={this.state.currentRound}
-            updateScores={this.updateScores.bind(this)}
+            updateScores={this.updateScores}
             scoreLabel={this.scoreLabel}
             />
         }

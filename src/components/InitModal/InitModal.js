@@ -115,8 +115,6 @@ export default class InitModal extends Component {
       return accum && value;
     });
 
-    console.log(validation);
-
     return validated;
   }
 
