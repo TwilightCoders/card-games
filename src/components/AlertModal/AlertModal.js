@@ -13,7 +13,7 @@ export default props => {
         <h4>{props.message}</h4>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={props.toggle}>OK!</Button>
+        <Button color="danger" onClick={props.toggle}>OK!</Button>
       </ModalFooter>
     </Modal>
   );

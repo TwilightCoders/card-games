@@ -7,8 +7,12 @@ import InitModal from '../InitModal';
 import ScoresModal from '../ScoresModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import AlertModal from '../AlertModal';
+import RenderSettings from './RenderSettings';
 import {
   Button,
+  Card,
+  CardBody,
+  CardTitle,
 } from 'mdbreact';
 
 
@@ -124,21 +128,17 @@ class Game extends Component {
     // winner, and if not, initialze everything for the next round - this will move to be
     // last within this function
     if (!this.state.gameplay.preRenderScoreboard && !isGameOver)
-      scores.push(this.seedScores(this.state.players.length, 1)[0]);
-
-    const modifier = isGameOver ? 0 : 1;
+      scores.push(this.seedScores(this.props.players.length, 1)[0]);
 
     const newState = {
       scores: scores,
-      currentRound: currentRound + modifier,
+      currentRound: currentRound + (isGameOver ? 0 : 1),
       alertDialog: {
         open: isGameOver,
         message: 'Game is over!',
       }
     }
-
-    console.log(newState);
-
+    
     this.setState(newState);
   }
 
@@ -225,12 +225,16 @@ class Game extends Component {
         <div className='container' id='gameBoard'>
           <h2>{this.state.settings.name}</h2>
           {!this.state.initialized && // If this game is not initialized, then render a button that allows you to initialize it
-            <Fragment>
-              <button
-                className='btn btn-raised btn-primary'
-                onClick={this.toggleInitModal}
-              >Initialize Game</button>
-            </Fragment>
+            <Card className='mt-3'>
+              <CardBody>
+                <CardTitle>Here are the settings of this game:</CardTitle>
+                <RenderSettings settings={this.props.game} />
+                <Button
+                  color='primary'
+                  onClick={this.toggleInitModal}
+                >Initialize Game</Button>
+              </CardBody>
+            </Card>
           }
           {this.state.initialized &&  // If the game is initialized, then render it!
             <Scoreboard

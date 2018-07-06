@@ -97,13 +97,14 @@ export default class ScoresModal extends Component {
   applyWhammie = (index = null) => {
     if (index === null) return false;
 
-    const { scores, negatives } = this.state;
+    const { scores, negatives, validation } = this.state;
     if (scores[index] === this.whammie) scores[index] = '';
     else scores[index] = this.whammie;
 
     negatives[index] = false;
+    validation[index] = true;
 
-    this.setState({scores, negatives});
+    this.setState({scores, negatives, validation});
   }
 
   // This function replaces whatever is typed into the text box of a given player score with a pass
@@ -111,13 +112,14 @@ export default class ScoresModal extends Component {
   applyPass = (index = null) => {
     if (index === null) return false;
 
-    const { scores, negatives } = this.state;
+    const { scores, negatives, validation } = this.state;
     if (scores[index] === this.pass) scores[index] = '';
     else scores[index] = this.pass;
 
     negatives[index] = false;
+    validation[index] = true;
 
-    this.setState({ scores, negatives });
+    this.setState({ scores, negatives, validation });
   }
 
   applyNegative = (index = null) => {
