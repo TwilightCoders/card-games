@@ -110,6 +110,7 @@ class Game extends Component {
       //players: players,
       initialized: true,
       started: true,
+      currentRound: 0,
       scores: this.seedScores(players.length, numRounds)
     })
   }
@@ -138,7 +139,7 @@ class Game extends Component {
         message: 'Game is over!',
       }
     }
-    
+
     this.setState(newState);
   }
 
