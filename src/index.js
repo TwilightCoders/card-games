@@ -9,9 +9,34 @@ import registerServiceWorker from './registerServiceWorker';
 
 import { PlayersProvider } from './contexts/Players';
 import { AlertProvider } from './contexts/Alerts';
+import ConfirmModal from './components/ConfirmModal/ConfirmModal';
+
+const getUserConfirmation = (message, callback) => {
+  const modal = document.createElement('div');
+  document.body.appendChild(modal);
+
+  const allowTransition = (answer) => () => {
+    // Unmount and remove modal DOM
+    ReactDOM.unmountComponentAtNode(modal);
+    //document.body.removeChild(modal);
+
+    callback(answer);
+  }
+
+  const confirmModal = (
+    <ConfirmModal
+      question={message}
+      action={allowTransition(true)}
+      open={true}
+      toggle={allowTransition(false)}
+    />
+  );
+
+  ReactDOM.render(confirmModal, modal);
+};
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter getUserConfirmation={getUserConfirmation}>
     <PlayersProvider>
       <AlertProvider>
         <App />

@@ -7,32 +7,26 @@ import {
 } from 'mdbreact';
 
 export default class ConfirmModal extends Component {
-  constructor(props) {
-    super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.confirm = this.confirm.bind(this);
-  }
-
-  toggle() {
+  
+  close = () => {
     this.props.toggle();
   }
 
-  confirm() {
+  confirm = () => {
     this.props.action();
-    this.toggle();
+    this.props.toggle();
   }
 
   render() {
     const { open } = this.props;
     return (
-      <Modal isOpen={open} toggle={this.toggle}>
+      <Modal isOpen={open} toggle={this.close}>
         <ModalBody>
           <h4>{this.props.question}</h4>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" className="mr-1" onClick={this.confirm}>Yes</Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          <Button color="secondary" onClick={this.close}>Cancel</Button>
         </ModalFooter>
       </Modal>
     );

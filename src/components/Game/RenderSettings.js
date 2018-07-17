@@ -1,6 +1,12 @@
 import React, { Fragment } from 'react';
 import { ListGroup, ListGroupItem } from 'mdbreact';
 
+Number.isInteger = Number.isInteger || function (value) {
+  return typeof value === 'number' &&
+    isFinite(value) &&
+    Math.floor(value) === value;
+};
+
 const ListArray = (arr) => {
   if (!Array.isArray(arr) || arr.length === 0) return '';
 
@@ -53,6 +59,7 @@ const RenderSettings = (props) => {
       case 'whammieScore':
         displayName = 'What are the values of whammies?';
         if (!settings.gameplay['whammies']) render = false;
+        if (Number.isInteger(settings.gameplay[elem]) && settings.gameplay[elem] > 0) displayVal = '+' + displayVal;
         break;
       case 'startScore':
         displayName = 'Starting Score:';
@@ -66,6 +73,7 @@ const RenderSettings = (props) => {
         break;
       case 'winScore':
         displayName = 'What score wins the game?';
+        if (!settings.gameplay[elem]) render = false;
         break;
       case 'tieBreaker':
         displayName = 'Is there a tiebreaker to see who wins?';

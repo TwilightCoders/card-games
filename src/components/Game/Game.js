@@ -5,7 +5,6 @@ import MainNav from '../NavBar/NavBar';
 import Scoreboard from './Scoreboard';
 import InitModal from '../InitModal';
 import ScoresModal from '../ScoresModal';
-import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import AlertModal from '../AlertModal';
 import RenderSettings from './RenderSettings';
 import {
@@ -41,6 +40,13 @@ class Game extends Component {
     super(props);
 
     this.defaultGame = Object.assign(defaultProps, this.props.game);
+
+    this.props.history.getUserConfirmation = (message, callback) => {
+      this.confirmDialog(
+        message,
+        callback
+      );
+    };
 
     let newGame = Object.assign({players: props.players}, this.defaultGame);
     //newGame.id = uuidv1();
@@ -200,6 +206,10 @@ class Game extends Component {
     });
   }
 
+  confirmToggle = () => {
+    this.setState(state => ({ confirmDialog: { open: !state.confirmDialog.open } }));
+  }
+
   // Will render the game if it is initialized, or offer the option to start the game if not.
   render() {
     // Save this value to a variable to avoid calculating it multiple times per render
@@ -210,18 +220,29 @@ class Game extends Component {
         <Prompt
           when={this.state.initialized}
           message={
-            location => {
+            'Are you sure you want to leave this game?'
+            /*location => {
               // TODO: Get this function to proprly allow navigation changes once the action is clicked on - will want to convert to Reach Router
               this.confirmDialog(
                 'Are you sure you want to leave this game?',
                 () => {
                   this.setState({ initialized: false, started: false });
+                  if (location) {
+                    this.props.history.block(true);
+                    this.props.history.push(location);
+                    console.log('pushed ' + location.pathname + ' to the history');
+                  }
                 }
               );
               return false; // This might be a problem - but return to this later
-            }
+            }*/
           }
         />
+        {/*
+        <Prompt
+          when={this.state.initialized}
+          message='Are you sure you want to leave this page?'
+        />*/}
         <MainNav />
         <div className='container' id='gameBoard'>
           <h2>{this.state.settings.name}</h2>
@@ -276,12 +297,6 @@ class Game extends Component {
             </div>
           </footer>
         }
-        <ConfirmModal
-          question={this.state.confirmDialog.question}
-          action={this.state.confirmDialog.action}
-          open={this.state.confirmDialog.open}
-          toggle={() => this.setState({ confirmDialog: { open: !this.state.confirmDialog.open } })}
-        />
         <AlertModal />
         <InitModal
           open={this.state.initModalOpen}
