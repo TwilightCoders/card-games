@@ -11,6 +11,7 @@ import { PlayersProvider } from './contexts/Players';
 import { AlertProvider } from './contexts/Alerts';
 import ConfirmModal from './components/ConfirmModal/ConfirmModal';
 
+// Thank you https://gist.github.com/cjies/94aead6b0d59e906fa08836182958763 for this solution
 const getUserConfirmation = (message, callback) => {
   const modal = document.createElement('div');
   document.body.appendChild(modal);
