@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
 	Button,
 	Modal,
@@ -7,13 +8,9 @@ import {
 	ModalFooter,
 } from 'mdbreact';
 
-//import { PlayersContext } from '../../contexts/Players';
-
-//const defaultAvatar = require('../../avatars/default.svg');
-
 const circleSize = '2em';
 
-export default class AvatarSelect extends Component {
+class AvatarSelect extends Component {
 	defaultState = {
 		color: (this.props.colorOptions ? this.props.colorOptions[0] : null),
     avatar: this.props.defaultAvatar,
@@ -25,11 +22,10 @@ export default class AvatarSelect extends Component {
 		this.setState({color: color});
 	}
 	
-	alertAvatar = () => {
-    //alert(`You chose avatar: ${this.state.avatar}, and the color is ${this.state.color}`);
+	selectAvatar = () => {
     const playerInfo = this.getPlayerInfo();
 
-		this.props.assign(playerInfo.avatar, playerInfo.color, this.props.player.index);
+		this.props.assign(playerInfo.avatar, playerInfo.color, this.props.editingPlayer.index);
 		this.setState(Object.assign({}, this.defaultState));
 		this.props.toggle();
   }
@@ -37,9 +33,9 @@ export default class AvatarSelect extends Component {
   getPlayerInfo = () => {
     const playerInfo = { color: this.state.color, avatar: this.state.avatar };
 
-    if (this.props.open && (playerInfo.color === null || playerInfo.avatar === null) && this.props.player) {
-      playerInfo.color = playerInfo.color || this.props.player.color;
-      playerInfo.avatar = playerInfo.avatar || this.props.player.avatar;
+    if (this.props.open && (playerInfo.color === null || playerInfo.avatar === null) && this.props.editingPlayer) {
+      playerInfo.color = playerInfo.color || this.props.editingPlayer.color;
+      playerInfo.avatar = playerInfo.avatar || this.props.editingPlayer.avatar;
     }
 
     return playerInfo;
@@ -65,7 +61,9 @@ export default class AvatarSelect extends Component {
                   style={{ width: circleSize, height: circleSize, cursor: 'pointer' }}
                   className={classNames}
                   onClick={() => this.setColor(color)}
-                  key={`colorSwatch${color}`}></div>);
+                  key={`colorSwatch${color}`}>
+                </div>
+              );
             })}
           </div>
           <h3>View Avatars:</h3>
@@ -92,61 +90,24 @@ export default class AvatarSelect extends Component {
         </ModalBody>
         <ModalFooter>
           <Button outline color='danger' onClick={props.toggle}>Cancel</Button>{' '}
-          <Button color="primary" onClick={this.alertAvatar}>Select Avatar</Button>
+          <Button color="primary" onClick={this.selectAvatar}>Select Avatar</Button>
         </ModalFooter>
       </Modal>
     );
-
-		/*return (
-			<PlayersContext.Consumer>
-				{value => (
-          <Modal isOpen={this.props.open} toggle={this.props.toggle} backdrop={false}>
-		        <ModalHeader toggle={this.props.toggle}>Avatars!</ModalHeader>
-		        <ModalBody>
-		        	<h3>Select Color:</h3>
-		        	<div className='row pb-3 pl-3'>
-		        		{value.colorOptions.map(color => {
-		        			const addBorder = (color === 'white') ? 'border-top border-bottom border-right border-left border-dark' : '';
-		        			const active = (color === playerInfo.color) ? 'z-depth-2' : '';
-		        			const classNames = `${color} rounded-circle d-inline m-1 ${addBorder} ${active}`;
-		        			return (
-		        				<div
-		        					style={{width: circleSize, height: circleSize, cursor: 'pointer'}}
-		        					className={classNames}
-		        					onClick={()=>this.setColor(color)}
-		        					key={`colorSwatch${color}`}></div>);
-		        		})}
-			        </div>
-		          <h3>View Avatars:</h3>
-		          <div className='row' id='avatarSelect'>
-		          	{value.images.map((image, index) => {
-		          		return (
-		          			<div key={`avatarsModal${index}`} className='col'>
-		          				<img
-		          					src={image}
-		          					alt={`avatar ${index}`}
-		          					onClick={() => this.setState({avatar: image})}
-		          					className={`rounded-circle m-3 ${playerInfo.color} ${(image === playerInfo.avatar ? 'z-depth-2 selected' : '')}`} />
-		          			</div>
-		          		);
-		          	})}
-		          	<div className='col mr-auto'>
-		          		<img
-		          			src={defaultAvatar}
-		          			alt='Default Avatar'
-		          			onClick={() => this.setState({avatar: defaultAvatar})}
-		          			className={`rounded-circle m-3 ${playerInfo.color} ${(defaultAvatar === playerInfo.avatar ? 'z-depth-2 selected' : '')}`} />
-		          	</div>
-		          </div>
-		        </ModalBody>
-		        <ModalFooter>
-		          <Button outline color='danger' onClick={this.props.toggle}>Cancel</Button>{' '}
-		          <Button color="primary" onClick={this.alertAvatar}>Select Avatar</Button>
-		        </ModalFooter>
-		      </Modal>
-		  	)}
-			</PlayersContext.Consumer>
-		);*/
 	}
 }
 
+AvatarSelect.propTypes = {
+  open: PropTypes.bool.isRequired,
+  editingPlayer: PropTypes.object,
+  assign: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+
+  players: PropTypes.array,
+  updatePlayers: PropTypes.func.isRequired,
+  images: PropTypes.array,
+  colorOptions: PropTypes.array,
+  defaultAvatar: PropTypes.object,
+}
+
+export default AvatarSelect;

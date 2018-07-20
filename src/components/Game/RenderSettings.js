@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { ListGroup, ListGroupItem } from 'mdbreact';
+import PropTypes from 'prop-types';
 
 Number.isInteger = Number.isInteger || function (value) {
   return typeof value === 'number' &&
@@ -112,6 +113,10 @@ const RenderSettings = (props) => {
       </div>
     </div>
   );
+}
+
+RenderSettings.propTypes = {
+  settings: PropTypes.object.isRequired,
 }
 
 export default RenderSettings;

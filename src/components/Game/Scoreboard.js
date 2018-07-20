@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Scoreboard = (props) => {
   const { players, currentRound, scores, gameplay, totalScores, scoreLabel } = props;
@@ -42,5 +43,14 @@ const Scoreboard = (props) => {
 
   return gameGrid;
 };
+
+Scoreboard.propTypes = {
+  players: PropTypes.array.isRequired,
+  currentRound: PropTypes.number.isRequired,
+  scores: PropTypes.array.isRequired,
+  gameplay: PropTypes.object.isRequired,
+  totalScores: PropTypes.arrayOf(PropTypes.number),
+  scoreLabel: PropTypes.func.isRequired,
+}
 
 export default Scoreboard;

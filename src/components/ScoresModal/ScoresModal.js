@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-
+import PropTypes from 'prop-types';
 import {
   Button,
   Card,
@@ -12,7 +12,7 @@ import {
   Input,
 } from 'mdbreact';
 
-export default class ScoresModal extends Component {
+class ScoresModal extends Component {
   constructor(props) {
     super(props);
 
@@ -291,3 +291,18 @@ export default class ScoresModal extends Component {
     );
   }
 }
+
+ScoresModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  toggle: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
+  gameplay: PropTypes.object.isRequired,
+  round: PropTypes.number.isRequired,
+  updateScores: PropTypes.func.isRequired,
+  scoreLabel: PropTypes.func.isRequired,
+
+  players: PropTypes.array,
+  alertToggle: PropTypes.func,
+}
+
+export default ScoresModal;

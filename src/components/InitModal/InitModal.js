@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import {
   //ButtonGroup,
   Button,
@@ -17,7 +18,7 @@ import AvatarSelect from '../AvatarSelect';
 
 //import { PlayersContext, AvatarContext } from '../Players';
 
-export default class InitModal extends Component {
+class InitModal extends Component {
   constructor(props) {
     super(props);
 
@@ -261,7 +262,7 @@ export default class InitModal extends Component {
         </Modal>
         <AvatarSelect
           open={this.state.avatarSelect}
-          player={this.state.editingPlayer}
+          editingPlayer={this.state.editingPlayer}
           assign={(avatar, color, player) => this.applyAvatar(avatar, color, player)}
           toggle={() => { this.setState(state => ({ avatarSelect: !state.avatarSelect }))}}
         />
@@ -269,3 +270,21 @@ export default class InitModal extends Component {
     );
   }
 }
+
+InitModal.propTypes = {
+  // Passive props passed on through the HOC's
+  open: PropTypes.bool.isRequired,
+  toggle: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
+  startGame: PropTypes.func.isRequired,
+  alertToggle: PropTypes.func.isRequired,
+
+  // HOC Props passed through via context API's
+  players: PropTypes.array,
+  updatePlayers: PropTypes.func,
+  images: PropTypes.array,
+  defaultAvatar: PropTypes.object,
+  colorOptions: PropTypes.object,
+}
+
+export default InitModal;

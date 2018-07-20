@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   Modal,
@@ -6,7 +7,7 @@ import {
   ModalFooter
 } from 'mdbreact';
 
-export default props => {
+const AlertModal = props => {
   return (
     <Modal isOpen={props.open} backdrop={(props.backdrop ? props.backdrop : false)} toggle={props.toggle}>
       <ModalBody>
@@ -18,3 +19,12 @@ export default props => {
     </Modal>
   );
 }
+
+AlertModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  toggle: PropTypes.func.isRequired,
+  backdrop: PropTypes.bool,
+}
+
+export default AlertModal;

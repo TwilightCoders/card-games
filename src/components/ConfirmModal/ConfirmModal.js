@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   Modal,
@@ -6,8 +7,7 @@ import {
   ModalFooter
 } from 'mdbreact';
 
-export default class ConfirmModal extends Component {
-  
+class ConfirmModal extends Component {
   close = () => {
     this.props.toggle();
   }
@@ -32,3 +32,12 @@ export default class ConfirmModal extends Component {
     );
   }
 }
+
+ConfirmModal.propTypes = {
+  question:PropTypes.string,
+  action:PropTypes.func,
+  open:PropTypes.bool.isRequired,
+  toggle:PropTypes.func.isRequired,
+}
+
+export default ConfirmModal;

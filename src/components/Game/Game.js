@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Prompt, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 //import uuidv1 from 'uuid/v1';
 import MainNav from '../NavBar/NavBar';
 import Scoreboard from './Scoreboard';
@@ -305,5 +306,12 @@ class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+  // game, players={players} updatePlayers={updatePlayers}
+  game:PropTypes.object.isRequired, // Add this into game.PropTypes.Shape({}).isRequired
+  players:PropTypes.array.isRequired,
+  updatePlayers:PropTypes.func.isRequired,
+};
 
 export default withRouter(Game);
