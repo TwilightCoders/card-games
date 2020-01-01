@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-card-games-dev-143454-authRole",
+            "UnauthRoleArn": "arn:aws:iam::430887250508:role/amplify-card-games-dev-143454-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::430887250508:role/amplify-card-games-dev-143454-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-card-games-dev-143454-deployment",
+            "UnauthRoleName": "amplify-card-games-dev-143454-unauthRole",
+            "StackName": "amplify-card-games-dev-143454",
+            "StackId": "arn:aws:cloudformation:us-east-1:430887250508:stack/amplify-card-games-dev-143454/cb1fd400-2ccd-11ea-a0e9-0a0207fddeaf",
+            "AmplifyAppId": "d1uh816ojddk4m"
+        }
+    }
+}
