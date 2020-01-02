@@ -1,15 +1,20 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-card-games-dev-143454-authRole",
-            "UnauthRoleArn": "arn:aws:iam::430887250508:role/amplify-card-games-dev-143454-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::430887250508:role/amplify-card-games-dev-143454-authRole",
+            "AuthRoleName": "amplify-cardgamesadmin-dev-211812-authRole",
+            "UnauthRoleArn": "arn:aws:iam::430887250508:role/amplify-cardgamesadmin-dev-211812-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::430887250508:role/amplify-cardgamesadmin-dev-211812-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-card-games-dev-143454-deployment",
-            "UnauthRoleName": "amplify-card-games-dev-143454-unauthRole",
-            "StackName": "amplify-card-games-dev-143454",
-            "StackId": "arn:aws:cloudformation:us-east-1:430887250508:stack/amplify-card-games-dev-143454/cb1fd400-2ccd-11ea-a0e9-0a0207fddeaf",
-            "AmplifyAppId": "d1uh816ojddk4m"
+            "DeploymentBucketName": "amplify-cardgamesadmin-dev-211812-deployment",
+            "UnauthRoleName": "amplify-cardgamesadmin-dev-211812-unauthRole",
+            "StackName": "amplify-cardgamesadmin-dev-211812",
+            "StackId": "arn:aws:cloudformation:us-east-1:430887250508:stack/amplify-cardgamesadmin-dev-211812/22cd6040-2d06-11ea-9a10-0e3b177c99d5",
+            "AmplifyAppId": "do7siqz45qly5"
+        },
+        "categories": {
+            "auth": {
+                "cardgamesadmin14742589": {}
+            }
         }
     }
 }

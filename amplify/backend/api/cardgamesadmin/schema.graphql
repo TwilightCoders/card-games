@@ -1,0 +1,92 @@
+# Our base query object which will stitch together all of the different pieces together
+type Game @model {
+  id: ID!
+  name: String!                 # Name of the game
+  description: String!          # The game's description
+  minimumPlayers: Int!          # What is the minimum number of players a game can have
+  maximumPlayers: Int!          # What is the maximum number of players a game can have
+  url: String!                  # The href of the game.
+  gameplay: Gameplay!           # Basically the rules of how that govern the mechanics of the game
+  enabled: Boolean!             # In the case that a game should not be displayed in the list of available games. This can also be useful for the situations where the same URL is used for multiple games
+}
+
+# These settings govern how the game should be played, after it has been initiated
+type Gameplay {
+  scoreTypes: [ScoreTypes!]!    # This should define what type of scores will be calculated ([positive], [negative]) - must be one or more of the ScoreType enums
+  startScore: Int!              # The score every player will start with
+  whammies: Boolean!            # Defines whether or not a game contains "whammies" (aka, donuts, or something else)
+  whammieScore: Int             # What is the value of a whammie? (Number)
+  whammieStyle: WhammieStyle    # What type of css style will be applied to the whammie when rendered on the scoreboard? ([circled], [blockout])
+  whammieName: String           # What is the name of the whammie?
+  passesAllowed: Boolean!       # Defines if a player can pass a turn, or if they have to play every turn
+  fixedRounds: Int              # Defines if there should be a fixed number of rounds to the game - if null or undefined, then there is no fixed limit
+  winType: WinTypes!            # ['rounds', 'score']
+  winCondition: WinConditions!  # Defined in the enum
+  winScore: Int                 # What score represents a win for a player
+  tieBreaker: WinConditions     # if the game can be a tie when the finished condition is met, then what will break the tie? Same options as win condition
+  dealerRotates: Boolean!       # If the dealer of the game rotates, then the game will be set up that way - if false, then none of the players will be identified as a dealer
+  preRenderScoreboard: Boolean! # If the scoreboard should be pre-rendered, then indicate so
+  levelLabels: [LevelLabels!]!  # An array of LevelLabels - a level number, and the string value that should be used in its place when displaying the level in the scoreboard
+}
+
+type LevelLabels {
+  level: Int!
+  label: String!
+}
+
+enum ScoreTypes {
+  POSITIVE
+  NEGATIVE
+}
+
+enum WhammieStyle {
+  CIRCLED
+  BLOCKOUT
+}
+
+enum WinTypes {
+  ROUNDS  # First player to reach a given round, wins (for instance, first to complete round 10)
+  SCORE   # The score dictates who wins, regardless of how many rounds there have been
+}
+
+# if 'rounds', then number of rounds completed. Else, then based on score: will high or low score win ('rounds', 'low', 'high')
+enum WinConditions {
+  LOW     # Low score wins
+  HIGH    # High score wins
+  ROUNDS  # Number of rounds completed wins
+}
+
+# # These settings govern how the game should be played, after it has been initiated
+# type Gameplay {
+#   scoreTypes: ['positive'], # This should define what type of scores will be calculated ([positive], [negative])
+#   startScore: 0,            # The score every player will start with
+#   whammies: false,          # Defines whether or not a game contains "whammies" (aka, donuts, or something else)
+#   whammieScore: null,       # What is the value of a whammie? (Number)
+#   whammieStyle: null,       # What type of css style will be applied to the whammie when rendered on the scoreboard? ([circled], [blockout])
+#   whammieName: null,        # What is the name of the whammie?
+#   passesAllowed: false,     # Defines if a player can pass a turn, or if they have to play every turn
+#   fixedRounds: 11,          # Defines if there should be a fixed number of rounds to the game
+#   winType: 'score',         # ['rounds', 'score']
+#   winCondition: 'low',      # if 'rounds', then number of rounds completed. If score, then will high or low score win ('rounds', 'low', 'high')
+#   winScore: null,           #
+#   tieBreaker: null,         # if the game can be a tie when the finished condition is met, then what will break the tie? Same options as win condition
+#   dealerRotates: true,      # If the dealer of the game rotates, then the game will be set up that way - if false, then none of the players will be identified as a dealer
+#   preRenderScoreboard: true,# If the scoreboard should be pre-rendered, then indicate so
+# }
+
+# type Blog @model {
+#   id: ID!
+#   name: String!
+#   posts: [Post] @connection(name: "BlogPosts")
+# }
+# type Post @model {
+#   id: ID!
+#   title: String!
+#   blog: Blog @connection(name: "BlogPosts")
+#   comments: [Comment] @connection(name: "PostComments")
+# }
+# type Comment @model {
+#   id: ID!
+#   content: String
+#   post: Post @connection(name: "PostComments")
+# }

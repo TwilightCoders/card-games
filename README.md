@@ -1,6 +1,10 @@
 # Card Game Score Keeper
 
-This app will keep track of scores for several card games. At the moment, these games are supported by the app:
+This app will maintain a GraphQL endpoint to perform the CRUD operations of the card game scorekeeper application.
+
+Using this application in isolation away from the scorekeeper application will allow that application to be relatively simple, since it will not
+need to manage the API endpoint, just consume it. This application will provide the necessary tools to manage the API endpoint and in totality will
+be consumed by both applications.
 
 * Three-Thirteen
 * Donut
@@ -15,3 +19,22 @@ there is a tie).
 
 
 This app was designed for personal use, by Jimmy Van Veen, and is not intended for widespread or commercial use.
+
+
+## Future me!
+
+As of Jan 2, 2020, You need Java to mock the amplify services. In an ubuntu, or WSL environment using Ubuntu, follow these commands to install Java in that env:
+
+(May have to update apt's first)
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+Install these packages:
+
+```bash
+sudo apt install default-jre
+sudo apt install openjdk-11-jre-headless
+sudo apt install openjdk-8-jre-headless
+```
