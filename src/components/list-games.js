@@ -1,23 +1,19 @@
 import React, { Fragment } from 'react'
+import { Link } from 'react-router-dom'
 
 const ListGames = ({games}) => (
-  <>
-    <h2>Here Are The Games:</h2>
-    {
-      Array.isArray(games) ? games.map(game => (
-        <Fragment key={game.id}>
-          <h3>{game.name}</h3>
-          <ul>
-            <li><strong>Description:</strong> {game.description}</li>
-            <li><strong>Min Players:</strong> {game.minimumPlayers}</li>
-            <li><strong>Max Players:</strong> {game.maximumPlayers}</li>
-            <li><strong>URL:</strong> {game.url}</li>
-          </ul>
-        </Fragment>
-      )) :
-      <span>Games is not an array. It's this: {games}</span>
-    }
-  </>
+  Array.isArray(games) ? games.map(game => (
+    <Fragment key={game.id}>
+      <h3><Link to={game.id}>{game.name}</Link></h3>
+      <ul style={{borderBottom: "1px solid #999"}}>
+        <li><strong>Description:</strong> {game.description}</li>
+        <li><strong>Min Players:</strong> {game.minimumPlayers}</li>
+        <li><strong>Max Players:</strong> {game.maximumPlayers}</li>
+        <li><strong>URL:</strong> {game.id}</li>
+      </ul>
+    </Fragment>
+  )) :
+  <span>Games is not an array. It's this: {games}</span>
 )
 
 /*

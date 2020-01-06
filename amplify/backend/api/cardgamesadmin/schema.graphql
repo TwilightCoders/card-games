@@ -1,5 +1,5 @@
 # Our base query object which will stitch together all of the different pieces together
-type Game @model {
+type Game implements Node @model {
   id: ID!
   name: String!                 # Name of the game
   description: String!          # The game's description
@@ -54,6 +54,10 @@ enum WinConditions {
   LOW     # Low score wins
   HIGH    # High score wins
   ROUNDS  # Number of rounds completed wins
+}
+
+interface Node {
+  id: ID!
 }
 
 # # These settings govern how the game should be played, after it has been initiated

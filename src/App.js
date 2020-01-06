@@ -1,5 +1,12 @@
 import React from 'react';
-import Amplify from 'aws-amplify';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
+
 import {
   withAuthenticator,
   Greetings,
@@ -7,33 +14,32 @@ import {
   ConfirmSignIn,
   VerifyContact,
   ForgotPassword,
-  Connect,
 } from 'aws-amplify-react';
+
+import Amplify from 'aws-amplify';
+
+// Pages
+import Home from './components/pages/home'
+import GameInfo from './components/pages/game-info'
 
 // Get the aws resources configuration parameters
 import awsconfig from './aws-exports';
-
-// GraphQL Queries
-import { listGames } from "./graphql/queries"
-
-// Components
-import ListGames from './components/list-games'
 
 Amplify.configure(awsconfig);
 
 function App() {
   return (
-    <Connect
-      query={{
-        query: listGames,
-      }}
-    >
-      {({ data: { listGames }, loading, errors }) => {
-        if (Array.isArray(errors) && errors.length) return (<h3>Error: {errors}</h3>);
-        if (loading || !listGames) return (<h3>Loading...</h3>);
-        return (<ListGames games={listGames.items} /> );
-      }}
-    </Connect>
+    <Router>
+      <Link to="/">Home</Link>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route>
+          <GameInfo />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
