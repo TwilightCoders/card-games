@@ -1,20 +1,45 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import {
+  Heading,
+  Anchor,
+  Box,
+  Text,
+} from 'grommet'
 
-const ListGames = ({games}) => (
-  Array.isArray(games) ? games.map(game => (
+const ListGames = ({games}) => {
+  const history = useHistory();
+
+  return Array.isArray(games) ? games.map(game => (
     <Fragment key={game.id}>
-      <h3><Link to={game.id}>{game.name}</Link></h3>
-      <ul style={{borderBottom: "1px solid #999"}}>
-        <li><strong>Description:</strong> {game.description}</li>
-        <li><strong>Min Players:</strong> {game.minimumPlayers}</li>
-        <li><strong>Max Players:</strong> {game.maximumPlayers}</li>
-        <li><strong>URL:</strong> {game.id}</li>
-      </ul>
+      <Box
+        border={{
+          color: "text",
+          size: "1px",
+        }}
+        margin={{
+          bottom: "small",
+        }}
+        pad="small"
+      >
+        <Heading
+          margin={{
+            vertical: "none",
+            bottom: "small",
+          }}
+          level={3}
+        >
+          <Anchor onClick={() => history.push(`/${game.id}`)} label={game.name} margin="none" />
+        </Heading>
+        <Text><strong>Description:</strong> {game.description}</Text>
+        <Text><strong>Min Players:</strong> {game.minimumPlayers}</Text>
+        <Text><strong>Max Players:</strong> {game.maximumPlayers}</Text>
+        <Text><strong>URL:</strong> {game.id}</Text>
+      </Box>
     </Fragment>
   )) :
   <span>Games is not an array. It's this: {games}</span>
-)
+  }
 
 /*
 id

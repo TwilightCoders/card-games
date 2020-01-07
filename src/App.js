@@ -4,12 +4,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from "react-router-dom";
 
 import {
   withAuthenticator,
-  Greetings,
   SignIn,
   ConfirmSignIn,
   VerifyContact,
@@ -18,33 +16,62 @@ import {
 
 import Amplify from 'aws-amplify';
 
+// Get the aws resources configuration parameters
+import awsconfig from './aws-exports';
+
+import {
+  Grommet,
+  CheckBox,
+  Box,
+} from 'grommet';
+
+//// Custom imports
 // Pages
 import Home from './components/pages/home'
 import GameInfo from './components/pages/game-info'
+// Interface
+import NavBar from './components/interface/nav-bar'
 
-// Get the aws resources configuration parameters
-import awsconfig from './aws-exports';
+// Theme
+import theme from './themes/default'
+
+// Utils
+import { capitalize } from './utils/string-utils'
 
 Amplify.configure(awsconfig);
 
 function App() {
+  const getThemeLabel = bool => bool ? "dark" : "light";
+
+  const [themeMode, setThemeMode] = React.useState(getThemeLabel())
+
   return (
-    <Router>
-      <Link to="/">Home</Link>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route>
-          <GameInfo />
-        </Route>
-      </Switch>
-    </Router>
+    <Grommet theme={theme} themeMode={themeMode} full>
+      <Router>
+        <NavBar />
+        <Box justify="end" size="small" margin="small" direction="row-responsive">
+          <CheckBox
+            toggle
+            onChange={() => setThemeMode(getThemeLabel(themeMode === getThemeLabel()))}
+            label={`${capitalize(getThemeLabel(true))} mode ${getThemeLabel(true) === themeMode ? 'enabled' : 'disabled'}`}
+            checked={themeMode !== getThemeLabel()}
+          />
+        </Box>
+
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route>
+            <GameInfo />
+          </Route>
+        </Switch>
+      </Router>
+    </Grommet>
   );
 }
 
 export default withAuthenticator(App, true, [
-  <Greetings />,
   <SignIn />,
   <ConfirmSignIn />,
   <VerifyContact />,

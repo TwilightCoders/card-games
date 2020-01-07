@@ -19,8 +19,6 @@ export function useQuery(query, variables) {
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState({})
 
-  console.log("re-rendering")
-
   useEffect(() => {
     let mounted = true;
 
