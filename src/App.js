@@ -14,11 +14,6 @@ import {
   ForgotPassword,
 } from 'aws-amplify-react';
 
-import Amplify from 'aws-amplify';
-
-// Get the aws resources configuration parameters
-import awsconfig from './aws-exports';
-
 import {
   Grommet,
   CheckBox,
@@ -29,6 +24,7 @@ import {
 // Pages
 import Home from './components/pages/home'
 import GameInfo from './components/pages/game-info'
+import CreateGame from './components/pages/create-game'
 // Interface
 import NavBar from './components/interface/nav-bar'
 
@@ -37,8 +33,6 @@ import theme from './themes/default'
 
 // Utils
 import { capitalize } from './utils/string-utils'
-
-Amplify.configure(awsconfig);
 
 function App() {
   const getThemeLabel = bool => bool ? "dark" : "light";
@@ -61,6 +55,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/createGame">
+            <CreateGame />
           </Route>
           <Route>
             <GameInfo />

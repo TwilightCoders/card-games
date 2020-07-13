@@ -28,7 +28,7 @@ export const NavBar = () => {
         items={[
           {
             label: 'Create Game',
-            onClick: () => {alert('Creating a game!')}
+            onClick: () => history.push('/createGame')
           },{
             label: 'Log Out',
             gap: 'small',

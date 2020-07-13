@@ -23,7 +23,7 @@ This app was designed for personal use, by Jimmy Van Veen, and is not intended f
 
 ## Future me!
 
-As of Jan 2, 2020, You need Java to mock the amplify services. In an ubuntu, or WSL environment using Ubuntu, follow these commands to install Java in that env:
+As of Jan 2, 2020, You need Java to mock the amplify services. In an Ubuntu environment (or WSL environment using Ubuntu) follow these commands to install Java in that env:
 
 (May have to update apt's first)
 ```bash
@@ -37,4 +37,16 @@ Install these packages:
 sudo apt install default-jre
 sudo apt install openjdk-11-jre-headless
 sudo apt install openjdk-8-jre-headless
+```
+
+## To Set Up/Connect To AWS Amplify (assumes there already is an env to connect to)
+```bash
+npm install -g @amplify/cli
+# install AWS CLI per docs so that you can have local access using
+# an existing IAM user. Or run `amplify pull` and create a new user
+# ensure the default profile you establish has the correct `us-east-1` location set.
+# once you have that then:
+amplify pull
+# use the default profile
+# use cardgamesadmin as the project you are working on
 ```
