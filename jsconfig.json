@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "node",
+		"target": "es2015",
+		"jsx": "react-jsx",
+		"strict": true,
+		"baseUrl": ".",
+		"checkJs": true,
+		"paths": {
+			"components/*": ["components/*"],
+			"context/*": ["context/*"],
+			"pages/*": ["pages/*"],
+			"styles/*": ["styles/*"]
+		}
+	},
+	"exclude": ["node_modules", ".next"]
+}
