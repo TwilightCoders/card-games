@@ -18,19 +18,13 @@ const links = [
  * Render the app's NavBar. This will be displayed on the top of all pages.
  */
 export default function NavBar() {
-	/**
-	 * Determine if the mobile nav bar is open or not
-	 */
+	/** Determine if the mobile nav bar is open or not */
 	const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
 
-	/**
-	 * The next.js router
-	 */
+	/** The next.js router */
 	const router = useRouter()
 
-	/**
-	 * Placeholder determining if the user is authenticated or not
-	 */
+	/** Placeholder determining if the user is authenticated or not */
 	const isUserLoggedIn = false
 
 	/**
@@ -39,18 +33,34 @@ export default function NavBar() {
 	 */
 	const sharedLinkClassNames = "px-3 py-2 rounded-md text-sm font-medium"
 
-	/**
-	 * Default Link class for a page that is not active
-	 */
+	/** Default Link class for a page that is not active */
 	const navLinkClass = `${sharedLinkClassNames} text-gray-300 hover:bg-gray-700 hover:text-white`
 
+	/** Active Link class for a page that is active */
+	const activeNavLinkClass = `${sharedLinkClassNames} bg-gray-400 text-white cursor-default`
+
 	/**
-	 * Active Link class for a page that is active
+	 * Get the Sign Up link
 	 */
-	const activeNavLinkClass = `${sharedLinkClassNames} bg-gray-900 text-white`
+	const signUpLink = () => {
+		const signUpPath = "/sign-up"
+		const signUpText = "Sign Up"
+
+		if (isUserLoggedIn) {
+			return <SettingsMenu />
+		} else if (router.pathname === signUpPath) {
+			return <div className={activeNavLinkClass}>{signUpText}</div>
+		} else {
+			return (
+				<Link href="/sign-up">
+					<a className={navLinkClass}>{signUpText}</a>
+				</Link>
+			)
+		}
+	}
 
 	return (
-		<nav className="bg-gray-800">
+		<nav className="bg-gray-900">
 			<div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
 				<div className="relative flex items-center justify-between h-16">
 					<div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -60,15 +70,11 @@ export default function NavBar() {
 							className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
 							aria-controls="mobile-menu"
 							aria-expanded="false"
-							onClick={() => setMobileNavOpen((bool) => !bool)}
+							onClick={() => setMobileNavOpen(bool => !bool)}
 						>
 							<span className="sr-only">Open main menu</span>
-							<MenuIcon
-								className={`${mobileNavOpen ? "block" : "hidden"} h-6 w-6`}
-							/>
-							<XIcon
-								className={`${mobileNavOpen ? "hidden" : "block"} h-6 w-6`}
-							/>
+							<MenuIcon className={`${mobileNavOpen ? "block" : "hidden"} h-6 w-6`} />
+							<XIcon className={`${mobileNavOpen ? "hidden" : "block"} h-6 w-6`} />
 						</button>
 					</div>
 
@@ -90,27 +96,16 @@ export default function NavBar() {
 										</div>
 									) : (
 										<Link href={to} key={key}>
-											<a
-												className={current ? activeNavLinkClass : navLinkClass}
-											>
-												{title}
-											</a>
+											<a className={current ? activeNavLinkClass : navLinkClass}>{title}</a>
 										</Link>
 									)
 								})}
-								{/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
 							</div>
 						</div>
 					</div>
 
 					{/* Settings menu */}
-					{isUserLoggedIn ? (
-						<SettingsMenu />
-					) : (
-						<Link href="#">
-							<a className={navLinkClass}>Sign Up</a>
-						</Link>
-					)}
+					{signUpLink()}
 				</div>
 			</div>
 		</nav>
@@ -126,7 +121,7 @@ function SettingsMenu() {
 	 * @param {boolean} active Whether the menu item is active
 	 * @returns {string} The CSS class names for the menu item
 	 */
-	const getClassNames = (active) =>
+	const getClassNames = active =>
 		`${
 			active ? "bg-gray-700 text-white" : "text-gray-700"
 		} block px-4 py-1 mx-2 my-1 text-sm rounded-md hover:bg-gray-700 hover:text-white`
