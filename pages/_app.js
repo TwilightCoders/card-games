@@ -1,5 +1,5 @@
 // Components
-import { NavProvider } from "context/NavContext"
+import { UserProvider } from "context/UserContext"
 import NavBar from "components/NavBar"
 
 // Styles
@@ -13,10 +13,10 @@ import "styles/globals.css"
  */
 function MyApp({ Component, pageProps }) {
 	return (
-		<NavProvider>
+		<UserProvider>
 			<NavBar />
 			<Component {...pageProps} />
-		</NavProvider>
+		</UserProvider>
 	)
 }
 
