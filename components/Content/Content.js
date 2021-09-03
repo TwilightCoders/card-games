@@ -22,11 +22,11 @@ const DefaultHead = ({ title }) => (
  * @param {JSX.Element} [props.head] An optional head component
  * @param {string} [props.title] The page title which will be provided to the default `<Head>` component if not provided
  * @param {import("components/Breadcrumbs/Breadcrumbs").Breadcrumb[]} [props.breadcrumbs] An array of breadcrumb objects used to render a series of links to iterate back throug the pages
- * @param {string|JSX.Element|JSX.Element[]} [props.children] The content to render
+ * @param {React.ReactNode} [props.children] The content to render
  */
 export default function Content({ head, title, breadcrumbs, children } = {}) {
 	return (
-		<div className="max-w-7xl mx-auto pt-3 sm:px-8 lg:px-12">
+		<div className="container mx-auto pt-3 sm:px-8 lg:px-12">
 			{head ? head : <DefaultHead title={title} />}
 			{breadcrumbs ? <Breadcrumbs breadcrumbs={breadcrumbs} /> : null}
 			{children}

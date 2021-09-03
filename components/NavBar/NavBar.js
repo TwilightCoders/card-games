@@ -7,12 +7,20 @@ import Link from "next/link"
 import { Menu, Transition } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
 
+// Hooks
+import { useUser } from "context/UserContext"
+
+// Supabase
+import { supabase } from "utils/supabaseClient"
+
 // Constants
-const links = [
+const LINKS = [
 	{ title: "Game Types", to: "/#" },
 	{ title: "New Game", to: "/new-game" },
 	{ title: "Donate", to: "/#" },
 ]
+const SIGN_IN_PATH = "/sign-in"
+const SIGN_IN_TITLE = "Sign In"
 
 /**
  * Render the app's NavBar. This will be displayed on the top of all pages.
@@ -24,8 +32,8 @@ export default function NavBar() {
 	/** The next.js router */
 	const router = useRouter()
 
-	/** Placeholder determining if the user is authenticated or not */
-	const isUserLoggedIn = false
+	/** The user's session information */
+	const { session } = useUser()
 
 	/**
 	 * Common class names that are shared between active and inactive links
@@ -38,26 +46,6 @@ export default function NavBar() {
 
 	/** Active Link class for a page that is active */
 	const activeNavLinkClass = `${sharedLinkClassNames} bg-gray-400 text-white cursor-default`
-
-	/**
-	 * Get the Sign Up link
-	 */
-	const signUpLink = () => {
-		const signUpPath = "/sign-up"
-		const signUpText = "Sign Up"
-
-		if (isUserLoggedIn) {
-			return <SettingsMenu />
-		} else if (router.pathname === signUpPath) {
-			return <div className={activeNavLinkClass}>{signUpText}</div>
-		} else {
-			return (
-				<Link href="/sign-up">
-					<a className={navLinkClass}>{signUpText}</a>
-				</Link>
-			)
-		}
-	}
 
 	return (
 		<nav className="bg-gray-900">
@@ -87,7 +75,7 @@ export default function NavBar() {
 						</Link>
 						<div className="hidden sm:block sm:ml-6">
 							<div className="flex space-x-4">
-								{links.map(({ title, to }, index) => {
+								{LINKS.map(({ title, to }, index) => {
 									const current = router.pathname === to
 									const key = `${title}-${index}`
 									return current ? (
@@ -104,8 +92,16 @@ export default function NavBar() {
 						</div>
 					</div>
 
-					{/* Settings menu */}
-					{signUpLink()}
+					{/* Settings menu or sign in link */}
+					{session ? (
+						<SettingsMenu />
+					) : router.pathname === SIGN_IN_PATH ? (
+						<div className={activeNavLinkClass}>{SIGN_IN_TITLE}</div>
+					) : (
+						<Link href={SIGN_IN_PATH}>
+							<a className={navLinkClass}>{SIGN_IN_TITLE}</a>
+						</Link>
+					)}
 				</div>
 			</div>
 		</nav>
@@ -162,9 +158,12 @@ function SettingsMenu() {
 						<div className="py-2">
 							<Menu.Item>
 								{({ active }) => (
-									<Link href="/account-settings">
-										<a className={getClassNames(active)}>Sign out</a>
-									</Link>
+									<a
+										className={`${getClassNames(active)} cursor-pointer`}
+										onClick={() => supabase.auth.signOut()}
+									>
+										Sign out
+									</a>
 								)}
 							</Menu.Item>
 						</div>

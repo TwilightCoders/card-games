@@ -29,7 +29,7 @@ export default function Breadcrumbs({ breadcrumbs }) {
 	}
 
 	// Return null if breadcrumbs is empty or only 1 breadcrumb
-	if (breadcrumbs.length === 0 || breadcrumbs.length === 1) {
+	if (!breadcrumbs.length || breadcrumbs.length === 1) {
 		return null
 	}
 
