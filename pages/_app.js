@@ -1,6 +1,10 @@
-// Components
+// Context
 import { UserProvider } from "context/UserContext"
+import { AppProvider } from "context/AppContext"
+
+// Components
 import NavBar from "components/NavBar"
+import LoadingOverlay from "components/LoadingOverlay"
 
 // Styles
 import "styles/globals.css"
@@ -13,10 +17,13 @@ import "styles/globals.css"
  */
 function MyApp({ Component, pageProps }) {
 	return (
-		<UserProvider>
-			<NavBar />
-			<Component {...pageProps} />
-		</UserProvider>
+		<AppProvider>
+			<UserProvider>
+				<NavBar />
+				<Component {...pageProps} />
+				<LoadingOverlay />
+			</UserProvider>
+		</AppProvider>
 	)
 }
 

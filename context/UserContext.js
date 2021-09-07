@@ -13,11 +13,13 @@ import { supabase } from "utils/supabaseClient"
  * @typedef {object} UserContext
  * @property {Session|null} session
  * @property {User|null} user
+ * @property {boolean} initialized
  */
 /** @type {UserContext} */
 const initialUserContext = {
 	session: null,
 	user: null,
+	initialized: false,
 }
 
 /**
@@ -39,44 +41,35 @@ export function UserProvider(props) {
 	const [user, setUser] = React.useState(
 		/** @type {import("@supabase/supabase-js").AuthUser | null} */ (null)
 	)
+	// Initialized or not?
+	const [initialized, setInitialized] = React.useState(false)
 
 	/**
 	 * Update the session if any state changes
 	 */
 	React.useEffect(() => {
-		let ready = true
-
 		// Initialize and save the session & user to state
 		setSession(supabase.auth.session())
 		setUser(supabase.auth.user())
 
+		setInitialized(true)
+
 		supabase.auth.onAuthStateChange((_event, session) => {
-			if (ready) {
+			if (initialized) {
 				// Update the session and user states
 				setSession(session)
 				setUser(session ? session.user : null)
 			}
 		})
 
-		return () => {
-			ready = false
-		}
-	}, [])
-
-	// /**
-	//  * Whenever the session changes, update the user
-	//  */
-	// React.useEffect(() => {
-	// 	const sessionUser = supabase.auth.user()
-	// 	if (session && sessionUser && (!user || sessionUser.id !== user.id)) {
-	// 		setUser(sessionUser)
-	// 	}
-	// }, [session, user])
+		return () => setInitialized(false)
+	}, [initialized])
 
 	/** @type {UserContext} */
 	const value = {
 		session,
 		user,
+		initialized,
 	}
 
 	return <UserContext.Provider value={value} {...props} />
@@ -88,7 +81,7 @@ export function UserProvider(props) {
 export function useUser() {
 	const context = useContext(UserContext)
 	if (!context) {
-		throw new Error("useUser can only be used within a NavProvider")
+		throw new Error("useUser can only be used within a UserProvider")
 	}
 	return context
 }
