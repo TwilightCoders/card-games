@@ -3,8 +3,8 @@ import * as React from "react"
 import { useRouter } from "next/router"
 
 // Components
-import Link from "next/link"
-import { Menu, Transition } from "@headlessui/react"
+import NextLink from "components/NextLink"
+import { Menu, Transition, Switch } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
 
 // Hooks
@@ -68,11 +68,12 @@ export default function NavBar() {
 
 					{/* Main navigation */}
 					<div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-						<Link href="/">
-							<a className="text-white text-xl hover:bg-gray-700 px-3 py-1 rounded-md">
-								Card Games
-							</a>
-						</Link>
+						<NextLink
+							href="/"
+							className="text-white text-xl hover:bg-gray-700 px-3 py-1 rounded-md"
+						>
+							Card Games
+						</NextLink>
 						<div className="hidden sm:block sm:ml-6">
 							<div className="flex space-x-4">
 								{LINKS.map(({ title, to }, index) => {
@@ -83,9 +84,13 @@ export default function NavBar() {
 											{title}
 										</div>
 									) : (
-										<Link href={to} key={key}>
-											<a className={current ? activeNavLinkClass : navLinkClass}>{title}</a>
-										</Link>
+										<NextLink
+											href={to}
+											key={key}
+											className={current ? activeNavLinkClass : navLinkClass}
+										>
+											{title}
+										</NextLink>
 									)
 								})}
 							</div>
@@ -98,9 +103,9 @@ export default function NavBar() {
 					) : router.pathname === SIGN_IN_PATH ? (
 						<div className={activeNavLinkClass}>{SIGN_IN_TITLE}</div>
 					) : (
-						<Link href={SIGN_IN_PATH}>
-							<a className={navLinkClass}>{SIGN_IN_TITLE}</a>
-						</Link>
+						<NextLink href={SIGN_IN_PATH} className={navLinkClass}>
+							{SIGN_IN_TITLE}
+						</NextLink>
 					)}
 				</div>
 			</div>
@@ -112,6 +117,9 @@ export default function NavBar() {
  * Renders the settings menu.
  */
 function SettingsMenu() {
+	// Track if dark mode is enabled
+	const [darkModeEnabled, setDarkModeEnabled] = React.useState(false)
+
 	/**
 	 * Get the CSS class names for a menu item while taking into account if it is active
 	 * @param {boolean} active Whether the menu item is active
@@ -138,22 +146,49 @@ function SettingsMenu() {
 					leaveFrom="transform scale-100 opacity-100"
 					leaveTo="transform scale-95 opacity-0"
 				>
-					<Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200">
+					<Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200">
 						<div className="py-2">
 							<Menu.Item>
 								{({ active }) => (
-									<Link href="/account-settings">
-										<a className={getClassNames(active)}>Your Profile</a>
-									</Link>
+									<NextLink href="/account-settings" className={getClassNames(active)}>
+										Your Profile
+									</NextLink>
 								)}
 							</Menu.Item>
 							<Menu.Item>
 								{({ active }) => (
-									<Link href="/account-settings">
-										<a className={getClassNames(active)}>Settings</a>
-									</Link>
+									<NextLink href="/account-settings" className={getClassNames(active)}>
+										Settings
+									</NextLink>
 								)}
 							</Menu.Item>
+						</div>
+						<div className="py-2">
+							<Switch.Group>
+								<div className="flex px-4 mx-2">
+									<Switch.Label className="text-sm cursor-pointer select-none flex-1">
+										Change theme
+									</Switch.Label>
+									<Switch
+										checked={darkModeEnabled}
+										onChange={setDarkModeEnabled}
+										className={
+											`${
+												darkModeEnabled ? "bg-blue-900" : "bg-blue-700"
+											} relative inline-flex items-center h-6 rounded-full w-11 transition-colors ` +
+											`focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ` +
+											`justify-self-end`
+										}
+									>
+										<span className="sr-only">Use setting</span>
+										<span
+											aria-hidden="true"
+											className={`${darkModeEnabled ? "translate-x-6" : "translate-x-1"}
+											inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
+										/>
+									</Switch>
+								</div>
+							</Switch.Group>
 						</div>
 						<div className="py-2">
 							<Menu.Item>
@@ -167,11 +202,13 @@ function SettingsMenu() {
 								)}
 							</Menu.Item>
 						</div>
-						{/* <Menu.Item disabled>
-							<span className="opacity-75 block px-4 py-2 text-sm text-gray-700">
-								Invite a friend (coming soon!)
+						<Menu.Item disabled>
+							<span className="opacity-75 block px-4 py-2 mx-2 text-sm text-gray-700">
+								Invite a friend
+								<br />
+								(coming soon!)
 							</span>
-						</Menu.Item> */}
+						</Menu.Item>
 					</Menu.Items>
 				</Transition>
 			</Menu>

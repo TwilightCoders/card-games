@@ -10,26 +10,27 @@ import { H1 } from "components/Heading"
 
 // Hooks
 import { useUser } from "context/UserContext"
+import { useApp } from "context/AppContext"
 
 // Supabase
 import { supabase } from "utils/supabaseClient"
 
 export default function AccountSettings() {
 	// Get the session and user from the user context
-	const { user, session } = useUser()
+	const { user, session, initialized } = useUser()
 
 	// Get the router
 	const router = useRouter()
 
-	const [loading, setLoading] = useState(true)
+	const { setLoading } = useApp()
 	const [username, setUsername] = useState(null)
 
 	// Redirect the user to the login page if they are not logged in
 	useEffect(() => {
-		if (!session) {
+		if (initialized && (!session || !user)) {
 			router.push("/sign-in")
 		}
-	})
+	}, [initialized, router, session, user])
 
 	// Load the profile from the database
 	useEffect(() => {
@@ -52,15 +53,15 @@ export default function AccountSettings() {
 						setUsername(data.shift().username)
 					}
 				} catch (error) {
-					console.error(error.message)
+					console.error("Could not get the profile", error.message)
 				} finally {
-					setLoading(false)
+					setTimeout(() => setLoading(false), 500)
 				}
 			}
 		}
 
 		getProfile()
-	}, [session, user?.id])
+	}, [session, setLoading, user?.id])
 
 	/**
 	 *
@@ -68,7 +69,6 @@ export default function AccountSettings() {
 	 */
 	async function updateProfile(username) {
 		try {
-			setLoading(true)
 			const user = supabase.auth.user()
 
 			const updates = {
@@ -86,8 +86,6 @@ export default function AccountSettings() {
 			}
 		} catch (error) {
 			alert(error.message)
-		} finally {
-			setLoading(false)
 		}
 	}
 
@@ -100,7 +98,7 @@ export default function AccountSettings() {
 	return (
 		<Content>
 			<H1>Account Settings</H1>
-			{user !== null && !loading ? (
+			{user !== null ? (
 				<div className="grid grid-flow-row md:gap-4 md:grid-flow-col border bg-gray-100 p-4 mt-4 rounded-md">
 					<Formik
 						initialValues={{
@@ -110,6 +108,7 @@ export default function AccountSettings() {
 						onSubmit={(values, { setSubmitting }) => {
 							updateProfile(values.username).finally(() => setSubmitting(false))
 						}}
+						key={username}
 					>
 						{({ isSubmitting, values }) => (
 							<Form className="mt-2">
