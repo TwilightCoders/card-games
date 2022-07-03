@@ -1,9 +1,0 @@
-{
-	"*.+(js|ts|tsx|jsx)": [
-		"next lint"
-	],
-	"**/*.{js,jsx,json,css,scss,md,yml,yaml,html,hbs,ts,tsx}": [
-		"prettier --write",
-		"git add"
-	]
-}
