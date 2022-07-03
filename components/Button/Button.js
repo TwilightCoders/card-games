@@ -12,8 +12,9 @@
  * @param {boolean} [props.full] - Whether the button should be displayed as a block
  * @param {boolean} [props.loading] - Whether the button should be displayed as loading
  * @param {ButtonColors} [props.color] - The color of the button
+ * @param {boolean} [props.disabled] - Whether the button should be disabled
  */
-export default function Button({ children, as, type, full, loading, color, ...props }) {
+export default function Button({ children, as, type, full, loading, color, disabled, ...props }) {
 	const Element = type || !as ? "button" : as
 
 	// A function that will return tailwind colors for the button based on the color prop
@@ -45,6 +46,7 @@ export default function Button({ children, as, type, full, loading, color, ...pr
 				`${full ? "block" : "inline-block"}`.trim()
 			}
 			{...(Element === "button" ? { type } : {})}
+			disabled={disabled}
 			{...props}
 		>
 			{loading ? (
